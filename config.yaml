@@ -1,0 +1,15 @@
+name: "Energy Planner"
+description: "Putting carnot.dk to use."
+version: "1.0.0"
+slug: "energy_planner"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+options:
+  user: ""
+  api_key: ""
+schema:
+  user: str
+  api_key: int

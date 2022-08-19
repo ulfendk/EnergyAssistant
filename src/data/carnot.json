@@ -1,0 +1,1434 @@
+{
+  "predictions": [
+    {
+      "dktime": "2022-08-18T14:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 163.49164050504004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T14:00:00+00:00",
+      "id": 2551650,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T15:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 149.68887960752002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T15:00:00+00:00",
+      "id": 2551651,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T16:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 128.6302605872,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T16:00:00+00:00",
+      "id": 2551652,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T17:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 99.10513133568,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T17:00:00+00:00",
+      "id": 2551653,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T18:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 66.10596227091601,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T18:00:00+00:00",
+      "id": 2551654,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T19:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 88.470488169764,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T19:00:00+00:00",
+      "id": 2551655,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T20:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 41.99647679680001,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T20:00:00+00:00",
+      "id": 2551656,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T21:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 22.733848693396,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T21:00:00+00:00",
+      "id": 2551657,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T22:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 36.382563721428006,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T22:00:00+00:00",
+      "id": 2551658,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-18T23:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 15.201225680236002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-18T23:00:00+00:00",
+      "id": 2551659,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T00:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 10.814315503607999,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T00:00:00+00:00",
+      "id": 2551660,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T01:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 8.425241315128002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T01:00:00+00:00",
+      "id": 2551661,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T02:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 4.689748258560001,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T02:00:00+00:00",
+      "id": 2551662,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T03:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 7.985443152492,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T03:00:00+00:00",
+      "id": 2551663,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T04:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T04:00:00+00:00",
+      "id": 2551664,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T05:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 1.0492811579876007,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T05:00:00+00:00",
+      "id": 2551665,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T06:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 33.30125145125201,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T06:00:00+00:00",
+      "id": 2551666,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T07:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 4.687642163464,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T07:00:00+00:00",
+      "id": 2551667,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T08:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T08:00:00+00:00",
+      "id": 2551668,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T09:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 7.019189843212,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T09:00:00+00:00",
+      "id": 2551669,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T10:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 8.505843598512001,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T10:00:00+00:00",
+      "id": 2551670,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T11:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T11:00:00+00:00",
+      "id": 2551671,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T12:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 11.545340455944,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T12:00:00+00:00",
+      "id": 2551672,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T13:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 30.289691787356,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T13:00:00+00:00",
+      "id": 2551673,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T14:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 33.122939206904,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T14:00:00+00:00",
+      "id": 2551674,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T15:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 5.950579478012001,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T15:00:00+00:00",
+      "id": 2551675,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T16:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 35.684572462484,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T16:00:00+00:00",
+      "id": 2551676,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T17:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 28.592004741084,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T17:00:00+00:00",
+      "id": 2551677,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T18:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 32.405179892688004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T18:00:00+00:00",
+      "id": 2551678,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T19:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 16.564031886956,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T19:00:00+00:00",
+      "id": 2551679,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T20:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 46.093819456140004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T20:00:00+00:00",
+      "id": 2551680,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T21:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 43.85228633641201,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T21:00:00+00:00",
+      "id": 2551681,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T22:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 34.633908001904004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T22:00:00+00:00",
+      "id": 2551682,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-19T23:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 25.626552033608,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-19T23:00:00+00:00",
+      "id": 2551683,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T00:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 34.81701532204801,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T00:00:00+00:00",
+      "id": 2551684,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T01:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 32.831793757008,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T01:00:00+00:00",
+      "id": 2551685,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T02:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 31.660104904464003,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T02:00:00+00:00",
+      "id": 2551686,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T03:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 29.36092867902,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T03:00:00+00:00",
+      "id": 2551687,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T04:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 31.237823402696005,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T04:00:00+00:00",
+      "id": 2551688,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T05:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 28.161406120212,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T05:00:00+00:00",
+      "id": 2551689,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T06:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 31.534311358180002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T06:00:00+00:00",
+      "id": 2551690,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T07:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 31.275476382564005,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T07:00:00+00:00",
+      "id": 2551691,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T08:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 34.18103290154801,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T08:00:00+00:00",
+      "id": 2551692,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T09:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 21.353525726492002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T09:00:00+00:00",
+      "id": 2551693,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T10:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 29.663658148524,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T10:00:00+00:00",
+      "id": 2551694,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T11:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 19.9921901911,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T11:00:00+00:00",
+      "id": 2551695,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T12:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 11.413975083428,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T12:00:00+00:00",
+      "id": 2551696,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T13:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 58.093973402088004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T13:00:00+00:00",
+      "id": 2551697,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T14:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 82.303231630488,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T14:00:00+00:00",
+      "id": 2551698,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T15:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 69.491295217912,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T15:00:00+00:00",
+      "id": 2551699,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T16:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 87.504001765832,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T16:00:00+00:00",
+      "id": 2551700,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T17:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 90.332469006984,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T17:00:00+00:00",
+      "id": 2551701,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T18:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 83.260194722496,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T18:00:00+00:00",
+      "id": 2551702,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T19:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 87.654206688336,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T19:00:00+00:00",
+      "id": 2551703,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T20:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 119.90291376571999,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T20:00:00+00:00",
+      "id": 2551704,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T21:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 96.63365863464,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T21:00:00+00:00",
+      "id": 2551705,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T22:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 101.25935993108,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T22:00:00+00:00",
+      "id": 2551706,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-20T23:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 73.0373921659,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-20T23:00:00+00:00",
+      "id": 2551707,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T00:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 66.690576569212,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T00:00:00+00:00",
+      "id": 2551708,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T01:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 74.78483434322,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T01:00:00+00:00",
+      "id": 2551709,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T02:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 59.70323504365601,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T02:00:00+00:00",
+      "id": 2551710,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T03:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 63.298243532588,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T03:00:00+00:00",
+      "id": 2551711,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T04:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 36.844303569312004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T04:00:00+00:00",
+      "id": 2551712,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T05:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 31.349757500496004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T05:00:00+00:00",
+      "id": 2551713,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T06:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 18.61159152298,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T06:00:00+00:00",
+      "id": 2551714,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T07:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 23.413738618180002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T07:00:00+00:00",
+      "id": 2551715,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T08:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 20.164212753168,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T08:00:00+00:00",
+      "id": 2551716,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T09:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T09:00:00+00:00",
+      "id": 2551717,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T10:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 2.162470532742401,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T10:00:00+00:00",
+      "id": 2551718,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T11:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T11:00:00+00:00",
+      "id": 2551719,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T12:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T12:00:00+00:00",
+      "id": 2551720,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T13:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 96.59836967352,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T13:00:00+00:00",
+      "id": 2551721,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T14:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 89.665289841828,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T14:00:00+00:00",
+      "id": 2551722,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T15:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 73.05260986,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T15:00:00+00:00",
+      "id": 2551723,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T16:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 46.753299347028005,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T16:00:00+00:00",
+      "id": 2551724,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T17:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 65.7941645554,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T17:00:00+00:00",
+      "id": 2551725,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T18:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 52.506587928264004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T18:00:00+00:00",
+      "id": 2551726,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T19:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 83.113830250396,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T19:00:00+00:00",
+      "id": 2551727,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T20:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 78.201260448284,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T20:00:00+00:00",
+      "id": 2551728,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T21:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 88.740100719068,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T21:00:00+00:00",
+      "id": 2551729,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T22:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 73.634459995384,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T22:00:00+00:00",
+      "id": 2551730,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-21T23:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 124.83513006032001,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-21T23:00:00+00:00",
+      "id": 2551731,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T00:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 112.1385011128,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T00:00:00+00:00",
+      "id": 2551732,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T01:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 120.91407181123999,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T01:00:00+00:00",
+      "id": 2551733,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T02:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 105.12854642651999,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T02:00:00+00:00",
+      "id": 2551734,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T03:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 129.41354005704002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T03:00:00+00:00",
+      "id": 2551735,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T04:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 113.91148736532,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T04:00:00+00:00",
+      "id": 2551736,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T05:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 111.1948352414,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T05:00:00+00:00",
+      "id": 2551737,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T06:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 113.94081140748,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T06:00:00+00:00",
+      "id": 2551738,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T07:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 107.39258574364,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T07:00:00+00:00",
+      "id": 2551739,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T08:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 107.89060979828,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T08:00:00+00:00",
+      "id": 2551740,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T09:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 82.09133617732,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T09:00:00+00:00",
+      "id": 2551741,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T10:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 88.029796461076,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T10:00:00+00:00",
+      "id": 2551742,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T11:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 79.37446257872,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T11:00:00+00:00",
+      "id": 2551743,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T12:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 76.34862534598,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T12:00:00+00:00",
+      "id": 2551744,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T13:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 88.76036088512,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T13:00:00+00:00",
+      "id": 2551745,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T14:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 134.58226250824,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T14:00:00+00:00",
+      "id": 2551746,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T15:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 176.11854167528003,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T15:00:00+00:00",
+      "id": 2551747,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T16:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 168.32012818976003,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T16:00:00+00:00",
+      "id": 2551748,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T17:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 213.42960932956,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T17:00:00+00:00",
+      "id": 2551749,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T18:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 255.92900739292,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T18:00:00+00:00",
+      "id": 2551750,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T19:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 322.84079171999997,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T19:00:00+00:00",
+      "id": 2551751,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T20:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 322.94400885248,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T20:00:00+00:00",
+      "id": 2551752,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T21:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 334.13057476692,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T21:00:00+00:00",
+      "id": 2551753,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T22:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 360.90742670064003,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T22:00:00+00:00",
+      "id": 2551754,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-22T23:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 363.51046430004,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-22T23:00:00+00:00",
+      "id": 2551755,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T00:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 314.62423304547997,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T00:00:00+00:00",
+      "id": 2551756,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T01:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 294.70984657224,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T01:00:00+00:00",
+      "id": 2551757,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T02:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 245.73786786960002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T02:00:00+00:00",
+      "id": 2551758,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T03:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 241.15744473756,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T03:00:00+00:00",
+      "id": 2551759,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T04:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 165.893777727,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T04:00:00+00:00",
+      "id": 2551760,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T05:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 136.66241328556,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T05:00:00+00:00",
+      "id": 2551761,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T06:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 62.913330172399995,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T06:00:00+00:00",
+      "id": 2551762,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T07:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 49.92758410565201,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T07:00:00+00:00",
+      "id": 2551763,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T08:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 32.252877217632005,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T08:00:00+00:00",
+      "id": 2551764,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T09:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T09:00:00+00:00",
+      "id": 2551765,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T10:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T10:00:00+00:00",
+      "id": 2551766,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T11:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T11:00:00+00:00",
+      "id": 2551767,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T12:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 28.013883623552005,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T12:00:00+00:00",
+      "id": 2551768,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T13:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T13:00:00+00:00",
+      "id": 2551769,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T14:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 63.16607161483601,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T14:00:00+00:00",
+      "id": 2551770,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T15:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 44.716099263648005,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T15:00:00+00:00",
+      "id": 2551771,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T16:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 95.96441478916,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T16:00:00+00:00",
+      "id": 2551772,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T17:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 136.62329966528,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T17:00:00+00:00",
+      "id": 2551773,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T18:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 140.48462728564002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T18:00:00+00:00",
+      "id": 2551774,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T19:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 116.19178272532,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T19:00:00+00:00",
+      "id": 2551775,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T20:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 170.87095437480002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T20:00:00+00:00",
+      "id": 2551776,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T21:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 161.87223353544002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T21:00:00+00:00",
+      "id": 2551777,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T22:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 197.33330729712003,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T22:00:00+00:00",
+      "id": 2551778,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-23T23:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 177.108639763,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-23T23:00:00+00:00",
+      "id": 2551779,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T00:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 237.56396839656,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T00:00:00+00:00",
+      "id": 2551780,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T01:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 149.20831927832003,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T01:00:00+00:00",
+      "id": 2551781,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T02:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 159.96626911788002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T02:00:00+00:00",
+      "id": 2551782,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T03:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 128.12695391452002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T03:00:00+00:00",
+      "id": 2551783,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T04:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 76.85434490088001,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T04:00:00+00:00",
+      "id": 2551784,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T05:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 94.86586064996,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T05:00:00+00:00",
+      "id": 2551785,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T06:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 48.92185010415601,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T06:00:00+00:00",
+      "id": 2551786,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T07:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 40.934257813464,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T07:00:00+00:00",
+      "id": 2551787,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T08:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 23.658743741480002,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T08:00:00+00:00",
+      "id": 2551788,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T09:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 12.101037013835999,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T09:00:00+00:00",
+      "id": 2551789,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T10:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T10:00:00+00:00",
+      "id": 2551790,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T11:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T11:00:00+00:00",
+      "id": 2551791,
+      "latest": true
+    },
+    {
+      "dktime": "2022-08-24T12:00:00+00:00",
+      "pricearea": "dk2",
+      "energysource": "offshorewindpower",
+      "prediction": 0.0,
+      "addedtime": "2022-08-18T12:43:01.175591",
+      "utctime": "2022-08-24T12:00:00+00:00",
+      "id": 2551792,
+      "latest": true
+    }
+  ]
+}
