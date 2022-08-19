@@ -1,6 +1,20 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
 open System
 open FSharp.Data
+open MQTTnet
+open MQTTnet.Client
+
+// MQTT
+let client = MqttFactory().CreateMqttClient()
+client.ConnectAsync(MqttClientOptionsBuilder()
+  .WithTcpServer("192.168.42.170", 1883)
+  .WithCredentials("energyassistant", "carnot")
+  .WithClientId("EnergyAssistant")
+  .Build()) |> Async.AwaitTask |> ignore
+
+let publishResult =
+  client.PublishAsync(MqttApplicationMessageBuilder().WithTopic("/asdf/asdf/asdf").WithPayload("").WithContentType("application/json").Build())
+  |> Async.AwaitTask
 
 // Command line arguments
 let args = System.Environment.GetCommandLineArgs()
