@@ -2,13 +2,6 @@
 open System
 open FSharp.Data
 
-type SegmentPrice = 
-  { Name: string;
-    Region: string; 
-    ValidFrom: DateTimeOffset;
-    Value: decimal;
-    IsPrediction: bool }
-
 // Command line arguments
 let args = System.Environment.GetCommandLineArgs()
 let username = args.[1]
@@ -24,12 +17,38 @@ type Carnot = JsonProvider<carnotSample>
 let data = Http.RequestString(carnotUrl,[], [ ("accept", "application/json"); ("apikey", apikey); ("username", username) ])
 let carnotData = Carnot.Parse(data)
 
-let segments = carnotData.Predictions |> Seq.map(fun x -> { Name = sprintf "%i" x.Dktime.Hour ; Region = x.Pricearea; ValidFrom = x.Utctime; Value = x.Prediction / 1000m; IsPrediction = true})
+type SegmentPrice = 
+  { Name: string;
+    Region: string; 
+    Start: DateTimeOffset;
+    End: DateTimeOffset;
+    Value: decimal }
+
+let name (time : DateTimeOffset) = sprintf "%i-%i" time.Hour (time.Hour + 1)
+
+let segments = carnotData.Predictions |> Seq.map(fun x -> 
+  { Name = name x.Dktime;
+    Region = x.Pricearea;
+    Start = x.Utctime;
+    End = x.Utctime.Add(TimeSpan.FromHours(1));
+    Value = x.Prediction / 1000m}) |> Seq.toArray
 
 // Calculating data
 
-let toSpan segments =
-    segments |> Seq.toList
+let getSpans (segments : array<'a>) spanWidth =
+  let rec getSpan (segments : array<'a>) =
+    let remaining = segments.Length - spanWidth
+    match remaining with
+    | x when x >= spanWidth -> segments.[0..(spanWidth-1)] :: (getSpan segments.[1..])
+    | _  -> []
+  getSpan segments
+
+let calcAvg (spans : SegmentPrice array list) =
+  spans |> List.map (fun s -> (s |> Array.averageBy (fun e -> e.Value), s.[0].Start, s))
+
+let spans = getSpans segments 3 |> calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
+
+printfn "Spans: %A" spans
 
 
 let min = segments |> Seq.minBy(fun x -> x.Value)

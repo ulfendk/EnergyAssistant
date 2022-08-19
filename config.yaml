@@ -10,6 +10,16 @@ arch:
 options:
   user: ""
   api_key: ""
+  lowest_spans: []
+  highest_spans: []
 schema:
   user: str
   api_key: int
+  lowest_spans:
+    - title: str
+      hours: int
+      max_hours_future: int
+  highest_spans:
+    - title: str
+      hours: int
+      max_hours_future: int
