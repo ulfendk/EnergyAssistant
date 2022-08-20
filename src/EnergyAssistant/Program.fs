@@ -4,31 +4,42 @@ open FSharp.Data
 open MQTTnet
 open MQTTnet.Client
 
-// MQTT
-let client = MqttFactory().CreateMqttClient()
-client.ConnectAsync(MqttClientOptionsBuilder()
-  .WithTcpServer("192.168.42.170", 1883)
-  .WithCredentials("energyassistant", "carnot")
-  .WithClientId("EnergyAssistant")
-  .Build()) |> Async.AwaitTask |> ignore
-
-let publishResult =
-  client.PublishAsync(MqttApplicationMessageBuilder().WithTopic("/asdf/asdf/asdf").WithPayload("").WithContentType("application/json").Build())
-  |> Async.AwaitTask
-
 // Command line arguments
 let args = System.Environment.GetCommandLineArgs()
-let username = args.[1]
-let apikey = args.[2]
+let configFile = args.[1]
 
-// Fetching data from carnot.dk
+// Configuration
+[<Literal>]
+let configSample = "../data/config.json"
+type Config = JsonProvider<configSample>
+let configData = Config.Load(configFile)
+
+let hoursOfDay (input: string) = input.Split('|') |> Array.map (fun x-> x.Trim() |> int) |> Set.ofArray
+
+// MQTT
+let client = MqttFactory().CreateMqttClient()
+let clientOptionsBuilder =
+  MqttClientOptionsBuilder()
+    .WithTcpServer(configData.Mqtt.Server, configData.Mqtt.Port)
+    .WithCredentials(configData.Mqtt.User, configData.Mqtt.Pwd)
+    .WithClientId(configData.Mqtt.ClientId)
+
+if (configData.Mqtt.UseTls) then clientOptionsBuilder.WithTls() |> ignore
+
+client.ConnectAsync(clientOptionsBuilder.Build()) |> Async.AwaitTask |> ignore
+
+// let publishResult =
+//   client.PublishAsync(MqttApplicationMessageBuilder().WithTopic("/asdf/asdf/asdf").WithPayload("").WithContentType("application/json").Build())
+//   |> Async.AwaitTask
+
+// carnot.dk
 [<Literal>]
 let carnotSample = "../data/carnot.json"
-let carnotUrl = "https://whale-app-dquqw.ondigitalocean.app/openapi/get_predict?energysource=spotprice&region=dk2&daysahead=7"
+let carnotUrl = sprintf "https://whale-app-dquqw.ondigitalocean.app/openapi/get_predict?energysource=spotprice&region=%s&daysahead=7" configData.Carnot.Region
 
 type Carnot = JsonProvider<carnotSample>
 
-let data = Http.RequestString(carnotUrl,[], [ ("accept", "application/json"); ("apikey", apikey); ("username", username) ])
+let data = Http.RequestString(carnotUrl,[], [ ("accept", "application/json"); ("apikey", configData.Carnot.ApiKey); ("username", configData.Carnot.User) ])
 let carnotData = Carnot.Parse(data)
 
 type SegmentPrice = 
@@ -57,16 +68,28 @@ let getSpans (segments : array<'a>) spanWidth =
     | _  -> []
   getSpan segments
 
+type Segment = decimal * DateTimeOffset * SegmentPrice array
+
 let calcAvg (spans : SegmentPrice array list) =
-  spans |> List.map (fun s -> (s |> Array.averageBy (fun e -> e.Value), s.[0].Start, s))
+  spans |> List.map (fun s -> Segment(s |> Array.averageBy (fun e -> e.Value), s.[0].Start, s))
 
-let spans = getSpans segments 3 |> calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
 
-printfn "Spans: %A" spans
+let spanWidths = configData.LowestSpans |> Array.map (fun x -> x.Hours) |> Set.ofSeq
+
+let spansAsSortedList x = getSpans segments x |> calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
+
+let spansDict = spanWidths |> Set.toSeq |> Seq.map (fun x -> (x, spansAsSortedList x)) |> dict
+
+// let spans = getSpans segments 3 |> calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
+
+let (average, startTime, prices) = spansDict.Item(0).Head
+
+printfn "Spans: %A" spansDict
 
 
 let min = segments |> Seq.minBy(fun x -> x.Value)
 let max = segments |> Seq.maxBy(fun x -> x.Value)
+let avg = segments |> Seq.averageBy(fun x -> x.Value)
 
 printfn "Min: %A" min
 printfn "Max: %A" max

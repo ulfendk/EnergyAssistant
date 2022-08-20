@@ -1,6 +1,6 @@
 name: "Energy Planner"
 description: "Putting carnot.dk to use."
-version: "1.0.0"
+version: "1.0.9"
 slug: "energy_planner"
 init: false
 arch:
@@ -8,18 +8,35 @@ arch:
   - amd64
   - armhf
 options:
-  user: ""
-  api_key: ""
+  carnot:
+    region: "dk2"
+    user: ""
+    api_key: ""
+  mqtt:
+    server: ""
+    port: 1883
+    user: ""
+    pwd: ""
+    client_id: "Energy Assistant"
+    use_tls: false
+  #   .WithTcpServer("192.168.42.170", 1883)
+  # .WithCredentials("energyassistant", "carnot")
+  # .WithClientId("EnergyAssistant")
   lowest_spans: []
-  highest_spans: []
 schema:
-  user: str
-  api_key: int
+  carnot:
+    region: list(dk1|dk2)
+    user: email
+    api_key: str
+  mqtt:
+    server: str
+    port: port
+    user: str
+    pwd: password
+    client_id: str
+    use_tls: bool
   lowest_spans:
     - title: str
-      hours: int
-      max_hours_future: int
-  highest_spans:
-    - title: str
-      hours: int
-      max_hours_future: int
+      hours: int(1,168)
+      max_hours_future: int(1,168)
+      hours_of_day: str
