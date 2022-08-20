@@ -13,15 +13,12 @@ options:
     user: ""
     api_key: ""
   mqtt:
-    server: ""
+    server: "core-mosquitto"
     port: 1883
     user: ""
     pwd: ""
     client_id: "Energy Assistant"
     use_tls: false
-  #   .WithTcpServer("192.168.42.170", 1883)
-  # .WithCredentials("energyassistant", "carnot")
-  # .WithClientId("EnergyAssistant")
   lowest_spans: []
 schema:
   carnot:
