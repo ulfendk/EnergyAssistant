@@ -1,0 +1,5 @@
+
+# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
+name: Energy Assistant
+url: 'https://github.com/ulfendk/EnergyAssistant'
+maintainer: Regin Ulf Nielsen <regin@ulfen.dk>
