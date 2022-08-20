@@ -7,6 +7,8 @@ bashio::log.info "Creating Energy Assistant configuration..."
 # Create main config
 USER_NAME=$(bashio::config 'user')
 API_KEY=$(bashio::config 'api_key')
+LOWEST_SPANS=$(bashio::config 'highest_spans')
+HIGHEST_SPANS=$(bashio::config 'lowest_spans')
 
 # DEFAULT_LEASE=$(bashio::config 'default_lease')
 # DNS=$(bashio::config 'dns|join(", ")')
@@ -17,7 +19,10 @@ API_KEY=$(bashio::config 'api_key')
     echo "{"
     echo "  \"@username\": \"${USER_NAME}\","
     echo "  \"apikey\": \"${API_KEY},"
+    echo "  \"apikey\": \"${LOWEST_SPANS},"
+    echo "  \"apikey\": \"${HIGHEST_SPANS}"
     echo "}"
 } > "${CONFIG}"
 
-./EnergyAssistant
+echo "Wrote the following config in `pwd`"
+cat ${CONFIG}
