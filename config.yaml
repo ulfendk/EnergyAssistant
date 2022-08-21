@@ -19,7 +19,7 @@ options:
     pwd: ""
     client_id: "Energy Assistant"
     use_tls: false
-  lowest_spans: []
+  spans: []
 schema:
   carnot:
     region: list(dk1|dk2)
@@ -32,7 +32,7 @@ schema:
     pwd: password
     client_id: str
     use_tls: bool
-  lowest_spans:
+  spans:
     - title: str
       hours: int(1,168)
       max_hours_future: int(1,168)
