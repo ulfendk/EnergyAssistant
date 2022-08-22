@@ -7,7 +7,7 @@ WORKDIR "/src/src/EnergyAssistant"
 RUN dotnet build "EnergyAssistant.fsproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "EnergyAssistant.fsproj" -c Release --self-contained true -o /app/publish
+RUN dotnet publish "EnergyAssistant.fsproj" -c Release --self-contained true --runtime linux-arm64 -o /app/publish
 
 # Add-on
 ARG BUILD_FROM

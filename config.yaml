@@ -1,6 +1,6 @@
 name: "Energy Planner"
 description: "Putting carnot.dk to use."
-version: "1.0.11"
+version: "1.0.13"
 slug: "energy_planner"
 init: false
 arch:
