@@ -1,22 +1,24 @@
-FROM mcr.microsoft.com/dotnet/sdk AS build
-WORKDIR /source
-# copy csproj and restore as distinct layers
-COPY src/ .
-RUN dotnet restore --use-current-runtime src/EnergyAssistant/
-
-# copy and publish app and libraries
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["src/EnergyAssistant/EnergyAssistant.fsproj", "src/EnergyAssistant/"]
+RUN dotnet restore "src/EnergyAssistant/EnergyAssistant.fsproj"
 COPY . .
-RUN dotnet publish -c Release -o /app --use-current-runtime --self-contained true --no-restore src/EnergyAssistant/
+WORKDIR "/src/src/EnergyAssistant"
+RUN dotnet build "EnergyAssistant.fsproj" -c Release -o /app/build
 
+FROM build AS publish
+RUN dotnet publish "EnergyAssistant.fsproj" -c Release --self-contained true -o /app/publish
+
+# Add-on
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-# Copy data for add-on
-COPY run.sh /
-RUN chmod a+x /run.sh
-
+## Copy data for add-on
+#COPY run.sh /
+#RUN chmod a+x /run.sh
+#
 WORKDIR /app
-COPY --from=build /app .
+COPY --from=publish /app .
 
 ENTRYPOINT ["EnergyAssistant"]
 

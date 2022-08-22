@@ -74,7 +74,7 @@ let calcAvg (spans : SegmentPrice array list) =
   spans |> List.map (fun s -> Segment(s |> Array.averageBy (fun e -> e.Value), s.[0].Start, s))
 
 
-let spanWidths = configData.LowestSpans |> Array.map (fun x -> x.Hours) |> Set.ofSeq
+let spanWidths = configData.Spans |> Array.map (fun x -> x.Hours) |> Set.ofSeq
 
 let spansAsSortedList x = getSpans segments x |> calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
 
