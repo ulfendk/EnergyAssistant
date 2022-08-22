@@ -25,4 +25,9 @@
 # } > "${CONFIG}"
 # PWD = `pwd`
 # bashio::log.info  "Wrote the following config in ${PWD}"
-bashio::log.info `cat /data/options.json`
+#bashio::log.info `cat /data/options.json`
+
+echo "Starting Energy Assistant..."
+
+dotnet exec EnergyAssistant.dll /data/options.json
+

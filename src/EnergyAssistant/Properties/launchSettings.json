@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EnergyAssistant": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\repos\\options.json"
+    }
+  }
+}

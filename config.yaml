@@ -1,7 +1,7 @@
-name: "Energy Planner"
-description: "Putting carnot.dk to use."
-version: "1.0.13"
-slug: "energy_planner"
+name: "Energy Assistant"
+description: "Enabling easy use of spot price data from Carnot in Home Assistant"
+version: "1.0.28"
+slug: "energy_assistant"
 init: false
 arch:
   - aarch64

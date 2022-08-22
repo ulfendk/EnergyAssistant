@@ -1,4 +1,4 @@
-# EnergyAssistant
+# Energy Assistant (for carnot.dk)
 
 **NB! This add-on is only useful when connected to the Danish electricity grid!**
 

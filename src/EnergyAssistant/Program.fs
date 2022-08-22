@@ -10,7 +10,7 @@ let configFile = args.[1]
 
 // Configuration
 [<Literal>]
-let configSample = "../data/config.json"
+let configSample = "../data/options.json"
 type Config = JsonProvider<configSample>
 let configData = Config.Load(configFile)
 
@@ -26,7 +26,7 @@ let clientOptionsBuilder =
 
 if (configData.Mqtt.UseTls) then clientOptionsBuilder.WithTls() |> ignore
 
-client.ConnectAsync(clientOptionsBuilder.Build()) |> Async.AwaitTask |> ignore
+let connectionResult = client.ConnectAsync(clientOptionsBuilder.Build()) |> Async.AwaitTask |> Async.RunSynchronously
 
 // let publishResult =
 //   client.PublishAsync(MqttApplicationMessageBuilder().WithTopic("/asdf/asdf/asdf").WithPayload("").WithContentType("application/json").Build())
@@ -82,7 +82,7 @@ let spansDict = spanWidths |> Set.toSeq |> Seq.map (fun x -> (x, spansAsSortedLi
 
 // let spans = getSpans segments 3 |> calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
 
-let (average, startTime, prices) = spansDict.Item(0).Head
+let (average, startTime, prices) = spansDict.Item(2).Head
 
 printfn "Spans: %A" spansDict
 
