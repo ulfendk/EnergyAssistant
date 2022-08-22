@@ -12,6 +12,10 @@
         "client_id": "Energy Assistant",
         "use_tls": false
     },
+    "levels": {
+        "medium": 2,
+        "high": 3
+    },
     "spans": [
         {
             "title": "Next laundry",

@@ -19,6 +19,9 @@ options:
     pwd: ""
     client_id: "Energy Assistant"
     use_tls: false
+  levels:
+    medium: 2
+    high: 3
   spans: []
 schema:
   carnot:
@@ -32,6 +35,9 @@ schema:
     pwd: password
     client_id: str
     use_tls: bool
+  levels:
+    medium: int(0,1000)
+    high: int(0,1000)
   spans:
     - title: str
       hours: int(1,168)

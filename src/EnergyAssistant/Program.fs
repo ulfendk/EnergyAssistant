@@ -3,6 +3,8 @@ open System
 open FSharp.Data
 open MQTTnet
 open MQTTnet.Client
+open Newtonsoft.Json
+open Newtonsoft.Json.Serialization
 
 // Command line arguments
 let args = System.Environment.GetCommandLineArgs()
@@ -28,9 +30,18 @@ if (configData.Mqtt.UseTls) then clientOptionsBuilder.WithTls() |> ignore
 
 let connectionResult = client.ConnectAsync(clientOptionsBuilder.Build()) |> Async.AwaitTask |> Async.RunSynchronously
 
-// let publishResult =
-//   client.PublishAsync(MqttApplicationMessageBuilder().WithTopic("/asdf/asdf/asdf").WithPayload("").WithContentType("application/json").Build())
-//   |> Async.AwaitTask
+
+let baseTopic = "energyassistant"
+let topic name = sprintf "%s/%s/%s" baseTopic configData.Carnot.Region name
+
+type Payload =
+  { [<JsonProperty("state")>]State: DateTimeOffset;
+    [<JsonProperty("value")>]Value: decimal }
+
+
+
+let asPayload obj = JsonConvert.SerializeObject(obj)
+
 
 // carnot.dk
 [<Literal>]
@@ -80,8 +91,6 @@ let spansAsSortedList x = getSpans segments x |> calcAvg |> List.sortBy (fun (av
 
 let spansDict = spanWidths |> Set.toSeq |> Seq.map (fun x -> (x, spansAsSortedList x)) |> dict
 
-// let spans = getSpans segments 3 |> calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
-
 let (average, startTime, prices) = spansDict.Item(2).Head
 
 printfn "Spans: %A" spansDict
@@ -90,6 +99,43 @@ printfn "Spans: %A" spansDict
 let min = segments |> Seq.minBy(fun x -> x.Value)
 let max = segments |> Seq.maxBy(fun x -> x.Value)
 let avg = segments |> Seq.averageBy(fun x -> x.Value)
+
+let publishResult name (payload: string) =
+  client.PublishAsync(MqttApplicationMessageBuilder()
+    .WithTopic(topic name)
+    .WithContentType("application/json")
+    .WithPayload(payload)
+    .WithRetainFlag(true)
+    .Build())
+  |> Async.AwaitTask
+  |> Async.RunSynchronously
+
+let segmentPriceAsPayload segmentPrice = asPayload { State = segmentPrice.Start; Value = segmentPrice.Value }
+
+type NumericState =
+  { [<JsonProperty("state")>]State: decimal;
+    [<JsonProperty("validAt")>]ValidAt: DateTimeOffset
+    [<JsonProperty("updatedAt")>]UpdatedAt: DateTimeOffset }
+
+type HourPrice =
+  { [<JsonProperty("hour")>] Hour: DateTimeOffset;
+    [<JsonProperty("price")>]Price: decimal}
+type ListState =
+  { [<JsonProperty("state")>]State: decimal;
+    [<JsonProperty("prices")>]Prices: HourPrice array;
+    [<JsonProperty("updatedAt")>]UpdateAt: DateTimeOffset }
+
+let now = DateTimeOffset.Now
+let hourPrices = carnotData.Predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Utctime.Year, x.Utctime.Month, x.Utctime.Day, x.Utctime.Hour, 0, 0, now.Offset); Price = x.Prediction / 1000m })
+let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
+let price = { State = currentPrice.Price; Prices = hourPrices; UpdateAt = now }
+
+publishResult "spotprice" (asPayload price) |> ignore
+publishResult "min" (asPayload{ State = min.Value; ValidAt = min.Start; UpdatedAt = now }) |> ignore
+publishResult "max" (asPayload{ State = max.Value; ValidAt = max.Start; UpdatedAt = now }) |> ignore
+publishResult "avg" (asPayload{ State = avg; ValidAt = now;  UpdatedAt = now }) |> ignore
+
+// publishResult "avg" avg |> ignore
 
 printfn "Min: %A" min
 printfn "Max: %A" max
