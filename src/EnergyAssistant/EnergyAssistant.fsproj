@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Model.fs" />
+    <Compile Include="Carnot.fs" />
+    <Compile Include="Mqtt.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
