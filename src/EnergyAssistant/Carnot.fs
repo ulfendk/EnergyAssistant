@@ -24,7 +24,7 @@ let calcAvg (spans : SegmentPrice array list) =
 
 let min segments = segments |> Seq.minBy(fun x -> x.Value)
 let max segments = segments |> Seq.maxBy(fun x -> x.Value)
-let avg segments = segments |> Seq.averageBy(fun x -> x.Value)
+let avg segments = Math.Round(segments |> Seq.averageBy(fun x -> x.Value), 2)
 let median segments =
     let arr = segments |> Seq.sortBy(fun x -> x.Value) |> Array.ofSeq
     arr.[arr.Length / 2].Value

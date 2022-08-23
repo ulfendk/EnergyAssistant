@@ -58,4 +58,4 @@ let fullPrice (now : DateTimeOffset) (fees : Fees) (price : decimal) =
       match isPeak with
       | true -> fees.PeakTariff
       | _ -> fees.OffPeakTariff
-    (price + fees.FixedCost + tariff) * (1m + fees.Vat)
+    Math.Round((price + fees.FixedCost + tariff) * (1m + fees.Vat), 2)

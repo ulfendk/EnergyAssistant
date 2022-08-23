@@ -59,7 +59,7 @@ let publishDiscovery =
         Schema = "json";
         UniqueId = asUniqueId name;
         DeviceClass = "monetary";
-        UnitOfMeasurement = "DKK";
+        UnitOfMeasurement = "DKK/kWh";
         ValueTemplate = "{{ value_json.state }}" }
 
     let timestampDiscovery (name: string) (id: string) =
