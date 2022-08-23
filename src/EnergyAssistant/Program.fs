@@ -72,8 +72,8 @@ let publishDiscovery =
     Mqtt.publishResult client (discoveryTopic "avg") (asPayload (priceDiscovery "Spotprice Average" "avg")) |> ignore
     Mqtt.publishResult client (discoveryTopic "median") (asPayload (priceDiscovery "Spotprice Median" "median")) |> ignore
 
-    Mqtt.publishResult client (discoveryTopic "min_time") (asPayload (priceDiscovery "Spotprice Minimum Time" "min")) |> ignore
-    Mqtt.publishResult client (discoveryTopic "max_time") (asPayload (priceDiscovery "Spotprice Maximum Time" "max")) |> ignore
+    Mqtt.publishResult client (discoveryTopic "min_time") (asPayload (timestampDiscovery "Spotprice Minimum Time" "min")) |> ignore
+    Mqtt.publishResult client (discoveryTopic "max_time") (asPayload (timestampDiscovery "Spotprice Maximum Time" "max")) |> ignore
 
     client.Dispose |> ignore
 
