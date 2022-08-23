@@ -41,3 +41,21 @@ let asId name =
 
 let asUniqueRegionalId region name =
   sprintf "EnergyAssistant_%s_%s" region name
+
+type Fees =
+  {  FixedCost: decimal;
+     PeakTariff: decimal;
+     OffPeakTariff: decimal;
+     Fee: decimal;
+     Vat: decimal }
+
+let fullPrice (now : DateTimeOffset) (fees : Fees) (price : decimal) =
+    let isPeak = 
+      match now with
+      | x when (x.Month >= 11 || x.Month <= 3) && x.Hour >= 17 && x.Hour <= 20 -> true
+      | _ -> false
+    let tariff =
+      match isPeak with
+      | true -> fees.PeakTariff
+      | _ -> fees.OffPeakTariff
+    (price + fees.FixedCost + tariff) * (1m + fees.Vat)

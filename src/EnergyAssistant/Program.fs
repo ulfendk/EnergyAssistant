@@ -22,6 +22,13 @@ let mqttSettings : Mqtt.MqttSettings =
       ClientId = configData.Mqtt.ClientId;
       UseTls = configData.Mqtt.UseTls }
 
+let fees = 
+  { FixedCost = configData.AdditionalCosts.FixedCost;
+    OffPeakTariff = configData.AdditionalCosts.RegularTariff;
+    PeakTariff = configData.AdditionalCosts.PeakTariff;
+    Fee = configData.AdditionalCosts.Fee;
+    Vat = configData.AdditionalCosts.Vat }
+
 // carnot.dk
 [<Literal>]
 let carnotSample = "../data/carnot.json"
@@ -96,7 +103,7 @@ while true do
         Carnot.SegmentPrice.Region = x.Pricearea;
         Carnot.SegmentPrice.Start = x.Utctime;
         Carnot.SegmentPrice.End = x.Utctime.Add(TimeSpan.FromHours(1));
-        Carnot.SegmentPrice.Value = x.Prediction / 1000m}) |> Seq.toArray
+        Carnot.SegmentPrice.Value = fullPrice x.Dktime fees (x.Prediction / 1000m) }) |> Seq.toArray
 
     let spanWidths = configData.Spans |> Array.map (fun x -> x.Hours) |> Set.ofSeq
 
@@ -106,7 +113,7 @@ while true do
 
     let (average, startTime, prices) = spansDict.Item(2).Head
 
-    printfn "Spans: %A" spansDict
+    // printfn "Spans: %A" spansDict
 
 
     let min = Carnot.min segments
@@ -117,7 +124,7 @@ while true do
     let segmentPriceAsPayload (segmentPrice: Carnot.SegmentPrice) = asPayload { State = segmentPrice.Start; Value = segmentPrice.Value }
 
     let now = DateTimeOffset.Now
-    let hourPrices = carnotData.Predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Utctime.Year, x.Utctime.Month, x.Utctime.Day, x.Utctime.Hour, 0, 0, now.Offset); Price = x.Prediction / 1000m })
+    let hourPrices = carnotData.Predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Utctime.Year, x.Utctime.Month, x.Utctime.Day, x.Utctime.Hour, 0, 0, now.Offset); Price = fullPrice x.Dktime fees (x.Prediction / 1000m) })
     let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let price = { State = currentPrice.Price; Prices = hourPrices; UpdateAt = now }
 

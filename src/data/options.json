@@ -12,6 +12,13 @@
         "client_id": "Energy Assistant",
         "use_tls": false
     },
+    "additional_costs": {
+        "fixed_cost": 0.024,
+        "peak_tariff": 0.6307,
+        "regular_tariff": 0.2363,
+        "fee": 0.8,
+        "vat": 0.25 
+    },
     "levels": {
         "medium": 2,
         "high": 3
