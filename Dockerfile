@@ -17,10 +17,6 @@ FROM build AS publish
 RUN dotnet publish "EnergyAssistant.fsproj" -c Release --self-contained false -o /app/publish
 
 
-## Copy data for add-on
-#COPY run.sh /
-#RUN chmod a+x /run.sh
-#
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish /app
@@ -28,8 +24,6 @@ COPY --from=publish /app/publish /app
 RUN apk add --no-cache dotnet6-runtime
 
 COPY run.sh /
-
-#ENTRYPOINT ["/app/EnergyAssistant /config/config.json"]
-#ENTRYPOINT ["/app/EnergyAssistant"]
+RUN chmod a+x /run.sh
 
 CMD [ "/run.sh" ]
