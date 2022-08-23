@@ -134,8 +134,8 @@ while true do
     printfn "Done"
 
 
-    printfn "Min: %A" min
-    printfn "Max: %A" max
+    //printfn "Min: %A" min
+    //printfn "Max: %A" max
 
     let sleepTimeMinutes = 30 - DateTime.Now.Minute % 30
     let sleetTimeSeconds = 60 - DateTime.Now.Second % 60
