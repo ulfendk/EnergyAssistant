@@ -1,7 +1,7 @@
 {
     "carnot": {
         "region": "dk2",
-        "user": "regin@ulfen.dk",
+        "user": "you@somewhere.com",
         "api_key": "abc123"
     },
     "mqtt": {
