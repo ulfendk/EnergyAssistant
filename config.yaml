@@ -1,0 +1,45 @@
+name: "Energy Assistant"
+description: "Enabling easy use of spot price data from Carnot in Home Assistant"
+version: "1.0.31"
+slug: "energy_assistant"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+options:
+  carnot:
+    region: "dk2"
+    user: ""
+    api_key: ""
+  mqtt:
+    server: "core-mosquitto"
+    port: 1883
+    user: ""
+    pwd: ""
+    client_id: "Energy Assistant"
+    use_tls: false
+  levels:
+    medium: 2
+    high: 3
+  spans: []
+schema:
+  carnot:
+    region: list(dk1|dk2)
+    user: email
+    api_key: str
+  mqtt:
+    server: str
+    port: port
+    user: str
+    pwd: password
+    client_id: str
+    use_tls: bool
+  levels:
+    medium: int(0,1000)
+    high: int(0,1000)
+  spans:
+    - title: str
+      hours: int(1,168)
+      max_hours_future: int(1,168)
+      hours_of_day: str

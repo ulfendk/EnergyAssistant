@@ -1,0 +1,32 @@
+{
+    "carnot": {
+        "region": "dk2",
+        "user": "regin@ulfen.dk",
+        "api_key": "abc123"
+    },
+    "mqtt": {
+        "server": "192.168.1.1",
+        "port": 1883,
+        "user": "energyassistant",
+        "pwd": "abc123",
+        "client_id": "Energy Assistant",
+        "use_tls": false
+    },
+    "levels": {
+        "medium": 2,
+        "high": 3
+    },
+    "spans": [
+        {
+            "title": "Next laundry",
+            "hours": 2,
+            "max_hours_future": 48,
+            "hours_of_day": "0|1|2|3"
+        },
+        {
+            "title": "Next EV Charge",
+            "hours": 5,
+            "max_hours_future": 48
+        }
+    ]
+}
