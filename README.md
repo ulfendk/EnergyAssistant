@@ -2,20 +2,65 @@
 
 **NB! This add-on is only useful when connected to the Danish electricity grid!**
 
-This add-on makes it easy to create automations in Home Assistant using the spot price data from carnot.dk.  Had I been more apt in Python and Home Assistant development, this could have been created as an integration (please be inspired).
+This add-on makes it easy to create automations in Home Assistant using the grid spot price data and predictions from [CARNOT](https://www.carnot.dk).
 
-For now, it was fun for me to code it in F# and package it as an add-on, using MQTT as the integration mechanism into HA.
+This add-on has been written in F# as a hobby project for fun and use - but could easily be created in a similar fashion as a Home Assistant integration.  However, that's beyond my current scope.
+
+It runs in F# and integrates with Home Assistant throgh MQTT (including discovery).
 
 ## Getting the API key
-carnot.dk
+
+1. Visit [carnot.dk](https://www.carnot.dk/profile/create) to create a profile.
+1. Open your profile and generate an API key
 
 ## Configuration
 
+The add-on requires som configuration.
+
 ### MQTT
+
+The following defaults are provided.  If you are running the Mosquitto add-on, you will need to add a user for Energy Assistant in the module's configuration, which can then be used here.
+
+```yaml
+server: "core-mosquitto"
+port: 1883
+user: ""
+pwd: ""
+client_id: "Energy Assistant"
+use_tls: false
+```
 
 ### Carnot
 
-### Lowest spans (Optional)
+The following defaults are provided.
+
+You can use region `dk1` (West Denamrk) or `dk2` (East Denmark).  `user` is the email address you used to create your carnot.dk account and `api_key` is the key you generated above.
+
+```yaml
+region: "dk2"
+user: ""
+api_key: ""
+```
+
+### Additional costs
+
+Additional costs can be added to the raw price.
+
+- Fixed cost is added per kWh
+- Peak tariff is added Nov-Mar from 17-20
+- Regular tariff is added when not peak
+- Fee is added per kWh
+- VAT is is tax percentage to add on top at the end
+
+```yaml
+fixed_cost: 0.0
+peak_tariff: 0.0
+regular_tariff: 0.0
+fee: 0.0
+vat: 0.0
+```
+
+### Spans (Coming soon)
 
 The following example will provide start times for:
 
@@ -36,14 +81,99 @@ Examples of how these can be used in Home Assistant to trigger automations will 
 
 ## Home Assistant
 
+When configured correctly the entities will appear automatically in HA.
+
 ### Entities
 
-Basic
+#### Basic
 
-Spans
+The following entities are always there:
+
+| Entity | Description |
+|--------|-------------|
+| sensor.spotprice | The current spot price |
+| sensor.spotprice_min | The lowest spot price in the period |
+| sensor.spotprice_min_time | The timestamp when the lowest spot price occurs |
+| sensor.spotprice_max | The highest spot price in the period |
+| sensor.spotprice_max_time | The timestamp when the highest spot price occurs |
+| sensor.spotprice_avg | The average spot price |
+| sensor.spotprice_median | The median spot price |
+
+#### Spans (Coming sooon)
+
+The following is an example of the entity created for a span:
 
 ### Graph
 
-### Automation examples
+To display a graph like this in Home Assistant:
 
-#### Configuring to charge the EV when you get home from work
+![Graph](img/graph.png "Spot prices graph")
+
+You can install ApexChart using HACS and add the following to Lovelace:
+
+```yaml
+type: custom:apexcharts-card
+experimental:
+  color_threshold: true
+header:
+  show: true
+  title: Elpriser
+now:
+  show: true
+  label: Nu
+span:
+  start: hour
+graph_span: 144h
+yaxis:
+  - min: 0
+    max: ~4
+series:
+  - entity: sensor.spotprice
+    type: area
+    show:
+      extremas: true
+    stroke_width: 0
+    data_generator: |
+      return entity.attributes.prices.map((start, index) => {
+        return [new Date(start["hour"]).getTime(), entity.attributes.prices[index]["price"]];
+      });
+    color_threshold:
+      - value: 0
+        color: green
+        opacity: 1
+      - value: 1.5
+        color: yellow
+      - value: 2
+        color: pink
+      - value: 4
+        color: red
+```
+
+### Entities
+
+You can also show the basic entities like this:
+
+![Entities](img/entities.png "Spot price entities")
+
+Using the following:
+
+```yaml
+type: entities
+entities:
+  - entity: sensor.spotprice
+  - entity: sensor.spotprice_average
+  - entity: sensor.spotprice_median
+  - type: divider
+  - entity: sensor.spotprice_minimum
+  - entity: sensor.spotprice_minimum_time
+  - type: divider
+  - entity: sensor.spotprice_maximum
+  - entity: sensor.spotprice_maximum_time
+title: Elpriser
+show_header_toggle: false
+```
+
+**Note: The entity names can be changed by clicking the entities, like in the above where the names have been translated.**
+
+### Automation examples (Coming soon)
+
