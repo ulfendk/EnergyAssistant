@@ -92,11 +92,11 @@ The following entities are always there:
 | Entity | Description |
 |--------|-------------|
 | sensor.spotprice | The current spot price |
-| sensor.spotprice_min | The lowest spot price in the period |
-| sensor.spotprice_min_time | The timestamp when the lowest spot price occurs |
-| sensor.spotprice_max | The highest spot price in the period |
-| sensor.spotprice_max_time | The timestamp when the highest spot price occurs |
-| sensor.spotprice_avg | The average spot price |
+| sensor.spotprice_minimum | The lowest spot price in the period |
+| sensor.spotprice_minimum_time | The timestamp when the lowest spot price occurs |
+| sensor.spotprice_maximum | The highest spot price in the period |
+| sensor.spotprice_maximum_time | The timestamp when the highest spot price occurs |
+| sensor.spotprice_average | The average spot price |
 | sensor.spotprice_median | The median spot price |
 
 #### Spans (Coming sooon)
