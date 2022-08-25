@@ -8,6 +8,12 @@ This add-on has been written in F# as a hobby project for fun and use - but coul
 
 It runs in F# and integrates with Home Assistant throgh MQTT (including discovery).
 
+## Installing
+
+1. Go to Settings -> Add-ons -> Store for Add-ons
+2. Click the `...` button in the top
+3. 
+
 ## Getting the API key
 
 1. Visit [carnot.dk](https://www.carnot.dk/profile/create) to create a profile.

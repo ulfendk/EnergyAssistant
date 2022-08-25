@@ -9,7 +9,7 @@ type SegmentPrice =
     End: DateTimeOffset;
     Value: decimal }
 
-let getSpans (segments : array<'a>) spanWidth =
+let getAsSpans (segments : array<'a>) spanWidth =
   let rec getSpan (segments : array<'a>) =
     let remaining = segments.Length - spanWidth
     match remaining with
