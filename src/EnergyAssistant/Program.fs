@@ -126,8 +126,9 @@ while true do
 
     //let hourPrices = carnotData.Predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Utctime.Year, x.Utctime.Month, x.Utctime.Day, x.Utctime.Hour, 0, 0, now.Offset); Price = fullPrice x.Dktime fees (x.Prediction / 1000m) })
 
-    let getDataAsSpans width = Carnot.getAsSpans predictions width
-    let spansWithData = spans |> Array.map (fun x -> (x, getDataAsSpans x.Duration))// NEED TO ADD AVG AND THEN SORT |> Array.map (fun ((span: Span), (data: SegmentPrice list)) -> (span, (data |> Array.map (fun x-> x.), data))
+    // INCLUDE config span data in the below and create a new type based on the collected span (take first only) and the config data
+    let getDataAsSpans width = Carnot.getAsSpans predictions width |> List.map (fun x -> { Start = (x |> Array.head).Start; Duration = TimeSpan.FromHours x.Length; HoursCovered = (x |> Array.map (fun y -> y.Start.Hour) |> Set.ofArray); Price = x |> Array.averageBy (fun y -> y.Value)  })
+    let spansWithData = spans |> Array.map (fun x -> (x, (getDataAsSpans x.Duration |> List.map (fun x -> ( x |> Array.averageBy (fun x -> x.Value), x))))) |> Array.map (fun (x, ys) -> (x, ys |> List.sortBy (fun (x, ys) -> x))) 
 
     printf "%A" spansWithData
 

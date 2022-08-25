@@ -60,8 +60,14 @@ let fullPrice (now : DateTimeOffset) (fees : Fees) (price : decimal) =
       | _ -> fees.OffPeakTariff
     Math.Round((price + fees.FixedCost + tariff) * (1m + fees.Vat), 2)
 
-type Span =
+type SpanDefinition =
     { Title: string;
       Duration: int;
       MaxHoursInFuture: int;
       HoursOfDay: int array }
+
+type Span =
+  { Start: DateTimeOffset; 
+    Duration: TimeSpan;
+    HoursCovered: Set<int>;
+    Price: decimal }
