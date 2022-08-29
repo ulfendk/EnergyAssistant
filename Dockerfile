@@ -16,7 +16,6 @@ ARG BUILD_ARCH
 FROM build AS publish
 RUN dotnet publish "EnergyAssistant.fsproj" -c Release --self-contained false -o /app/publish
 
-
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish /app

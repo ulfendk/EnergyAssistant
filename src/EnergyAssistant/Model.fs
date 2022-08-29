@@ -64,10 +64,11 @@ type SpanDefinition =
     { Title: string;
       Duration: int;
       MaxHoursInFuture: int;
-      HoursOfDay: int array }
+      HoursOfDay: int Set }
 
 type Span =
-  { Start: DateTimeOffset; 
+  { Title: string;
+    Start: DateTimeOffset; 
     Duration: TimeSpan;
-    HoursCovered: Set<int>;
+    //HoursCovered: int Set;
     Price: decimal }

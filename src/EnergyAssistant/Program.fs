@@ -33,10 +33,10 @@ let fees =
 
 let hoursOfDay (input: string option) =
     match input with
-    | Some(x) -> x.Split('|') |> Array.map (fun x-> x.Trim() |> int) |> Set.ofArray |> Seq.sort |> Array.ofSeq
+    | Some(x) -> x.Split('|') |> Array.map (fun x-> x.Trim() |> int)
     | None -> [|0..23|]
-
-let spans = configData.Spans |> Array.map (fun x -> { Title = x.Title; Duration = x.Hours; MaxHoursInFuture = x.MaxHoursFuture; HoursOfDay = (hoursOfDay x.HoursOfDay)})
+    |> Set.ofArray
+let spanDefinitions = configData.Spans |> Array.map (fun x -> { Title = x.Title; Duration = x.Hours; MaxHoursInFuture = x.MaxHoursFuture; HoursOfDay = (hoursOfDay x.HoursOfDay)})
 
 // carnot.dk
 [<Literal>]
@@ -49,6 +49,9 @@ let baseTopic = "energyassistant"
 let topic name = sprintf "%s/%s/%s" baseTopic configData.Carnot.Region name
 
 let asPayload obj = JsonConvert.SerializeObject(obj)
+let key i = sprintf "span_%i" (i + 1)
+let appendTimeKey name = sprintf "%s_time" name
+let appendTime name = sprintf "%s Time" name
 
 let publishDiscovery =
     let baseDiscoveryTopic = "homeassistant/sensor"
@@ -90,8 +93,13 @@ let publishDiscovery =
     publish "avg" (priceDiscovery "Spotprice Average" "avg") |> ignore
     publish "median" (priceDiscovery "Spotprice Median" "median") |> ignore
 
-    publish "min_time" (timestampDiscovery "Spotprice Minimum Time" "min") |> ignore
-    publish "max_time" (timestampDiscovery "Spotprice Maximum Time" "max") |> ignore
+    publish "min_time" (timestampDiscovery (appendTime "Spotprice Minimum") "min") |> ignore
+    publish "max_time" (timestampDiscovery (appendTime "Spotprice Maximum") "max") |> ignore
+
+    spanDefinitions |> Array.iteri (fun i x ->
+        let key = key i
+        publish key (priceDiscovery x.Title key) |> ignore
+        publish (appendTimeKey key) (timestampDiscovery (appendTime x.Title) key) |> ignore)
 
     client.Dispose |> ignore
 
@@ -106,6 +114,8 @@ while true do
     let carnotData = CarnotDk.Parse(data)
 
     let name (time : DateTimeOffset) = sprintf "%i-%i" time.Hour (time.Hour + 1)
+    
+    //let temp = carnotData.Predictions |> Seq.sortBy (fun x -> x.Dktime) |> Seq.map (fun x -> (x.Dktime, x.Prediction, DateTimeOffset(x.Dktime.Year, x.Dktime.Month, x.Dktime.Day, x.Dktime.Hour, 0, 0, DateTimeOffset.Now.Offset), DateTimeOffset(x.Dktime.Year, x.Dktime.Month, x.Dktime.Day, x.Dktime.Hour, 0, 0, DateTimeOffset.Now.Offset).ToLocalTime())) |> Array.ofSeq
 
     let predictions = carnotData.Predictions |> Seq.map(fun x -> 
       { Carnot.SegmentPrice.Name = name x.Dktime;
@@ -120,33 +130,31 @@ while true do
     let median = Carnot.median predictions
 
     let now = DateTimeOffset.Now
-    // let spillOver x = 
-    //   match x / 24 > 0 with
-    //   | true -> 0
-    //   | _ -> 1 
-    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = fullPrice x.Start fees x.Value })
+
+    // Spans
+    let spanAsHours (start : DateTimeOffset) (finish : DateTimeOffset) =
+        let rec extractHours (start : DateTimeOffset) (finish : DateTimeOffset) =
+            match start with
+            | _ when start = finish -> []
+            | _ -> start.Hour :: extractHours (start.AddHours(1)) finish
+        extractHours start finish |> Set.ofList
+
+    let toPeriods duration = Carnot.getAsSpans predictions duration
+    let filterHoursAhead hoursAhead (periods : Carnot.SegmentPrice array) = periods |> Array.filter (fun x -> x.End <= now.AddHours(hoursAhead))
+    let filterHoursOfDay hours (periods : Carnot.SegmentPrice array) = periods |> Array.filter (fun x -> Set.isSubset (spanAsHours x.Start x.End) hours)
+
+    let spans = spanDefinitions |> Array.map (fun spanDef -> 
+        let periods = toPeriods spanDef.Duration |> List.map (fun x -> x |> Array.map (fun y -> { y with Start = y.Start.ToOffset(now.Offset); End = y.End.ToOffset(now.Offset)}))
+        let periodsWithinDuration = periods |> List.map (fun x -> filterHoursAhead spanDef.MaxHoursInFuture x)
+        let periodsWithinDurationAndTimeOfDay = periodsWithinDuration |> List.map (fun x -> filterHoursOfDay spanDef.HoursOfDay x) |> List.filter (fun x -> x.Length = spanDef.Duration)
+        let spans = periodsWithinDurationAndTimeOfDay |> List.map (fun x -> { Title = spanDef.Title; Start = x.[0].Start; Duration = TimeSpan.FromHours spanDef.Duration; Price = x |> Array.averageBy (fun y -> y.Value) })
+        let sorted = spans |> List.sortBy (fun x -> x.Price)
+        sorted.Head)
+
+    // Prices
+    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value }) //fullPrice x.Start fees 
     let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let price = { State = currentPrice.Price; Prices = hourPrices; UpdateAt = now }
-
-    //let hourPrices = carnotData.Predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Utctime.Year, x.Utctime.Month, x.Utctime.Day, x.Utctime.Hour, 0, 0, now.Offset); Price = fullPrice x.Dktime fees (x.Prediction / 1000m) })
-
-    // INCLUDE config span data in the below and create a new type based on the collected span (take first only) and the config data
-    // let getDataAsSpans width = Carnot.getAsSpans predictions width |> List.map (fun x -> { Start = (x |> Array.head).Start; Duration = TimeSpan.FromHours x.Length; HoursCovered = (x |> Array.map (fun y -> y.Start.Hour) |> Set.ofArray); Price = x |> Array.averageBy (fun y -> y.Value)  })
-    // let spansWithData = spans |> Array.map (fun x -> (x, (getDataAsSpans x.Duration |> List.map (fun x -> ( x |> Array.averageBy (fun x -> x.Value), x))))) |> Array.map (fun (x, ys) -> (x, ys |> List.sortBy (fun (x, ys) -> x))) 
-
-    // printf "%A" spansWithData
-
-    let spanWidths = configData.Spans |> Array.map (fun x -> x.Hours) |> Set.ofSeq
-    let spansAsSortedList x = Carnot.getAsSpans predictions x |> Carnot.calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
-
-    //let spansDict = spanWidths |> Set.toSeq |> Seq.map (fun x -> (x, spansAsSortedList x)) |> dict
-    //let (average, startTime, prices) =
-    //    match spansDict with
-    //    | x when x.Count > 0 -> spansDict.Item(2).Head
-    //    | _ -> 
-
-
-
 
     log "Publishing MQTT states..."
 
@@ -156,6 +164,10 @@ while true do
     publish "max" { State = max.Value; ValidAt = max.Start; UpdatedAt = now } |> ignore
     publish "avg" { State = avg; ValidAt = now;  UpdatedAt = now } |> ignore
     publish "median" { State = median; ValidAt = now;  UpdatedAt = now } |> ignore
+
+    spans |> Array.iteri (fun i x ->
+        let key = key i
+        publish key { State = x.Price; ValidAt = x.Start; UpdatedAt = now } |> ignore)
 
     client.Dispose()
 
