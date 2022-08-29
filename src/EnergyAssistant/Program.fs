@@ -110,8 +110,8 @@ while true do
     let predictions = carnotData.Predictions |> Seq.map(fun x -> 
       { Carnot.SegmentPrice.Name = name x.Dktime;
         Carnot.SegmentPrice.Region = x.Pricearea;
-        Carnot.SegmentPrice.Start = x.Utctime;
-        Carnot.SegmentPrice.End = x.Utctime.Add(TimeSpan.FromHours(1));
+        Carnot.SegmentPrice.Start = x.Dktime;
+        Carnot.SegmentPrice.End = x.Dktime.Add(TimeSpan.FromHours(1));
         Carnot.SegmentPrice.Value = fullPrice x.Dktime fees (x.Prediction / 1000m) }) |> Seq.toArray
 
     let min = Carnot.min predictions
@@ -120,17 +120,21 @@ while true do
     let median = Carnot.median predictions
 
     let now = DateTimeOffset.Now
-    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, now.Offset); Price = fullPrice x.Start fees x.Value })
+    // let spillOver x = 
+    //   match x / 24 > 0 with
+    //   | true -> 0
+    //   | _ -> 1 
+    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = fullPrice x.Start fees x.Value })
     let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let price = { State = currentPrice.Price; Prices = hourPrices; UpdateAt = now }
 
     //let hourPrices = carnotData.Predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Utctime.Year, x.Utctime.Month, x.Utctime.Day, x.Utctime.Hour, 0, 0, now.Offset); Price = fullPrice x.Dktime fees (x.Prediction / 1000m) })
 
     // INCLUDE config span data in the below and create a new type based on the collected span (take first only) and the config data
-    let getDataAsSpans width = Carnot.getAsSpans predictions width |> List.map (fun x -> { Start = (x |> Array.head).Start; Duration = TimeSpan.FromHours x.Length; HoursCovered = (x |> Array.map (fun y -> y.Start.Hour) |> Set.ofArray); Price = x |> Array.averageBy (fun y -> y.Value)  })
-    let spansWithData = spans |> Array.map (fun x -> (x, (getDataAsSpans x.Duration |> List.map (fun x -> ( x |> Array.averageBy (fun x -> x.Value), x))))) |> Array.map (fun (x, ys) -> (x, ys |> List.sortBy (fun (x, ys) -> x))) 
+    // let getDataAsSpans width = Carnot.getAsSpans predictions width |> List.map (fun x -> { Start = (x |> Array.head).Start; Duration = TimeSpan.FromHours x.Length; HoursCovered = (x |> Array.map (fun y -> y.Start.Hour) |> Set.ofArray); Price = x |> Array.averageBy (fun y -> y.Value)  })
+    // let spansWithData = spans |> Array.map (fun x -> (x, (getDataAsSpans x.Duration |> List.map (fun x -> ( x |> Array.averageBy (fun x -> x.Value), x))))) |> Array.map (fun (x, ys) -> (x, ys |> List.sortBy (fun (x, ys) -> x))) 
 
-    printf "%A" spansWithData
+    // printf "%A" spansWithData
 
     let spanWidths = configData.Spans |> Array.map (fun x -> x.Hours) |> Set.ofSeq
     let spansAsSortedList x = Carnot.getAsSpans predictions x |> Carnot.calcAvg |> List.sortBy (fun (avg, _, _) -> avg)
