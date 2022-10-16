@@ -2,6 +2,7 @@
 
 open System
 open Newtonsoft.Json
+open NodaTime
 
 type Payload =
   { [<JsonProperty("state")>]State: DateTimeOffset;
@@ -16,8 +17,14 @@ type HourPrice =
   { [<JsonProperty("hour")>] Hour: DateTimeOffset;
     [<JsonProperty("price")>]Price: decimal}
 
+type Level =
+  | Low
+  | Medium
+  | High
+
 type ListState =
   { [<JsonProperty("state")>]State: decimal;
+    [<JsonProperty("level")>]Level: Level;
     [<JsonProperty("prices")>]Prices: HourPrice array;
     [<JsonProperty("updatedAt")>]UpdateAt: DateTimeOffset }
 
@@ -41,6 +48,14 @@ let asId name =
 
 let asUniqueRegionalId region name =
   sprintf "EnergyAssistant_%s_%s" region name
+
+type TariffPeriod =
+  { StartDate: LocalDate;
+    EndDate: LocalDate }
+
+type Tariffs =
+  { Fixed: decimal;
+    Vat: decimal }
 
 type Fees =
   {  FixedCost: decimal;
@@ -71,4 +86,9 @@ type Span =
     Start: DateTimeOffset; 
     Duration: TimeSpan;
     //HoursCovered: int Set;
-    Price: decimal }
+    Price: decimal;
+    Level: Level }
+
+let zone = DateTimeZoneProviders.Bcl.GetSystemDefault()
+let currentDate = SystemClock.Instance.GetCurrentInstant().InZone(zone).Date
+let xxx = NodaTime.Period.Between(currentDate, currentDate)

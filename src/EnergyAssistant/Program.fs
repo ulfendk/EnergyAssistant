@@ -31,6 +31,14 @@ let fees =
     Fee = configData.AdditionalCosts.Fee;
     Vat = configData.AdditionalCosts.Vat }
 
+let tariffs = None
+
+let level (price: decimal) = 
+    match price with
+    | p when p > configData.Levels.High -> High
+    | p when p > configData.Levels.Medium -> Medium
+    | _ -> Low
+
 let hoursOfDay (input: string option) =
     match input with
     | Some(x) -> x.Split('|') |> Array.map (fun x-> x.Trim() |> int)
@@ -87,7 +95,7 @@ let publishDiscovery =
 
     let publish topic payload = Mqtt.publish client (discoveryTopic topic) (asPayload payload)
     publish "spotprice" (priceDiscovery "Spotprice" "spotprice") |> ignore
-    publish "spotprice" (priceDiscovery "Spotprice" "spotprice") |> ignore
+    // publish "spotprice" (priceDiscovery "Spotprice" "spotprice") |> ignore
     publish "min" (priceDiscovery "Spotprice Minimum" "min") |> ignore
     publish "max" (priceDiscovery "Spotprice Maximum" "max") |> ignore
     publish "avg" (priceDiscovery "Spotprice Average" "avg") |> ignore
@@ -147,14 +155,14 @@ while true do
         let periods = toPeriods spanDef.Duration |> List.map (fun x -> x |> Array.map (fun y -> { y with Start = y.Start.ToOffset(now.Offset); End = y.End.ToOffset(now.Offset)}))
         let periodsWithinDuration = periods |> List.map (fun x -> filterHoursAhead spanDef.MaxHoursInFuture x)
         let periodsWithinDurationAndTimeOfDay = periodsWithinDuration |> List.map (fun x -> filterHoursOfDay spanDef.HoursOfDay x) |> List.filter (fun x -> x.Length = spanDef.Duration)
-        let spans = periodsWithinDurationAndTimeOfDay |> List.map (fun x -> { Title = spanDef.Title; Start = x.[0].Start; Duration = TimeSpan.FromHours spanDef.Duration; Price = x |> Array.averageBy (fun y -> y.Value) })
+        let spans = periodsWithinDurationAndTimeOfDay |> List.map (fun x -> { Title = spanDef.Title; Start = x.[0].Start; Duration = TimeSpan.FromHours spanDef.Duration; Price = x |> Array.averageBy (fun y -> y.Value); Level = x |> Array.averageBy (fun y -> y.Value) |> level })
         let sorted = spans |> List.sortBy (fun x -> x.Price)
         sorted.Head)
 
     // Prices
     let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value }) //fullPrice x.Start fees 
     let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
-    let price = { State = currentPrice.Price; Prices = hourPrices; UpdateAt = now }
+    let price = { State = currentPrice.Price; Level = level currentPrice.Price; Prices = hourPrices; UpdateAt = now }
 
     log "Publishing MQTT states..."
 
