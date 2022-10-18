@@ -24,7 +24,7 @@ let connect mqttSettings =
     let connectionResult = client.ConnectAsync(clientOptionsBuilder.Build()) |> Async.AwaitTask |> Async.RunSynchronously
     client
 
-let publishResult (client: IMqttClient) topic (payload: string) =
+let publish (client: IMqttClient) topic (payload: string) =
   client.PublishAsync(MqttApplicationMessageBuilder()
     .WithTopic(topic)
     .WithContentType("application/json")

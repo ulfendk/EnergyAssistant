@@ -12,13 +12,108 @@
         "client_id": "Energy Assistant",
         "use_tls": false
     },
-    "additional_costs": {
-        "fixed_cost": 0.024,
-        "peak_tariff": 0.6307,
-        "regular_tariff": 0.2363,
-        "fee": 0.8,
-        "vat": 0.25 
-    },
+    "vat": 0.25,
+    "tariffs": [
+        {
+            "startDate": "2022-10-01",
+            "endDate": "2022-12-31",
+            "periods": [
+                {
+                    "startTime": "00:00:00",
+                    "endTime": "17:00:00" ,
+                    "fixedCost": 0.3323
+                },
+                {
+                    "startTime": "17:00:00",
+                    "endTime": "20:00:00" ,
+                    "fixedCost": 0.7971
+                },
+                {
+                    "startTime": "20:00:00",
+                    "endTime": "00:00:00" ,
+                    "fixedCost": 0.3323
+                }
+            ]
+        },
+        {
+            "startDate": "2023-01-01",
+            "endDate": "2023-03-31",
+            "periods": [
+                {
+                    "startTime": "00:00:00",
+                    "endTime": "06:00:00" ,
+                    "fixedCost": 0.19504
+                },
+                {
+                    "startTime": "06:00:00",
+                    "endTime": "17:00:00" ,
+                    "fixedCost": 0.52136
+                },
+                {
+                    "startTime": "17:00:00",
+                    "endTime": "21:00:00" ,
+                    "fixedCost": 1.49888
+                },
+                {
+                    "startTime": "21:00:00",
+                    "endTime": "00:00:00" ,
+                    "fixedCost": 0.52136
+                }
+            ]
+        },
+        {
+            "startDate": "2023-04-01",
+            "endDate": "2023-09-01",
+            "periods": [
+                {
+                    "startTime": "00:00:00",
+                    "endTime": "06:00:00" ,
+                    "fixedCost": 0.19504
+                },
+                {
+                    "startTime": "06:00:00",
+                    "endTime": "17:00:00" ,
+                    "fixedCost": 0.27648
+                },
+                {
+                    "startTime": "17:00:00",
+                    "endTime": "21:00:00" ,
+                    "fixedCost": 0.6676
+                },
+                {
+                    "startTime": "21:00:00",
+                    "endTime": "00:00:00" ,
+                    "fixedCost": 0.27648
+                }
+            ]
+        },
+        {
+            "startDate": "2023-10-01",
+            "endDate": "2024-03-31",
+            "periods": [
+                {
+                    "startTime": "00:00:00",
+                    "endTime": "06:00:00" ,
+                    "fixedCost": 0.2278
+                },
+                {
+                    "startTime": "06:00:00",
+                    "endTime": "17:00:00" ,
+                    "fixedCost": 0.6357
+                },
+                {
+                    "startTime": "17:00:00",
+                    "endTime": "21:00:00" ,
+                    "fixedCost": 1.8576
+                },
+                {
+                    "startTime": "21:00:00",
+                    "endTime": "00:00:00" ,
+                    "fixedCost": 0.6357
+                }
+            ]
+        }
+    ],
     "levels": {
         "medium": 2,
         "high": 3
