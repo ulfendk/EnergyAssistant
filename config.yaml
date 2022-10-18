@@ -19,19 +19,7 @@ options:
     pwd: ""
     client_id: "Energy Assistant"
     use_tls: false
-  tariffs: 
-    - startDate: "2022-10-01"
-      endDate: "2022-12-31"
-      periods:
-        - startTime: "00:00:00"
-          endTime: "17:00:00"
-          fixedCost: 0.0
-        - startTime: "17:00:00"
-          endTime: "20:00:00"
-          fixedCost: 0.0
-        - startTime: "20:00:00"
-          endTime: "00:00:00"
-          fixedCost: 0.0
+  tariffs: []
   vat: 0.25
   levels:
     medium: 2
