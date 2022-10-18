@@ -15,16 +15,12 @@ type NumericState =
 
 type HourPrice =
   { [<JsonProperty("hour")>] Hour: DateTimeOffset;
-    [<JsonProperty("price")>]Price: decimal}
-
-type Level =
-  | Low
-  | Medium
-  | High
+    [<JsonProperty("price")>]Price: decimal;
+    [<JsonProperty("level")>]Level: string}
 
 type ListState =
   { [<JsonProperty("state")>]State: decimal;
-    [<JsonProperty("level")>]Level: Level;
+    [<JsonProperty("level")>]Level: string;
     [<JsonProperty("prices")>]Prices: HourPrice array;
     [<JsonProperty("updatedAt")>]UpdateAt: DateTimeOffset }
 
@@ -57,24 +53,6 @@ type Tariffs =
   { Fixed: decimal;
     Vat: decimal }
 
-type Fees =
-  {  FixedCost: decimal;
-     PeakTariff: decimal;
-     OffPeakTariff: decimal;
-     Fee: decimal;
-     Vat: decimal }
-
-let fullPrice (now : DateTimeOffset) (fees : Fees) (price : decimal) =
-    let isPeak = 
-      match now with
-      | x when (x.Month >= 11 || x.Month <= 3) && x.Hour >= 17 && x.Hour <= 20 -> true
-      | _ -> false
-    let tariff =
-      match isPeak with
-      | true -> fees.PeakTariff
-      | _ -> fees.OffPeakTariff
-    Math.Round((price + fees.FixedCost + tariff) * (1m + fees.Vat), 2)
-
 type SpanDefinition =
     { Title: string;
       Duration: int;
@@ -87,7 +65,7 @@ type Span =
     Duration: TimeSpan;
     //HoursCovered: int Set;
     Price: decimal;
-    Level: Level }
+    Level: string }
 
 let zone = DateTimeZoneProviders.Bcl.GetSystemDefault()
 let currentDate = SystemClock.Instance.GetCurrentInstant().InZone(zone).Date

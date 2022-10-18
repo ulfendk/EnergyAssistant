@@ -2,6 +2,7 @@
 open System
 open FSharp.Data
 open Newtonsoft.Json
+open NodaTime
 
 open Model
 
@@ -24,20 +25,54 @@ let mqttSettings : Mqtt.MqttSettings =
       ClientId = configData.Mqtt.ClientId;
       UseTls = configData.Mqtt.UseTls }
 
-let fees = 
-  { FixedCost = configData.AdditionalCosts.FixedCost;
-    OffPeakTariff = configData.AdditionalCosts.RegularTariff;
-    PeakTariff = configData.AdditionalCosts.PeakTariff;
-    Fee = configData.AdditionalCosts.Fee;
-    Vat = configData.AdditionalCosts.Vat }
+let zone = DateTimeZoneProviders.Bcl.GetSystemDefault()
+let date value = Instant.FromDateTimeOffset(value).InZone(zone).Date
+let localTime (value: TimeSpan) = LocalTime(value.Hours, value.Minutes)
 
-let tariffs = None
+type PeriodCost = 
+    { StartTime: LocalTime;
+      EndTime: LocalTime;
+      FixedCost: decimal }
+
+type Tariff =
+    { DateInterval: DateInterval;
+      Periods: PeriodCost array }
+
+let vat (price: decimal) = (configData.Vat + 1m) * price
+
+let tariffs = configData.Tariffs |> Array.map (fun x ->
+        { DateInterval = DateInterval((date x.StartDate), (date x.EndDate));
+          Periods = x.Periods |> Array.map (fun y -> 
+                { StartTime = localTime y.StartTime;
+                  EndTime = localTime y.EndTime;
+                  FixedCost = y.FixedCost }) })
+
+let activeTariff (dateTime: DateTimeOffset) =
+    try
+        let theTariff = tariffs |> Array.find (fun x ->
+            let theDate = date dateTime
+            x.DateInterval.Contains(theDate))
+        let theTime = localTime (TimeSpan(dateTime.Hour, dateTime.Minute, 0))
+        let theActiveTariff = theTariff.Periods |> Array.find (fun x -> theTime >= x.StartTime && theTime < x.EndTime)
+        printfn "Tariff for found for %O is %O %M" theTime theActiveTariff.StartTime theActiveTariff.FixedCost |> ignore
+        Some(theActiveTariff.FixedCost)
+    with
+        | :? System.Collections.Generic.KeyNotFoundException -> None
+
+let priceWithTariffAndVat (price: decimal) (start : DateTimeOffset) =
+    let tariffed =
+        match activeTariff start with
+        | Some(t) -> price + t
+        | None -> price
+    printfn "Tariffed price %M = %M" price tariffed |> ignore
+    printfn "With VAT %M" (vat tariffed) |> ignore
+    vat tariffed
 
 let level (price: decimal) = 
     match price with
-    | p when p > configData.Levels.High -> High
-    | p when p > configData.Levels.Medium -> Medium
-    | _ -> Low
+    | p when p > (decimal configData.Levels.High) -> "High"
+    | p when p > (decimal configData.Levels.Medium) -> "Medium"
+    | _ -> "Low"
 
 let hoursOfDay (input: string option) =
     match input with
@@ -123,14 +158,12 @@ while true do
 
     let name (time : DateTimeOffset) = sprintf "%i-%i" time.Hour (time.Hour + 1)
     
-    //let temp = carnotData.Predictions |> Seq.sortBy (fun x -> x.Dktime) |> Seq.map (fun x -> (x.Dktime, x.Prediction, DateTimeOffset(x.Dktime.Year, x.Dktime.Month, x.Dktime.Day, x.Dktime.Hour, 0, 0, DateTimeOffset.Now.Offset), DateTimeOffset(x.Dktime.Year, x.Dktime.Month, x.Dktime.Day, x.Dktime.Hour, 0, 0, DateTimeOffset.Now.Offset).ToLocalTime())) |> Array.ofSeq
-
     let predictions = carnotData.Predictions |> Seq.map(fun x -> 
       { Carnot.SegmentPrice.Name = name x.Dktime;
         Carnot.SegmentPrice.Region = x.Pricearea;
         Carnot.SegmentPrice.Start = x.Dktime;
         Carnot.SegmentPrice.End = x.Dktime.Add(TimeSpan.FromHours(1));
-        Carnot.SegmentPrice.Value = fullPrice x.Dktime fees (x.Prediction / 1000m) }) |> Seq.toArray
+        Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.Prediction / 1000m) x.Dktime }) |> Seq.toArray
 
     let min = Carnot.min predictions
     let max = Carnot.max predictions
@@ -160,7 +193,7 @@ while true do
         sorted.Head)
 
     // Prices
-    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value }) //fullPrice x.Start fees 
+    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value; Level = (level x.Value) }) //fullPrice x.Start fees 
     let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let price = { State = currentPrice.Price; Level = level currentPrice.Price; Prices = hourPrices; UpdateAt = now }
 
