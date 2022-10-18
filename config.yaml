@@ -1,6 +1,6 @@
 name: "Energy Assistant"
 description: "Enabling easy use of spot price data from Carnot in Home Assistant"
-version: "1.0.45"
+version: "1.0.46"
 slug: "energy_assistant"
 init: false
 arch:
@@ -21,7 +21,7 @@ options:
     use_tls: false
   tariffs: 
     - startDate: 2022-10-01
-      endDate: 2022-31-12
+      endDate: 2022-12-31
       periods:
         - startTime: 00:00:00
           endTime: 17:00:00
