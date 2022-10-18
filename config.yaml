@@ -40,10 +40,7 @@ schema:
   tariffs:
     - startDate: str
       endDate: str
-      periods:
-        - startTime: str
-          endTime: str
-          fixedCost: float
+      periods: []
   levels:
     medium: int(0,1000)
     high: int(0,1000)
