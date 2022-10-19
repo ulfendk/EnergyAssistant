@@ -40,11 +40,25 @@ type Tariff =
 
 let vat (price: decimal) = (configData.Vat + 1m) * price
 
-let tariffs = configData.Tariffs |> Array.map (fun x ->
-        { DateInterval = DateInterval((date x.StartDate), (date x.EndDate));
+type ConfigTariff =
+    { StartTimeSpan: TimeSpan;
+      EndTimeSpan: TimeSpan;
+      FixedCost: decimal }
+
+type ConfigTariffPeriod = 
+    { StartDateOffset: DateTimeOffset;
+      EndDateOffset: DateTimeOffset;
+      Periods: ConfigTariff array }
+
+let configTariffs = configData.Tariffs |> Seq.groupBy (fun x -> x.Period) |> Seq.map (fun (k,v) -> (k, v |> Seq.map (fun x -> { StartTimeSpan = x.StartTime; EndTimeSpan = x.EndTime; FixedCost = x.FixedCost }) |> Seq.toArray )) |> dict
+let configTariffPeriods = configData.TariffPeriods |> Array.map (fun x ->
+    { StartDateOffset = x.StartDate; EndDateOffset = x.EndDate; Periods = configTariffs.Item(x.Name) })
+
+let tariffs = configTariffPeriods |> Array.map (fun x -> //configData.Tariffs
+        { DateInterval = DateInterval((date x.StartDateOffset), (date x.EndDateOffset));
           Periods = x.Periods |> Array.map (fun y -> 
-                { StartTime = localTime y.StartTime;
-                  EndTime = localTime y.EndTime;
+                { StartTime = localTime y.StartTimeSpan;
+                  EndTime = localTime y.EndTimeSpan;
                   FixedCost = y.FixedCost }) })
 
 let activeTariff (dateTime: DateTimeOffset) =
@@ -54,7 +68,7 @@ let activeTariff (dateTime: DateTimeOffset) =
             x.DateInterval.Contains(theDate))
         let theTime = localTime (TimeSpan(dateTime.Hour, dateTime.Minute, 0))
         let theActiveTariff = theTariff.Periods |> Array.find (fun x -> theTime >= x.StartTime && theTime < x.EndTime)
-        printfn "Tariff for found for %O is %O %M" theTime theActiveTariff.StartTime theActiveTariff.FixedCost |> ignore
+        // printfn "Tariff for found for %O is %O %M" theTime theActiveTariff.StartTime theActiveTariff.FixedCost |> ignore
         Some(theActiveTariff.FixedCost)
     with
         | :? System.Collections.Generic.KeyNotFoundException -> None
@@ -64,8 +78,8 @@ let priceWithTariffAndVat (price: decimal) (start : DateTimeOffset) =
         match activeTariff start with
         | Some(t) -> price + t
         | None -> price
-    printfn "Tariffed price %M = %M" price tariffed |> ignore
-    printfn "With VAT %M" (vat tariffed) |> ignore
+    // printfn "Tariffed price %M = %M" price tariffed |> ignore
+    // printfn "With VAT %M" (vat tariffed) |> ignore
     vat tariffed
 
 let level (price: decimal) = 

@@ -13,105 +13,118 @@
         "use_tls": false
     },
     "vat": 0.25,
+    "tariffPeriods": [
+        {
+            "name": "2022Q4",
+            "startDate": "2022-10-01",
+            "endDate": "2022-12-31"
+        },
+        {
+            "name": "2023Q1",
+            "startDate": "2023-01-01",
+            "endDate": "2023-03-31"
+        },
+        {
+            "name": "2023Sommer",
+            "startDate": "2023-04-01",
+            "endDate": "2023-09-01"
+        },
+        {
+            "name": "2023Vinter",
+            "startDate": "2023-10-01",
+            "endDate": "2024-03-31"
+        }
+    ],
     "tariffs": [
         {
-            "startDate": "2022-10-01",
-            "endDate": "2022-12-31",
-            "periods": [
-                {
-                    "startTime": "00:00:00",
-                    "endTime": "17:00:00" ,
-                    "fixedCost": 0.3323
-                },
-                {
-                    "startTime": "17:00:00",
-                    "endTime": "20:00:00" ,
-                    "fixedCost": 0.7971
-                },
-                {
-                    "startTime": "20:00:00",
-                    "endTime": "00:00:00" ,
-                    "fixedCost": 0.3323
-                }
-            ]
+            "period": "2022Q4",
+            "startTime": "00:00:00",
+            "endTime": "17:00:00",
+            "fixedCost": 0.3323
         },
         {
-            "startDate": "2023-01-01",
-            "endDate": "2023-03-31",
-            "periods": [
-                {
-                    "startTime": "00:00:00",
-                    "endTime": "06:00:00" ,
-                    "fixedCost": 0.19504
-                },
-                {
-                    "startTime": "06:00:00",
-                    "endTime": "17:00:00" ,
-                    "fixedCost": 0.52136
-                },
-                {
-                    "startTime": "17:00:00",
-                    "endTime": "21:00:00" ,
-                    "fixedCost": 1.49888
-                },
-                {
-                    "startTime": "21:00:00",
-                    "endTime": "00:00:00" ,
-                    "fixedCost": 0.52136
-                }
-            ]
+            "period": "2022Q4",
+            "startTime": "17:00:00",
+            "endTime": "20:00:00",
+            "fixedCost": 0.7971
         },
         {
-            "startDate": "2023-04-01",
-            "endDate": "2023-09-01",
-            "periods": [
-                {
-                    "startTime": "00:00:00",
-                    "endTime": "06:00:00" ,
-                    "fixedCost": 0.19504
-                },
-                {
-                    "startTime": "06:00:00",
-                    "endTime": "17:00:00" ,
-                    "fixedCost": 0.27648
-                },
-                {
-                    "startTime": "17:00:00",
-                    "endTime": "21:00:00" ,
-                    "fixedCost": 0.6676
-                },
-                {
-                    "startTime": "21:00:00",
-                    "endTime": "00:00:00" ,
-                    "fixedCost": 0.27648
-                }
-            ]
+            "period": "2022Q4",
+            "startTime": "20:00:00",
+            "endTime": "00:00:00",
+            "fixedCost": 0.3323
         },
         {
-            "startDate": "2023-10-01",
-            "endDate": "2024-03-31",
-            "periods": [
-                {
-                    "startTime": "00:00:00",
-                    "endTime": "06:00:00" ,
-                    "fixedCost": 0.2278
-                },
-                {
-                    "startTime": "06:00:00",
-                    "endTime": "17:00:00" ,
-                    "fixedCost": 0.6357
-                },
-                {
-                    "startTime": "17:00:00",
-                    "endTime": "21:00:00" ,
-                    "fixedCost": 1.8576
-                },
-                {
-                    "startTime": "21:00:00",
-                    "endTime": "00:00:00" ,
-                    "fixedCost": 0.6357
-                }
-            ]
+            "period": "2023Q1",
+            "startTime": "00:00:00",
+            "endTime": "06:00:00",
+            "fixedCost": 0.19504
+        },
+        {
+            "period": "2023Q1",
+            "startTime": "06:00:00",
+            "endTime": "17:00:00",
+            "fixedCost": 0.52136
+        },
+        {
+            "period": "2023Q1",
+            "startTime": "17:00:00",
+            "endTime": "21:00:00",
+            "fixedCost": 1.49888
+        },
+        {
+            "period": "2023Q1",
+            "startTime": "21:00:00",
+            "endTime": "00:00:00",
+            "fixedCost": 0.52136
+        },
+        {
+            "period": "2023Sommer",
+            "startTime": "00:00:00",
+            "endTime": "06:00:00",
+            "fixedCost": 0.19504
+        },
+        {
+            "period": "2023Sommer",
+            "startTime": "06:00:00",
+            "endTime": "17:00:00",
+            "fixedCost": 0.27648
+        },
+        {
+            "period": "2023Sommer",
+            "startTime": "17:00:00",
+            "endTime": "21:00:00",
+            "fixedCost": 0.6676
+        },
+        {
+            "period": "2023Sommer",
+            "startTime": "21:00:00",
+            "endTime": "00:00:00",
+            "fixedCost": 0.27648
+        },
+        {
+            "period": "2023Vinter",
+            "startTime": "00:00:00",
+            "endTime": "06:00:00",
+            "fixedCost": 0.2278
+        },
+        {
+            "period": "2023Vinter",
+            "startTime": "06:00:00",
+            "endTime": "17:00:00",
+            "fixedCost": 0.6357
+        },
+        {
+            "period": "2023Vinter",
+            "startTime": "17:00:00",
+            "endTime": "21:00:00",
+            "fixedCost": 1.8576
+        },
+        {
+            "period": "2023Vinter",
+            "startTime": "21:00:00",
+            "endTime": "00:00:00",
+            "fixedCost": 0.6357
         }
     ],
     "levels": {
