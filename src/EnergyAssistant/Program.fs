@@ -155,7 +155,7 @@ let publishDiscovery =
 
     let publish topic payload = Mqtt.publish client (discoveryTopic topic) (asPayload payload)
     publish "spotprice" (priceDiscovery "Spotprice" "spotprice") |> ignore
-    publish "spotprice_level" (levelDiscovery "Spotprice Level" "level") |> ignore
+    publish "spotprice_level" (levelDiscovery "Spotprice Level" "spotprice") |> ignore
 
     publish "min" (priceDiscovery "Spotprice Minimum" "min") |> ignore
     publish "max" (priceDiscovery "Spotprice Maximum" "max") |> ignore
