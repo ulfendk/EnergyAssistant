@@ -129,7 +129,8 @@
     ],
     "levels": {
         "medium": 2,
-        "high": 3
+        "high": 3,
+        "extreme": 4
     },
     "spans": [
         {

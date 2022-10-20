@@ -80,10 +80,11 @@ let priceWithTariffAndVat (price: decimal) (start : DateTimeOffset) =
         | None -> price
     // printfn "Tariffed price %M = %M" price tariffed |> ignore
     // printfn "With VAT %M" (vat tariffed) |> ignore
-    vat tariffed
+    Math.Round(vat tariffed, 2)
 
 let level (price: decimal) = 
     match price with
+    | p when p > (decimal configData.Levels.Extreme) -> "Extreme"
     | p when p > (decimal configData.Levels.High) -> "High"
     | p when p > (decimal configData.Levels.Medium) -> "Medium"
     | _ -> "Low"
