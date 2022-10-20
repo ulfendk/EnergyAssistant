@@ -1,6 +1,6 @@
 name: "Energy Assistant"
 description: "Enabling easy use of spot price data from Carnot in Home Assistant"
-version: "1.0.57"
+version: "1.0.58"
 slug: "energy_assistant"
 init: false
 arch:
@@ -22,8 +22,8 @@ options:
   tariffs: []
   vat: 0.25
   levels:
-    medium: 2
-    high: 3
+    medium: 1.5
+    high: 2.5
     extreme: 4
   spans: []
 schema:

@@ -84,9 +84,9 @@ let priceWithTariffAndVat (price: decimal) (start : DateTimeOffset) =
 
 let level (price: decimal) = 
     match price with
-    | p when p > (decimal configData.Levels.Extreme) -> "Extreme"
-    | p when p > (decimal configData.Levels.High) -> "High"
-    | p when p > (decimal configData.Levels.Medium) -> "Medium"
+    | p when p > configData.Levels.Extreme -> "Extreme"
+    | p when p > configData.Levels.High -> "High"
+    | p when p > configData.Levels.Medium -> "Medium"
     | _ -> "Low"
 
 let hoursOfDay (input: string option) =
