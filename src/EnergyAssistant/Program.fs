@@ -149,7 +149,6 @@ let publishDiscovery =
         JsonAttributeTopic = topic;
         Schema = "json";
         UniqueId = asUniqueId name;
-        DeviceClass = "None";
         UnitOfMeasurement = "";
         ValueTemplate = "{{ value_json.level }}" }
 

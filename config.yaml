@@ -1,6 +1,6 @@
 name: "Energy Assistant"
 description: "Enabling easy use of spot price data from Carnot in Home Assistant"
-version: "1.0.55"
+version: "1.0.56"
 slug: "energy_assistant"
 init: false
 arch:
