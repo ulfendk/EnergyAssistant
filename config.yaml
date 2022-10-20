@@ -1,6 +1,6 @@
 name: "Energy Assistant"
 description: "Enabling easy use of spot price data from Carnot in Home Assistant"
-version: "1.0.58"
+version: "1.0.59"
 slug: "energy_assistant"
 init: false
 arch:
@@ -49,9 +49,9 @@ schema:
       endTime: str
       fixedCost: float
   levels:
-    medium: int(0,1000)
-    high: int(0,1000)
-    extreme: int(0,1000)
+    medium: float(0,1000)
+    high: float(0,1000)
+    extreme: float(0,1000)
   spans:
     - title: str
       hours: int(1,168)
