@@ -67,6 +67,6 @@ type Span =
     Price: decimal;
     Level: string }
 
-let zone = DateTimeZoneProviders.Bcl.GetSystemDefault()
-let currentDate = SystemClock.Instance.GetCurrentInstant().InZone(zone).Date
-let xxx = NodaTime.Period.Between(currentDate, currentDate)
+// let zone = DateTimeZoneProviders.Bcl.GetSystemDefault()
+// let currentDate = SystemClock.Instance.GetCurrentInstant().InZone(zone).Date
+// let xxx = NodaTime.Period.Between(currentDate, currentDate)

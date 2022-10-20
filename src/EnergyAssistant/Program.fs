@@ -142,9 +142,21 @@ let publishDiscovery =
         UnitOfMeasurement = "";
         ValueTemplate = "{{ value_json.validAt }}" }
 
+    let levelDiscovery (name: string) (id: string) =
+      let topic = topic id
+      { Name = name;
+        StateTopic = topic;
+        JsonAttributeTopic = topic;
+        Schema = "json";
+        UniqueId = asUniqueId name;
+        DeviceClass = "None";
+        UnitOfMeasurement = "";
+        ValueTemplate = "{{ value_json.level }}" }
+
     let publish topic payload = Mqtt.publish client (discoveryTopic topic) (asPayload payload)
     publish "spotprice" (priceDiscovery "Spotprice" "spotprice") |> ignore
-    // publish "spotprice" (priceDiscovery "Spotprice" "spotprice") |> ignore
+    publish "spotprice_level" (levelDiscovery "Spotprice Level" "level") |> ignore
+
     publish "min" (priceDiscovery "Spotprice Minimum" "min") |> ignore
     publish "max" (priceDiscovery "Spotprice Maximum" "max") |> ignore
     publish "avg" (priceDiscovery "Spotprice Average" "avg") |> ignore
