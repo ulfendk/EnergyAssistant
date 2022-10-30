@@ -223,7 +223,7 @@ while true do
     //let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let currentPrice = hourPrices |> Array.find (fun x -> 
         //  let utcNow = now.UtcDateTime
-         x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
+         x.Hour.Date = now.Date && (x.Hour.Hour + 1) = now.Hour)
     let price = { State = currentPrice.Price; Level = level currentPrice.Price; Prices = hourPrices; UpdateAt = now }
 
     log "Publishing MQTT states..."
