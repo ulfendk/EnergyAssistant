@@ -221,12 +221,11 @@ while true do
     // Prices
     let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value; Level = (level x.Value) }) //fullPrice x.Start fees 
     //let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
-    let currentPrice = hourPrices |> Array.find (fun x -> 
-        //  let utcNow = now.UtcDateTime
-        let localTime = x.Hour.Date.AddHours(1)
+    let currentPrice = hourPrices |> Array.find (fun x ->
+        let localTime = x.Hour.Add(DateTimeOffset.Now.Offset)
         let localDateHour = DateTime(localTime.Year, localTime.Month, localTime.Day, localTime.Hour, 0, 0)
-        localDateHour = now.Date && localDateHour.Hour = now.Hour)
-        //  x.Hour.Date = now.Date && (x.Hour.Hour + 1) = now.Hour)
+        let isMatch = localDateHour.Date = now.Date && localDateHour.Hour = now.Hour
+        isMatch)
     let price = { State = currentPrice.Price; Level = level currentPrice.Price; Prices = hourPrices; UpdateAt = now }
 
     log "Publishing MQTT states..."
