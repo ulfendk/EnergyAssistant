@@ -223,7 +223,7 @@ while true do
     //let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let currentPrice = hourPrices |> Array.find (fun x -> 
         //  let utcNow = now.UtcDateTime
-        let localTime = x.Hour.Date.ToLocalTime()
+        let localTime = x.Hour.Date.AddHours(1)
         let localDateHour = DateTime(localTime.Year, localTime.Month, localTime.Day, localTime.Hour, 0, 0)
         localDateHour = now.Date && localDateHour.Hour = now.Hour)
         //  x.Hour.Date = now.Date && (x.Hour.Hour + 1) = now.Hour)
