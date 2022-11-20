@@ -240,6 +240,46 @@ series:
         color: red
 ```
 
+To display a graph with only actual prices, use this:
+
+```yaml
+type: custom:apexcharts-card
+experimental:
+  color_threshold: true
+header:
+  show: true
+  title: Elpriser (bekræftede)
+now:
+  show: true
+  label: Nu
+span:
+  start: hour
+graph_span: 48h
+yaxis:
+  - min: 0
+    max: ~4
+series:
+  - entity: sensor.spotprice
+    type: column
+    show:
+      extremas: true
+    stroke_width: 0
+    data_generator: |
+      return entity.attributes.prices.map((start, index) => {
+        return [new Date(start["hour"]).getTime(), entity.attributes.prices[index]["isPrediction"] ? 0 : entity.attributes.prices[index]["price"]];
+      });
+    color_threshold:
+      - value: 0
+        color: green
+        opacity: 1
+      - value: 1.5
+        color: yellow
+      - value: 2.5
+        color: pink
+      - value: 4
+        color: red
+```
+
 ### Entities
 
 You can also show the basic entities like this:
