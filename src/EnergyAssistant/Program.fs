@@ -197,7 +197,7 @@ while true do
     let name (time : DateTimeOffset) = sprintf "%i-%i" time.Hour (time.Hour + 1)
 
     let actuals = energiData.Records |> Seq.map(fun x->
-      let hourDk = x.HourUtc.Add(DateTimeOffset.Now.Offset)
+      let hourDk = x.HourUtc//.Add(DateTimeOffset.Now.Offset)
       { Carnot.SegmentPrice.Name = name hourDk;
         Carnot.SegmentPrice.Region = x.PriceArea;
         Carnot.SegmentPrice.Start = hourDk;
@@ -206,11 +206,12 @@ while true do
         Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
 
     let carnotPredictions = carnotData.Predictions |> Seq.map(fun x -> 
-      { Carnot.SegmentPrice.Name = name x.Dktime;
+      let hourDk = x.Dktime//.Add(DateTimeOffset.Now.Offset)
+      { Carnot.SegmentPrice.Name = name hourDk;
         Carnot.SegmentPrice.Region = x.Pricearea;
-        Carnot.SegmentPrice.Start = x.Dktime;
-        Carnot.SegmentPrice.End = x.Dktime.Add(TimeSpan.FromHours(1));
-        Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.Prediction / 1000m) x.Dktime
+        Carnot.SegmentPrice.Start = hourDk;
+        Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
+        Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.Prediction / 1000m) hourDk
         Carnot.SegmentPrice.IsPrediction = true }) |> Seq.toList
     
     let predictions = actuals @ carnotPredictions |> List.distinctBy (fun x -> x.Start) |> List.sortBy (fun x -> x.Start) |> Array.ofList
@@ -246,7 +247,7 @@ while true do
     let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value; Level = (level x.Value); IsPrediction = x.IsPrediction }) //fullPrice x.Start fees 
     //let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let currentPrice = hourPrices |> Array.find (fun x ->
-        let localTime = x.Hour.Add(DateTimeOffset.Now.Offset)
+        let localTime = x.Hour //.Add(DateTimeOffset.Now.Offset)
         let localDateHour = DateTime(localTime.Year, localTime.Month, localTime.Day, localTime.Hour, 0, 0)
         let isMatch = localDateHour.Date = now.Date && localDateHour.Hour = now.Hour
         isMatch)
