@@ -184,8 +184,12 @@ while true do
 
     let client = Mqtt.connect mqttSettings
 
+    log "Downloading predictions from Carnot.dk..."
+
     let data = Http.RequestString(carnotUrl,[], [ ("accept", "application/json"); ("apikey", configData.Carnot.ApiKey); ("username", configData.Carnot.User) ])
     let carnotData = CarnotDk.Parse(data)
+
+    log "Downloading spot prices from energidataservice.dk..."
 
     let energiDataString = Http.RequestString(energiUrl)
     let energiData = EnergiDataService.Parse(energiDataString)
@@ -239,7 +243,7 @@ while true do
         sorted.Head)
 
     // Prices
-    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value; Level = (level x.Value) }) //fullPrice x.Start fees 
+    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value; Level = (level x.Value); IsPrediction = x.IsPrediction }) //fullPrice x.Start fees 
     //let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let currentPrice = hourPrices |> Array.find (fun x ->
         let localTime = x.Hour.Add(DateTimeOffset.Now.Offset)

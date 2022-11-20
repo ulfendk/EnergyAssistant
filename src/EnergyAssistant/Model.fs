@@ -1,6 +1,7 @@
 ﻿module Model
 
 open System
+open System.Text.Json
 open Newtonsoft.Json
 open NodaTime
 
@@ -16,7 +17,8 @@ type NumericState =
 type HourPrice =
   { [<JsonProperty("hour")>] Hour: DateTimeOffset;
     [<JsonProperty("price")>]Price: decimal;
-    [<JsonProperty("level")>]Level: string}
+    [<JsonProperty("level")>]Level: string
+    [<JsonProperty("isPrediction")>]IsPrediction: bool}
 
 type ListState =
   { [<JsonProperty("state")>]State: decimal;
