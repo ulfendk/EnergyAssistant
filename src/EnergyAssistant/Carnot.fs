@@ -7,7 +7,8 @@ type SegmentPrice =
     Region: string; 
     Start: DateTimeOffset;
     End: DateTimeOffset;
-    Value: decimal }
+    Value: decimal
+    IsPrediction: bool }
 
 let getAsSpans (segments : array<'a>) spanWidth =
   let rec getSpan (segments : array<'a>) =

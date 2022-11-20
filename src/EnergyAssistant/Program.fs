@@ -96,6 +96,11 @@ let hoursOfDay (input: string option) =
     |> Set.ofArray
 let spanDefinitions = configData.Spans |> Array.map (fun x -> { Title = x.Title; Duration = x.Hours; MaxHoursInFuture = x.MaxHoursFuture; HoursOfDay = (hoursOfDay x.HoursOfDay)})
 
+[<Literal>]
+let energiSample = "../data/energidataservice.json"
+let energiUrl = sprintf "https://api.energidataservice.dk/dataset/elspotprices?start=now&sort=HourUTC asc&filter={\"PriceArea\":[\"%s\"]}&limit=48" configData.Carnot.Region
+type EnergiDataService = JsonProvider<energiSample>
+
 // carnot.dk
 [<Literal>]
 let carnotSample = "../data/carnot.json"
@@ -182,14 +187,29 @@ while true do
     let data = Http.RequestString(carnotUrl,[], [ ("accept", "application/json"); ("apikey", configData.Carnot.ApiKey); ("username", configData.Carnot.User) ])
     let carnotData = CarnotDk.Parse(data)
 
+    let energiDataString = Http.RequestString(energiUrl)
+    let energiData = EnergiDataService.Parse(energiDataString)
+
     let name (time : DateTimeOffset) = sprintf "%i-%i" time.Hour (time.Hour + 1)
-    
-    let predictions = carnotData.Predictions |> Seq.map(fun x -> 
+
+    let actuals = energiData.Records |> Seq.map(fun x->
+      let hourDk = x.HourUtc.Add(DateTimeOffset.Now.Offset)
+      { Carnot.SegmentPrice.Name = name hourDk;
+        Carnot.SegmentPrice.Region = x.PriceArea;
+        Carnot.SegmentPrice.Start = hourDk;
+        Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
+        Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.SpotPriceDkk / 1000m) hourDk
+        Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
+
+    let carnotPredictions = carnotData.Predictions |> Seq.map(fun x -> 
       { Carnot.SegmentPrice.Name = name x.Dktime;
         Carnot.SegmentPrice.Region = x.Pricearea;
         Carnot.SegmentPrice.Start = x.Dktime;
         Carnot.SegmentPrice.End = x.Dktime.Add(TimeSpan.FromHours(1));
-        Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.Prediction / 1000m) x.Dktime }) |> Seq.toArray
+        Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.Prediction / 1000m) x.Dktime
+        Carnot.SegmentPrice.IsPrediction = true }) |> Seq.toList
+    
+    let predictions = actuals @ carnotPredictions |> List.distinctBy (fun x -> x.Start) |> List.sortBy (fun x -> x.Start) |> Array.ofList
 
     let min = Carnot.min predictions
     let max = Carnot.max predictions

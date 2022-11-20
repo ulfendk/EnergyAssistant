@@ -1,0 +1,177 @@
+{
+  "total": 24,
+  "filters": "{\"PriceArea\":[\"DK2\"]}",
+  "sort": "HourUTC asc",
+  "limit": 48,
+  "dataset": "Elspotprices",
+  "records": [
+    {
+      "HourUTC": "2022-11-20T23:00:00",
+      "HourDK": "2022-11-21T00:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1036.430054,
+      "SpotPriceEUR": 139.350006
+    },
+    {
+      "HourUTC": "2022-11-21T00:00:00",
+      "HourDK": "2022-11-21T01:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1044.089966,
+      "SpotPriceEUR": 140.380005
+    },
+    {
+      "HourUTC": "2022-11-21T01:00:00",
+      "HourDK": "2022-11-21T02:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1111.849976,
+      "SpotPriceEUR": 149.490005
+    },
+    {
+      "HourUTC": "2022-11-21T02:00:00",
+      "HourDK": "2022-11-21T03:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1078.300049,
+      "SpotPriceEUR": 144.979996
+    },
+    {
+      "HourUTC": "2022-11-21T03:00:00",
+      "HourDK": "2022-11-21T04:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1151.339966,
+      "SpotPriceEUR": 154.800003
+    },
+    {
+      "HourUTC": "2022-11-21T04:00:00",
+      "HourDK": "2022-11-21T05:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1245.949951,
+      "SpotPriceEUR": 167.520004
+    },
+    {
+      "HourUTC": "2022-11-21T05:00:00",
+      "HourDK": "2022-11-21T06:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2011.130005,
+      "SpotPriceEUR": 270.399994
+    },
+    {
+      "HourUTC": "2022-11-21T06:00:00",
+      "HourDK": "2022-11-21T07:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2357.280029,
+      "SpotPriceEUR": 316.940002
+    },
+    {
+      "HourUTC": "2022-11-21T07:00:00",
+      "HourDK": "2022-11-21T08:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2410.159912,
+      "SpotPriceEUR": 324.049988
+    },
+    {
+      "HourUTC": "2022-11-21T08:00:00",
+      "HourDK": "2022-11-21T09:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2291.899902,
+      "SpotPriceEUR": 308.149994
+    },
+    {
+      "HourUTC": "2022-11-21T09:00:00",
+      "HourDK": "2022-11-21T10:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2202.870117,
+      "SpotPriceEUR": 296.179993
+    },
+    {
+      "HourUTC": "2022-11-21T10:00:00",
+      "HourDK": "2022-11-21T11:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2287.290039,
+      "SpotPriceEUR": 307.529999
+    },
+    {
+      "HourUTC": "2022-11-21T11:00:00",
+      "HourDK": "2022-11-21T12:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2229.939941,
+      "SpotPriceEUR": 299.820007
+    },
+    {
+      "HourUTC": "2022-11-21T12:00:00",
+      "HourDK": "2022-11-21T13:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2248.540039,
+      "SpotPriceEUR": 302.320007
+    },
+    {
+      "HourUTC": "2022-11-21T13:00:00",
+      "HourDK": "2022-11-21T14:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2469.439941,
+      "SpotPriceEUR": 332.019989
+    },
+    {
+      "HourUTC": "2022-11-21T14:00:00",
+      "HourDK": "2022-11-21T15:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2481.860107,
+      "SpotPriceEUR": 333.690002
+    },
+    {
+      "HourUTC": "2022-11-21T15:00:00",
+      "HourDK": "2022-11-21T16:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2489.219971,
+      "SpotPriceEUR": 334.679993
+    },
+    {
+      "HourUTC": "2022-11-21T16:00:00",
+      "HourDK": "2022-11-21T17:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2494.500000,
+      "SpotPriceEUR": 335.390015
+    },
+    {
+      "HourUTC": "2022-11-21T17:00:00",
+      "HourDK": "2022-11-21T18:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2345.899902,
+      "SpotPriceEUR": 315.410004
+    },
+    {
+      "HourUTC": "2022-11-21T18:00:00",
+      "HourDK": "2022-11-21T19:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 2167.540039,
+      "SpotPriceEUR": 291.429993
+    },
+    {
+      "HourUTC": "2022-11-21T19:00:00",
+      "HourDK": "2022-11-21T20:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1875.540039,
+      "SpotPriceEUR": 252.169998
+    },
+    {
+      "HourUTC": "2022-11-21T20:00:00",
+      "HourDK": "2022-11-21T21:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1636.270020,
+      "SpotPriceEUR": 220.000000
+    },
+    {
+      "HourUTC": "2022-11-21T21:00:00",
+      "HourDK": "2022-11-21T22:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1487.000000,
+      "SpotPriceEUR": 199.929993
+    },
+    {
+      "HourUTC": "2022-11-21T22:00:00",
+      "HourDK": "2022-11-21T23:00:00",
+      "PriceArea": "DK2",
+      "SpotPriceDKK": 1153.050049,
+      "SpotPriceEUR": 155.029999
+    }
+  ]
+}
