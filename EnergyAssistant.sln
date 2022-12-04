@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{6F5B94E0-0
 	ProjectSection(SolutionItems) = preProject
 		src\data\carnot.json = src\data\carnot.json
 		src\data\options.json = src\data\options.json
+		src\data\nordpool.json = src\data\nordpool.json
 	EndProjectSection
 EndProject
 Global

@@ -199,23 +199,37 @@ while true do
     let energiDataString = Http.RequestString(energiUrl)
     let energiData = EnergiDataService.Parse(energiDataString)
 
-    log "Downloading spot prices from Nordpool..."
-
-    let nordpoolDataString = Http.RequestString(nordpoolUrl)
-    let nordpoolData = NordpoolService.Parse(nordpoolDataString)
-
-    // nordpoolData.Rows
-
     let name (time : DateTimeOffset) = sprintf "%i-%i" time.Hour (time.Hour + 1)
 
-    let actuals = energiData.Records |> Seq.map(fun x->
-      let hourDk = x.HourUtc//.Add(DateTimeOffset.Now.Offset)
-      { Carnot.SegmentPrice.Name = name hourDk;
-        Carnot.SegmentPrice.Region = x.PriceArea;
-        Carnot.SegmentPrice.Start = hourDk;
-        Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
-        Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.SpotPriceDkk / 1000m) hourDk
-        Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
+    let actuals =
+        if energiData.Records.Length = 0 then
+            log "energidataservice.dk did not return any values, trying Nordpool directly..."
+            log "Downloading spot prices from Nordpool..."
+
+            let nordpoolDataString = Http.RequestString(nordpoolUrl)
+            let nordpoolData = NordpoolService.Parse(nordpoolDataString)
+
+            nordpoolData.Data.Rows |> Seq.take 24 |> Seq.mapi (fun i x -> //  Seq.map (fun x -> (x.Name, x.Columns.[1].Value)) |> Seq.take 24 |> .toList
+              let now = DateTime.UtcNow.Date
+              let priceString = x.Columns.[1].Value.String.Value
+              let priceString2 = priceString.Replace(',', '.').Replace(" ", "")
+              let price = Decimal.Parse(priceString2, System.Globalization.CultureInfo.InvariantCulture)
+              let hourDk = now.AddHours(i)///.Add(DateTimeOffset.Now.Offset)
+              { Carnot.SegmentPrice.Name = name hourDk;
+                Carnot.SegmentPrice.Region = "DK2";
+                Carnot.SegmentPrice.Start = hourDk;
+                Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
+                Carnot.SegmentPrice.Value = priceWithTariffAndVat (price / 1000m) hourDk
+                Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
+        else
+            energiData.Records |> Seq.map(fun x->
+              let hourDk = x.HourUtc//.Add(DateTimeOffset.Now.Offset)
+              { Carnot.SegmentPrice.Name = name hourDk;
+                Carnot.SegmentPrice.Region = x.PriceArea;
+                Carnot.SegmentPrice.Start = hourDk;
+                Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
+                Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.SpotPriceDkk / 1000m) hourDk
+                Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
 
     let carnotPredictions = carnotData.Predictions |> Seq.map(fun x ->
       let hourDk = x.Dktime//.Add(DateTimeOffset.Now.Offset)
