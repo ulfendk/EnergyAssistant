@@ -29,7 +29,7 @@ let zone = DateTimeZoneProviders.Bcl.GetSystemDefault()
 let date value = Instant.FromDateTimeOffset(value).InZone(zone).Date
 let localTime (value: TimeSpan) = LocalTime(value.Hours, value.Minutes)
 
-type PeriodCost = 
+type PeriodCost =
     { StartTime: LocalTime;
       EndTime: LocalTime;
       FixedCost: decimal }
@@ -45,7 +45,7 @@ type ConfigTariff =
       EndTimeSpan: TimeSpan;
       FixedCost: decimal }
 
-type ConfigTariffPeriod = 
+type ConfigTariffPeriod =
     { StartDateOffset: DateTimeOffset;
       EndDateOffset: DateTimeOffset;
       Periods: ConfigTariff array }
@@ -56,7 +56,7 @@ let configTariffPeriods = configData.TariffPeriods |> Array.map (fun x ->
 
 let tariffs = configTariffPeriods |> Array.map (fun x -> //configData.Tariffs
         { DateInterval = DateInterval((date x.StartDateOffset), (date x.EndDateOffset));
-          Periods = x.Periods |> Array.map (fun y -> 
+          Periods = x.Periods |> Array.map (fun y ->
                 { StartTime = localTime y.StartTimeSpan;
                   EndTime = localTime y.EndTimeSpan;
                   FixedCost = y.FixedCost }) })
@@ -82,7 +82,7 @@ let priceWithTariffAndVat (price: decimal) (start : DateTimeOffset) =
     // printfn "With VAT %M" (vat tariffed) |> ignore
     Math.Round(vat tariffed, 2)
 
-let level (price: decimal) = 
+let level (price: decimal) =
     match price with
     | p when p >= configData.Levels.Extreme -> "Extreme"
     | p when p >= configData.Levels.High -> "High"
@@ -100,6 +100,11 @@ let spanDefinitions = configData.Spans |> Array.map (fun x -> { Title = x.Title;
 let energiSample = "../data/energidataservice.json"
 let energiUrl = sprintf "https://api.energidataservice.dk/dataset/elspotprices?start=now&sort=HourUTC asc&filter={\"PriceArea\":[\"%s\"]}&limit=48" configData.Carnot.Region
 type EnergiDataService = JsonProvider<energiSample>
+
+[<Literal>]
+let nordpoolSample = "../data/nordpool.json"
+let nordpoolUrl = sprintf "https://www.nordpoolgroup.com/api/marketdata/page/41?currency=,DKK,DKK,EUR&endDate=%s" (DateTime.Now.ToString "dd-MM-yyyy")
+type NordpoolService = JsonProvider<nordpoolSample>
 
 // carnot.dk
 [<Literal>]
@@ -196,16 +201,37 @@ while true do
 
     let name (time : DateTimeOffset) = sprintf "%i-%i" time.Hour (time.Hour + 1)
 
-    let actuals = energiData.Records |> Seq.map(fun x->
-      let hourDk = x.HourUtc//.Add(DateTimeOffset.Now.Offset)
-      { Carnot.SegmentPrice.Name = name hourDk;
-        Carnot.SegmentPrice.Region = x.PriceArea;
-        Carnot.SegmentPrice.Start = hourDk;
-        Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
-        Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.SpotPriceDkk / 1000m) hourDk
-        Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
+    let actuals =
+        if energiData.Records.Length = 0 then
+            log "energidataservice.dk did not return any values, trying Nordpool directly..."
+            log "Downloading spot prices from Nordpool..."
 
-    let carnotPredictions = carnotData.Predictions |> Seq.map(fun x -> 
+            let nordpoolDataString = Http.RequestString(nordpoolUrl)
+            let nordpoolData = NordpoolService.Parse(nordpoolDataString)
+
+            nordpoolData.Data.Rows |> Seq.take 24 |> Seq.mapi (fun i x -> //  Seq.map (fun x -> (x.Name, x.Columns.[1].Value)) |> Seq.take 24 |> .toList
+              let now = DateTime.UtcNow.Date
+              let priceString = x.Columns.[1].Value.String.Value
+              let priceString2 = priceString.Replace(',', '.').Replace(" ", "")
+              let price = Decimal.Parse(priceString2, System.Globalization.CultureInfo.InvariantCulture)
+              let hourDk = now.AddHours(i)///.Add(DateTimeOffset.Now.Offset)
+              { Carnot.SegmentPrice.Name = name hourDk;
+                Carnot.SegmentPrice.Region = "DK2";
+                Carnot.SegmentPrice.Start = hourDk;
+                Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
+                Carnot.SegmentPrice.Value = priceWithTariffAndVat (price / 1000m) hourDk
+                Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
+        else
+            energiData.Records |> Seq.map(fun x->
+              let hourDk = x.HourUtc//.Add(DateTimeOffset.Now.Offset)
+              { Carnot.SegmentPrice.Name = name hourDk;
+                Carnot.SegmentPrice.Region = x.PriceArea;
+                Carnot.SegmentPrice.Start = hourDk;
+                Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
+                Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.SpotPriceDkk / 1000m) hourDk
+                Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
+
+    let carnotPredictions = carnotData.Predictions |> Seq.map(fun x ->
       let hourDk = x.Dktime//.Add(DateTimeOffset.Now.Offset)
       { Carnot.SegmentPrice.Name = name hourDk;
         Carnot.SegmentPrice.Region = x.Pricearea;
@@ -213,7 +239,7 @@ while true do
         Carnot.SegmentPrice.End = hourDk.Add(TimeSpan.FromHours(1));
         Carnot.SegmentPrice.Value = priceWithTariffAndVat (x.Prediction / 1000m) hourDk
         Carnot.SegmentPrice.IsPrediction = true }) |> Seq.toList
-    
+
     let predictions = actuals @ carnotPredictions |> List.distinctBy (fun x -> x.Start) |> List.sortBy (fun x -> x.Start) |> Array.ofList
 
     let min = Carnot.min predictions
@@ -235,7 +261,7 @@ while true do
     let filterHoursAhead hoursAhead (periods : Carnot.SegmentPrice array) = periods |> Array.filter (fun x -> x.End <= now.AddHours(hoursAhead))
     let filterHoursOfDay hours (periods : Carnot.SegmentPrice array) = periods |> Array.filter (fun x -> Set.isSubset (spanAsHours x.Start x.End) hours)
 
-    let spans = spanDefinitions |> Array.map (fun spanDef -> 
+    let spans = spanDefinitions |> Array.map (fun spanDef ->
         let periods = toPeriods spanDef.Duration |> List.map (fun x -> x |> Array.map (fun y -> { y with Start = y.Start.ToOffset(now.Offset); End = y.End.ToOffset(now.Offset)}))
         let periodsWithinDuration = periods |> List.map (fun x -> filterHoursAhead spanDef.MaxHoursInFuture x)
         let periodsWithinDurationAndTimeOfDay = periodsWithinDuration |> List.map (fun x -> filterHoursOfDay spanDef.HoursOfDay x) |> List.filter (fun x -> x.Length = spanDef.Duration)
@@ -244,7 +270,7 @@ while true do
         sorted.Head)
 
     // Prices
-    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value; Level = (level x.Value); IsPrediction = x.IsPrediction }) //fullPrice x.Start fees 
+    let hourPrices = predictions |> Array.map (fun x -> { Hour = DateTimeOffset(x.Start.Year, x.Start.Month, x.Start.Day, x.Start.Hour, 0, 0, TimeSpan.Zero); Price = x.Value; Level = (level x.Value); IsPrediction = x.IsPrediction }) //fullPrice x.Start fees
     //let currentPrice = hourPrices |> Array.find (fun x -> x.Hour.Date = now.Date && x.Hour.Hour = now.Hour)
     let currentPrice = hourPrices |> Array.find (fun x ->
         let localTime = x.Hour //.Add(DateTimeOffset.Now.Offset)
