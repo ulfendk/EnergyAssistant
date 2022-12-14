@@ -98,7 +98,7 @@ let spanDefinitions = configData.Spans |> Array.map (fun x -> { Title = x.Title;
 
 [<Literal>]
 let energiSample = "../data/energidataservice.json"
-let energiUrl = sprintf "https://api.energidataservice.dk/dataset/elspotprices?start=utcnow&sort=HourUTC asc&filter={\"PriceArea\":[\"%s\"]}&limit=48" configData.Carnot.Region
+let energiUrl dateUtcString = sprintf "https://api.energidataservice.dk/dataset/elspotprices?start=%s&sort=HourUTC asc&filter={\"PriceArea\":[\"%s\"]}&limit=48" dateUtcString configData.Carnot.Region
 type EnergiDataService = JsonProvider<energiSample>
 
 [<Literal>]
@@ -196,7 +196,7 @@ while true do
 
     log "Downloading spot prices from energidataservice.dk..."
 
-    let energiDataString = Http.RequestString(energiUrl)
+    let energiDataString = Http.RequestString(energiUrl (DateTime.UtcNow.ToString("yyyy-MM-dd")))
     let energiData = EnergiDataService.Parse(energiDataString)
 
     let name (time : DateTimeOffset) = sprintf "%i-%i" time.Hour (time.Hour + 1)

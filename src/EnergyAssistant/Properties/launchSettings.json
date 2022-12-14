@@ -2,7 +2,7 @@
   "profiles": {
     "EnergyAssistant": {
       "commandName": "Project",
-      "commandLineArgs": "/Users/regin/repos/config.json"
+      "commandLineArgs": "/home/regin/repos/options.json"
     }
   }
 }
