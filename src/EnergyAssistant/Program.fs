@@ -223,7 +223,7 @@ while true do
                 Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
         else
             energiData.Records |> Seq.map(fun x->
-              let hourDk = x.HourUtc.Add(DateTimeOffset.Now.Offset)
+              let hourDk = x.HourUtc;//.Add(DateTimeOffset.Now.Offset)
               { Carnot.SegmentPrice.Name = name hourDk;
                 Carnot.SegmentPrice.Region = x.PriceArea;
                 Carnot.SegmentPrice.Start = hourDk;
