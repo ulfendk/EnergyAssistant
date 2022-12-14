@@ -253,7 +253,7 @@ now:
   show: true
   label: Nu
 span:
-  start: hour
+  start: day
 graph_span: 48h
 yaxis:
   - min: 0
