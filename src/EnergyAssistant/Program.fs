@@ -98,7 +98,7 @@ let spanDefinitions = configData.Spans |> Array.map (fun x -> { Title = x.Title;
 
 [<Literal>]
 let energiSample = "../data/energidataservice.json"
-let energiUrl = sprintf "https://api.energidataservice.dk/dataset/elspotprices?start=now&sort=HourUTC asc&filter={\"PriceArea\":[\"%s\"]}&limit=48" configData.Carnot.Region
+let energiUrl = sprintf "https://api.energidataservice.dk/dataset/elspotprices?start=utcnow&sort=HourUTC asc&filter={\"PriceArea\":[\"%s\"]}&limit=48" configData.Carnot.Region
 type EnergiDataService = JsonProvider<energiSample>
 
 [<Literal>]
@@ -223,7 +223,7 @@ while true do
                 Carnot.SegmentPrice.IsPrediction = false }) |> Seq.toList
         else
             energiData.Records |> Seq.map(fun x->
-              let hourDk = x.HourUtc;//.Add(DateTimeOffset.Now.Offset)
+              let hourDk = x.HourUtc.Add(DateTimeOffset.Now.Offset)
               { Carnot.SegmentPrice.Name = name hourDk;
                 Carnot.SegmentPrice.Region = x.PriceArea;
                 Carnot.SegmentPrice.Start = hourDk;
