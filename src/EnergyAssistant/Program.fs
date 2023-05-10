@@ -116,7 +116,9 @@ type CarnotDk = JsonProvider<carnotSample>
 let baseTopic = "energyassistant"
 let topic name = sprintf "%s/%s/%s" baseTopic configData.Carnot.Region name
 
-let asPayload obj = JsonConvert.SerializeObject(obj)
+let settings = Newtonsoft.Json.JsonSerializerSettings()
+settings.NullValueHandling <- NullValueHandling.Ignore
+let asPayload obj = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented, settings)
 let key i = sprintf "span_%i" (i + 1)
 let appendTimeKey name = sprintf "%s_time" name
 let appendTime name = sprintf "%s Time" name
