@@ -162,7 +162,7 @@ let publishDiscovery =
         JsonAttributeTopic = topic;
         Schema = "json";
         UniqueId = asUniqueId name;
-        UnitOfMeasurement = "";
+        UnitOfMeasurement = null;
         ValueTemplate = "{{ value_json.level }}" }
 
     let publish topic payload = Mqtt.publish client (discoveryTopic topic) (asPayload payload)
