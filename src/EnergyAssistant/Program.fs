@@ -161,6 +161,7 @@ let publishDiscovery =
       let topic = topic id
       { Name = name;
         StateTopic = topic;
+        CommandTopic = topic;
         JsonAttributeTopic = topic;
         Schema = "json";
         UniqueId = asUniqueId name;
