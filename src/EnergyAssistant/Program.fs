@@ -123,7 +123,9 @@ let appendTime name = sprintf "%s Time" name
 
 let publishDiscovery =
     let baseDiscoveryTopic = "homeassistant/sensor"
+    let baseTextDiscoveryTopic = "homeassistant/text"
     let discoveryTopic name = sprintf "%s/%s/%s/config" baseDiscoveryTopic configData.Carnot.Region (asId name)
+    let discoveryTextTopic name = sprintf "%s/%s/%s/config" baseTextDiscoveryTopic configData.Carnot.Region (asId name)
 
     let asUniqueId name = asUniqueRegionalId configData.Carnot.Region name
 
@@ -164,8 +166,9 @@ let publishDiscovery =
         ValueTemplate = "{{ value_json.level }}" }
 
     let publish topic payload = Mqtt.publish client (discoveryTopic topic) (asPayload payload)
+    let publishText topic payload = Mqtt.publish client (discoveryTextTopic topic) (asPayload payload)
     publish "spotprice" (priceDiscovery "Spotprice" "spotprice") |> ignore
-    publish "spotprice_level" (levelDiscovery "Spotprice Level" "spotprice") |> ignore
+    publishText "spotprice_level" (levelDiscovery "Spotprice Level" "spotprice") |> ignore
 
     publish "min" (priceDiscovery "Spotprice Minimum" "min") |> ignore
     publish "max" (priceDiscovery "Spotprice Maximum" "max") |> ignore
