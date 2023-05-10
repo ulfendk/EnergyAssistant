@@ -26,9 +26,19 @@ type ListState =
     [<JsonProperty("prices")>]Prices: HourPrice array;
     [<JsonProperty("updatedAt")>]UpdateAt: DateTimeOffset }
 
+// type DiscoveryPayload =
+//     { [<JsonProperty("name")>]Name: string;
+//       [<JsonProperty("state_topic")>]StateTopic: string;
+//       [<JsonProperty("json_attributes_topic")>]JsonAttributeTopic: string;
+//       [<JsonProperty("schema")>]Schema: string;
+//       [<JsonProperty("unique_id")>]UniqueId: string;
+//       [<JsonProperty("unit_of_measurement")>]UnitOfMeasurement: string;
+//       [<JsonProperty("value_template")>]ValueTemplate: string }
+
 type DiscoveryPayload =
     { [<JsonProperty("name")>]Name: string;
       [<JsonProperty("state_topic")>]StateTopic: string;
+      [<JsonProperty("command_topic")>]CommandTopic: string;
       [<JsonProperty("json_attributes_topic")>]JsonAttributeTopic: string;
       [<JsonProperty("schema")>]Schema: string;
       [<JsonProperty("unique_id")>]UniqueId: string;
