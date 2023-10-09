@@ -17,4 +17,7 @@ public class MqttOptions
 
     [JsonPropertyName("use_tls")]
     public bool? UseTls { get; set; }
+
+    [JsonPropertyName("allow_untrusted_certificate")]
+    public bool? AllowUntrustedCertificate { get; set; }
 }

@@ -19,7 +19,9 @@ public class MqttPublisher : IDisposable
             .WithCredentials(options.User, options.Password)
             .WithClientId(options.ClientId);
 
-        if (options.UseTls == true) optionsBuilder.WithTls();
+        if (options.UseTls == true) optionsBuilder.WithTlsOptions(builder => builder
+            .UseTls()
+            .WithAllowUntrustedCertificates(options.AllowUntrustedCertificate ?? false));
 
         var connectResult = _client.ConnectAsync(optionsBuilder.Build()).GetAwaiter().GetResult();
         if (connectResult.ResultCode != MqttClientConnectResultCode.Success)
