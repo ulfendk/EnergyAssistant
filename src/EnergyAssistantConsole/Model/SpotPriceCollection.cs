@@ -2,36 +2,6 @@ using System.Collections.Generic;
 
 namespace UlfenDk.EnergyAssistant.Model;
 
-public record struct SpotPrice
-{
-    public override int GetHashCode()
-    {
-        return Hour.GetHashCode();
-    }
-
-    public bool Equals(SpotPrice? other)
-    {
-        return Hour == other?.Hour;
-    }
-
-    public string Region { get; set; }
-
-    public DateTimeOffset Hour { get; set; }
-
-    public decimal CalculatedPriceFullTariff { get; set; }
-
-    public decimal CalculatedPriceReducedTariff { get; set; }
-
-    public decimal RawPrice { get; set; }
-
-    public string Level { get; set; }
-
-    public string Source { get; set; }
-
-    public bool IsPrediction { get; set; }
-}
-
-
 public class SpotPriceCollection
 {
     private readonly SortedSet<SpotPrice> _prices;

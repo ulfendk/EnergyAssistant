@@ -4,6 +4,7 @@ namespace UlfenDk.EnergyAssistant.Config;
 
 public class Options
 {
+    public string? Region { get; set; }
     public CarnotOptions? Carnot { get; set; }
 
     public MqttOptions? Mqtt { get; set;}

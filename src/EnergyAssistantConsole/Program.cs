@@ -6,6 +6,8 @@ using UlfenDk.EnergyAssistant.Config;
 using UlfenDk.EnergyAssistant.EnergiDataService;
 using UlfenDk.EnergyAssistant.Model;
 using UlfenDk.EnergyAssistant.Mqtt;
+using UlfenDk.EnergyAssistant.Nordpool;
+using UlfenDk.EnergyAssistant.Price;
 
 #region Options loading
 
@@ -39,18 +41,52 @@ var tariffs = new TariffCollection(tariffsDictionary);
 
 #region Energi Data Service
 
-var energidataserviceLoader = new EnergiDataServiceLoader(options?.Carnot?.Region ?? throw new InvalidDataException(nameof(options.Carnot.Region)));
+var energidataserviceLoader = new EnergiDataServiceLoader(options.Region ?? throw new InvalidDataException(nameof(options.Region)));
 
 #endregion
 
 #region Carnot.dk
 
 var carnotLoader = new CarnotDataLoader(
-    options?.Carnot?.User ?? throw new InvalidDataException(nameof(options.Carnot.User)),
-    options?.Carnot?.ApiKey ?? throw new InvalidDataException(nameof(options.Carnot.ApiKey)),
-    options?.Carnot?.Region ?? throw new InvalidDataException(nameof(options.Carnot.Region)));
+    options.Carnot?.User ?? throw new InvalidDataException(nameof(options.Carnot.User)),
+    options.Carnot?.ApiKey ?? throw new InvalidDataException(nameof(options.Carnot.ApiKey)),
+    options.Region ?? throw new InvalidDataException(nameof(options.Region)));
 
 #endregion
 
-MqttPublisher GetMqttPublisher() => new MqttPublisher(options?.Mqtt ?? throw new InvalidDataException(nameof(options.Mqtt));
+#region Nordpool
+
+var nordpoolLoader = new NordpoolDataLoader(options.Region);
+
+#endregion
+
+var priceCalculator = new PriceCalculator();
+
+MqttPublisher GetMqttPublisher() => new MqttPublisher(options?.Mqtt ?? throw new InvalidDataException(nameof(options.Mqtt)));
+
+// Publish Discovery messages here
+
+var spotPrices = new SpotPriceCollection();
+
+while (true)
+{
+    var carnotData = await carnotLoader.GetPredictionsAsync();
+    if (carnotData.Any())
+    {
+        spotPrices.AddOrUpdateRange(carnotData.Select(priceCalculator.AddCosts));
+    }
+
+    var energiData = await energidataserviceLoader.GetLatestPricesAsync();
+    if (energiData.Any())
+    {
+        spotPrices.AddOrUpdateRange(energiData.Select(priceCalculator.AddCosts));
+    }
+    else
+    {
+        var nordpoolData = await nordpoolLoader.GetSpotPricesAsync();
+        spotPrices.AddOrUpdateRange(nordpoolData.Select(priceCalculator.AddCosts));
+    }
+    
+    // Publish values
+}
 

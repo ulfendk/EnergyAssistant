@@ -1,6 +1,6 @@
 namespace UlfenDk.EnergyAssistant.Model;
 
-public record struct Tariff(decimal fixedCost);
+public record struct Tariff(decimal ReducedCost, decimal RegularCost, decimal AdditionalCost);
 
 public class TariffCollection
 {
@@ -18,7 +18,7 @@ public class TariffCollection
             var tariffPeriod = Tariffs.FirstOrDefault(kv => kv.Key.Contains(time)).Value;
             var tariff = tariffPeriod?.FirstOrDefault(kv => kv.Key.Contains(time)).Value;
 
-            return tariff ?? new(0m);
+            return tariff ?? new();
         }
     }
 }

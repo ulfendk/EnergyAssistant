@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using UlfenDk.EnergyAssistant.Model;
 
 namespace UlfenDk.EnergiDataService.Carnot;
 
@@ -17,7 +18,7 @@ public class CarnotDataLoader
         _region = region ?? throw new ArgumentNullException(nameof(region));
     }
 
-    public async Task<CarnotData?> GetPredictionsAsync()
+    public async Task<SpotPrice[]> GetPredictionsAsync()
     {
         try
         {
@@ -31,15 +32,24 @@ public class CarnotDataLoader
 
             var result = await client.GetFromJsonAsync<CarnotData>(uri);
 
+            var spotPrices = result?.Predictions?.Select(x => new SpotPrice
+            {
+                    Hour = DateTimeOffset.Parse(x.Utctime ?? throw new InvalidDataException(nameof(x.Utctime))),
+                    Region = (x.Pricearea ?? _region).ToLowerInvariant(),
+                    Source = "Carnot.dk",
+                    RawPrice = (decimal?)x.Prediction ?? throw new InvalidDataException(nameof(x.Prediction)),
+                    IsPrediction = true
+            });
+            
             Console.WriteLine("Done");
 
-            return result;
+            return spotPrices?.ToArray() ?? Array.Empty<SpotPrice>();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Failed to download from Carnot.dk: {ex.Message}");
 
-            return null;
+            return Array.Empty<SpotPrice>();
         }
     }
 }
