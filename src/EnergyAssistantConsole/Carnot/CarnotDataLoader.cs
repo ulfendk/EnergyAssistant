@@ -26,10 +26,10 @@ public class CarnotDataLoader
 
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Add("accept", "application/json");
-            client.DefaultRequestHeaders.Add("apikey", _apiKey):
+            client.DefaultRequestHeaders.Add("apikey", _apiKey);
             client.DefaultRequestHeaders.Add("username", _user);
 
-            var result = await client.GetFromJsonAsync<CarnotData>(uri)();
+            var result = await client.GetFromJsonAsync<CarnotData>(uri);
 
             Console.WriteLine("Done");
 

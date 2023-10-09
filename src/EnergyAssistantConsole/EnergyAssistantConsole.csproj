@@ -12,4 +12,8 @@
     <Folder Include="Model/" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MQTTnet" Version="4.3.1.873" />
+  </ItemGroup>
+
 </Project>

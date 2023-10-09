@@ -17,7 +17,7 @@ public class EnergiDataServiceLoader
         {
             Console.Write($"Downloading predictions from Carnot.dk...");
 
-            string url = $"https://api.energidataservice.dk/dataset/elspotprices?start={DateTime.Now:yyyy-MM-ddThh:mm:ss}}&sort=HourUTC asc&filter={{\"PriceArea\":[\"{_region}}\"]}}&limit=48";
+            string url = $"https://api.energidataservice.dk/dataset/elspotprices?start={DateTime.Now:yyyy-MM-ddThh:mm:ss}&sort=HourUTC asc&filter={{\"PriceArea\":[\"{_region}\"]}}&limit=48";
 
             using var client = new HttpClient();
             

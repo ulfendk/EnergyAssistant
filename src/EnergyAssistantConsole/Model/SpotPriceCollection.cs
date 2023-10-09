@@ -2,11 +2,16 @@ using System.Collections.Generic;
 
 namespace UlfenDk.EnergyAssistant.Model;
 
-public record struct potPrice
+public record struct SpotPrice
 {
-    override GetHash()
+    public override int GetHashCode()
     {
-        // Use only Time for this.
+        return Hour.GetHashCode();
+    }
+
+    public bool Equals(SpotPrice? other)
+    {
+        return Hour == other?.Hour;
     }
 
     public string Region { get; set; }
@@ -29,20 +34,20 @@ public record struct potPrice
 
 public class SpotPriceCollection
 {
-    private readonly SortedHashset<SpotPrice> _prices;
+    private readonly SortedSet<SpotPrice> _prices;
 
     public SpotPriceCollection()
     {
-        _prices = new SortedHashset<SpotPrice>(x => x.Hour);
+        _prices = new SortedSet<SpotPrice>();
     }
 
-    public SpotPrice Current => _prices.TryGet(GetCurrentHour(), out var value) ? value : default; 
+    public SpotPrice? Current => _prices.SingleOrDefault(x => x.Hour == GetCurrentHour()); 
 
     public void AddOrUpdateRange(IEnumerable<SpotPrice> prices)
     {
         var today = GetToday();
 
-        var toRemove = _prices.Where(x => x.Hour < startOfDay).ToArray();
+        var toRemove = _prices.Where(x => x.Hour < GetToday()).ToArray();
         foreach (var expiredPrice in toRemove)
         {
             _prices.Remove(expiredPrice);
@@ -52,7 +57,8 @@ public class SpotPriceCollection
         {
             if (_prices.Contains(newPrice))
             {
-                _prices.Update(newPrice);
+                _prices.Remove(newPrice);
+                _prices.Add(newPrice);
             }
             else
             {
@@ -61,7 +67,15 @@ public class SpotPriceCollection
         }
     }
 
-    private DateTimeOffset GetCurrentHour() => null;
+    private DateTimeOffset GetCurrentHour()
+    {
+        var now = DateTimeOffset.Now;
+        return new DateTimeOffset(now.Year, now.Month, now.Day, now.Hour, 0, 0, now.Offset);
+    }
 
-    private DateTimeOffset GetToday() => null;
+    private DateTimeOffset GetToday()
+    {
+        var now = DateTimeOffset.Now;
+        return new DateTimeOffset(DateTimeOffset.Now.Date, now.Offset);
+    }
 }
