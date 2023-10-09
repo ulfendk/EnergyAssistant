@@ -5,6 +5,7 @@ using UlfenDk.EnergiDataService.Carnot;
 using UlfenDk.EnergyAssistant.Config;
 using UlfenDk.EnergyAssistant.EnergiDataService;
 using UlfenDk.EnergyAssistant.Model;
+using UlfenDk.EnergyAssistant.Mqtt;
 
 #region Options loading
 
@@ -50,3 +51,6 @@ var carnotLoader = new CarnotDataLoader(
     options?.Carnot?.Region ?? throw new InvalidDataException(nameof(options.Carnot.Region)));
 
 #endregion
+
+MqttPublisher GetMqttPublisher() => new MqttPublisher(options?.Mqtt ?? throw new InvalidDataException(nameof(options.Mqtt));
+
