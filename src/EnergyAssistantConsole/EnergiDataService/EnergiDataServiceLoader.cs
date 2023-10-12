@@ -25,15 +25,17 @@ public class EnergiDataServiceLoader
             using var client = new HttpClient();
             
             var result = await client.GetFromJsonAsync<EnergiData>(url);
-            
+
             var spotPrices = result?.Records?.Select(x => new SpotPrice
-            {
-                Hour = new DateTimeOffset(DateTime.Parse(x.HourUtc ?? throw new InvalidDataException(nameof(x.HourUtc))), now.Offset),
-                Region = (x.PriceArea ?? _region).ToLowerInvariant(),
-                RawPrice = (decimal?)x.SpotPriceDkk ?? throw new InvalidDataException(nameof(x.SpotPriceDkk)),
-                IsPrediction = false,
-                Source = "EnergiDataService"
-            }).ToArray() ?? Array.Empty<SpotPrice>();
+                {
+                    Hour = new DateTimeOffset(DateTime.Parse(x.HourUtc ?? throw new InvalidDataException(nameof(x.HourUtc))), TimeSpan.Zero)
+                        .ToOffset(now.Offset),
+                    Region = (x.PriceArea ?? _region).ToLowerInvariant(),
+                    RawPrice = (decimal?)x.SpotPriceDkk / 1000m ?? throw new InvalidDataException(nameof(x.SpotPriceDkk)),
+                    IsPrediction = false,
+                    Source = "EnergiDataService"
+                })
+                .ToArray() ?? Array.Empty<SpotPrice>();
             
             Console.WriteLine("Done");
 

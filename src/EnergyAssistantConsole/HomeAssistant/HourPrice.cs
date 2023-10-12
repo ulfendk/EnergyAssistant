@@ -1,4 +1,4 @@
-namespace UlfenDk.EnergyAssistant.Mqtt;
+namespace UlfenDk.EnergyAssistant.HomeAssistant;
 
 public record struct HourPrice(
     DateTimeOffset Hour,

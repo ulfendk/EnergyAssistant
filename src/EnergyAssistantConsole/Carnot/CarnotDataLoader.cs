@@ -30,15 +30,18 @@ public class CarnotDataLoader
             client.DefaultRequestHeaders.Add("apikey", _apiKey);
             client.DefaultRequestHeaders.Add("username", _user);
 
+            var now = DateTimeOffset.Now;
+            
             var result = await client.GetFromJsonAsync<CarnotData>(uri);
 
             var spotPrices = result?.Predictions?.Select(x => new SpotPrice
             {
-                    Hour = DateTimeOffset.Parse(x.Utctime ?? throw new InvalidDataException(nameof(x.Utctime))),
-                    Region = (x.Pricearea ?? _region).ToLowerInvariant(),
-                    Source = "Carnot.dk",
-                    RawPrice = (decimal?)x.Prediction ?? throw new InvalidDataException(nameof(x.Prediction)),
-                    IsPrediction = true
+                Hour = DateTimeOffset.Parse(x.Utctime ?? throw new InvalidDataException(nameof(x.Utctime)))
+                    .ToOffset(now.Offset),
+                Region = (x.Pricearea ?? _region).ToLowerInvariant(),
+                Source = "Carnot.dk",
+                RawPrice = (decimal?)x.Prediction / 1000m ?? throw new InvalidDataException(nameof(x.Prediction)),
+                IsPrediction = true
             });
             
             Console.WriteLine("Done");

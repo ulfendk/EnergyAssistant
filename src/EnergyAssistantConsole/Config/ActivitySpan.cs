@@ -6,11 +6,11 @@ public class ActivitySpan
 {
     public string? Title { get; set; }
 
-    public int? Hours { get; set; }
+    public int? HoursDuration { get; set; }
 
     [JsonPropertyName("max_hours_future")]
     public int? MaxHoursInFuture { get; set; }
 
     [JsonPropertyName("hours_of_day")]
-    public string? HoursOfDay { get; set; }
+    public int[]? HoursOfDay { get; set; }
 }

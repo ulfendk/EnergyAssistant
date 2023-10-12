@@ -20,29 +20,42 @@ public class PriceCalculator
     {
         var tariff = _tariffs[price.Hour];
 
-        var regularPrice = _vat * (price.RawPrice + tariff.RegularCost + tariff.AdditionalCost);
-        var reducedPrice = _vat * (price.RawPrice + tariff.ReducedCost + tariff.AdditionalCost);
-        
-        var regularLevel = _levels.Where(x => x.Value < regularPrice).ToArray() switch
+        var regularPrice = _vat * (price.RawPrice + tariff.RegularCost);
+        var reducedPrice = _vat * (price.RawPrice + tariff.ReducedCost);
+
+        var regularLevels = _levels.Where(x => x.Value < regularPrice).ToArray();
+        var regularLevel = regularLevels.Length > 0
+            ? regularLevels.First().Name
+            : "N/A";
+        // var regularLevel = _levels.Where(x => x.Value < regularPrice).ToArray() switch
+        // {
+        //     [(_, { } name), _] => name,
+        //     [(_, { } name)] => name,
+        //     _ => _levels.Any() ? _levels.First().Name : "N/A"
+        // };
+        var reducedLevels = _levels.Where(x => x.Value < regularPrice).ToArray();
+        var reducedLevel = regularLevels.Length > 0
+            ? regularLevels.First().Name
+            : "N/A";
+        // var reducedLevel = _levels.Where(x => x.Value < reducedPrice).ToArray() switch
+        // {
+        //     [(_, { } name), _] => name,
+        //     [(_, { } name)] => name,
+        //     _ => _levels.Any() ? _levels.First().Name : "N/A"
+        // };
+
+        return new SpotPrice
         {
-            [(_, { } name), _] => name,
-            [(_, { } name)] => name,
-            _ => _levels.Any() ? _levels.First().Name : "N/A"
-        };
-        var reducedLevel = _levels.Where(x => x.Value < reducedPrice).ToArray() switch
-        {
-            [(_, { } name), _] => name,
-            [(_, { } name)] => name,
-            _ => _levels.Any() ? _levels.First().Name : "N/A"
-        };
-        
-        return price with
-        {
-            CalculatedPriceRegularTariff = regularPrice * _vat,
-            CalculatedPriceReducedTariff = reducedPrice * _vat,
-            
+            Region = price.Region,
+            Hour = price.Hour,
+            Source = price.Source,
+            IsPrediction = price.IsPrediction,
+            RawPrice = price.RawPrice,
+            CalculatedPriceRegularTariff = regularPrice,
+            CalculatedPriceReducedTariff = reducedPrice,
             RegularPriceLevel = regularLevel,
             ReducedPriceLevel = reducedLevel
+
         };
     }
 }

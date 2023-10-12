@@ -1,6 +1,6 @@
 namespace UlfenDk.EnergyAssistant.Model;
 
-public record struct Tariff(decimal ReducedCost, decimal RegularCost, decimal AdditionalCost);
+public record struct Tariff(decimal RegularCost, decimal ReducedCost);
 
 public class TariffCollection
 {

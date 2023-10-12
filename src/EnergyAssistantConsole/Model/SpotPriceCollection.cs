@@ -1,14 +1,31 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net;
 
 namespace UlfenDk.EnergyAssistant.Model;
 
-public class SpotPriceCollection
+public class SpotPriceCollection : IEnumerable<SpotPrice>
 {
+    private class RecordComparer : IEqualityComparer<SpotPrice>, IComparer<SpotPrice>
+    {
+        public bool Equals(SpotPrice x, SpotPrice y) => x.Equals(y);
+
+        public int GetHashCode(SpotPrice obj) => obj.GetHashCode();
+
+        public int Compare(SpotPrice? x, SpotPrice? y) => (x, y) switch
+        {
+            ({ } a, { } b)  => a.CompareTo(b),
+            _ => -1
+        };
+}
+
     private readonly SortedSet<SpotPrice> _prices;
 
     public SpotPriceCollection()
     {
-        _prices = new SortedSet<SpotPrice>();
+        _prices = new SortedSet<SpotPrice>(new RecordComparer());
+        // _prices = new SortedSet<SpotPrice>(new RecordComparer());
     }
 
     public SpotPrice? Current => _prices.SingleOrDefault(x => x.Hour == GetCurrentHour()); 
@@ -25,15 +42,15 @@ public class SpotPriceCollection
 
         foreach (var newPrice in prices)
         {
-            if (_prices.Contains(newPrice))
+            if (!_prices.Add(newPrice))
             {
                 _prices.Remove(newPrice);
                 _prices.Add(newPrice);
             }
-            else
-            {
-                _prices.Add(newPrice);
-            }
+            // else
+            // {
+            //     _prices.Add(newPrice);
+            // }
         }
     }
 
@@ -48,4 +65,8 @@ public class SpotPriceCollection
         var now = DateTimeOffset.Now;
         return new DateTimeOffset(DateTimeOffset.Now.Date, now.Offset);
     }
+
+    public IEnumerator<SpotPrice> GetEnumerator() => _prices.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => _prices.GetEnumerator();
 }

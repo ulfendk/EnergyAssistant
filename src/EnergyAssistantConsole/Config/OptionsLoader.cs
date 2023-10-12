@@ -8,6 +8,6 @@ public static class OptionsLoader
     {
         string optionsJson = File.ReadAllText(fileName);
 
-        return JsonSerializer.Deserialize<Options?>(optionsJson, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        return JsonSerializer.Deserialize<Options>(optionsJson, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase,   });
     }
 }

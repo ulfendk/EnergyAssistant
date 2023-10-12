@@ -7,6 +7,8 @@ public class Options
     public string? Region { get; set; }
     public CarnotOptions? Carnot { get; set; }
 
+    public bool UseNordPoolBackup { get; set; } = false;
+
     public MqttOptions? Mqtt { get; set;}
 
     public float? Vat { get; set; }

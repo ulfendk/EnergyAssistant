@@ -53,7 +53,7 @@ public  class Conf
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("Published")]
-    public DateTimeOffset? Published { get; set; }
+    public string? Published { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("ShowGraph")]
@@ -172,7 +172,7 @@ public class Entity
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("DataUpdated")]
-    public DateTimeOffset? DataUpdated { get; set; }
+    public string? DataUpdated { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("Attributes")]
@@ -234,7 +234,7 @@ public class Entity
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("LastUpdate")]
-    public DateTimeOffset? LastUpdate { get; set; }
+    public string? LastUpdate { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("Unit")]
@@ -375,15 +375,15 @@ public class Data
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("DataStartdate")]
-    public DateTimeOffset? DataStartdate { get; set; }
+    public string? DataStartdate { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("DataEnddate")]
-    public DateTimeOffset? DataEnddate { get; set; }
+    public string? DataEnddate { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("MinDateForTimeScale")]
-    public DateTimeOffset? MinDateForTimeScale { get; set; }
+    public string? MinDateForTimeScale { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("AreaChanges")]
@@ -395,7 +395,7 @@ public class Data
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("LatestResultDate")]
-    public DateTimeOffset? LatestResultDate { get; set; }
+    public string? LatestResultDate { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("ContainsPreliminaryValues")]
@@ -418,7 +418,7 @@ public class Data
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("DateUpdated")]
-    public DateTimeOffset? DateUpdated { get; set; }
+    public string? DateUpdated { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("CombinedHeadersEnabled")]
@@ -445,15 +445,15 @@ public  class Row
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("StartTime")]
-    public DateTimeOffset? StartTime { get; set; }
+    public string? StartTime { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("EndTime")]
-    public DateTimeOffset? EndTime { get; set; }
+    public string? EndTime { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("DateTimeForData")]
-    public DateTimeOffset? DateTimeForData { get; set; }
+    public string? DateTimeForData { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("DayNumber")]
@@ -461,7 +461,7 @@ public  class Row
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("StartTimeDate")]
-    public DateTimeOffset? StartTimeDate { get; set; }
+    public string? StartTimeDate { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("IsExtraRow")]
@@ -529,7 +529,7 @@ public class Column
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("DateTimeForData")]
-    public DateTimeOffset? DateTimeForData { get; set; }
+    public string? DateTimeForData { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("DisplayName")]
@@ -576,9 +576,9 @@ internal static class Converter
         Converters =
         {
             NameConverter.Singleton,
-            new DateOnlyConverter(),
-            new TimeOnlyConverter(),
-            IsoDateTimeOffsetConverter.Singleton
+            // new DateOnlyConverter(),
+            // new TimeOnlyConverter(),
+            // IsoDateTimeOffsetConverter.Singleton
         },
     };
 }
