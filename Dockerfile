@@ -10,11 +10,11 @@ COPY ["src/EnergyAssistantConsole/EnergyAssistantConsole.csproj", "src/EnergyAss
 RUN dotnet restore "src/EnergyAssistantConsole/EnergyAssistantConsole.csproj"
 COPY . .
 WORKDIR "/src/src/EnergyAssistantConsole"
-RUN dotnet build "EnergyAssistantConsole.csproj" -c Release -o /app/build
+RUN dotnet build -c Release -o /app/build
 
 ARG BUILD_ARCH
 FROM build AS publish
-RUN dotnet publish "EnergyAssistantConsole.csproj" -c Release --self-contained false -o /app/publish
+RUN dotnet publish -c Release --self-contained false -o /app/publish
 
 FROM base AS final
 WORKDIR /app
