@@ -7,7 +7,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
 COPY ["src/EnergyAssistantConsole/EnergyAssistantConsole.csproj", "src/EnergyAssistantConsole"]
-RUN dotnet restore "src/EnergyAssistantConsole/EnergyAssistantConsole.csproj"
+RUN dotnet restore "src/EnergyAssistantConsole"
 COPY . .
 WORKDIR "/src/src/EnergyAssistantConsole"
 RUN dotnet build -c Release -o /app/build
