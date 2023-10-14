@@ -1,10 +1,14 @@
+using YamlDotNet.Serialization;
+
 namespace UlfenDk.EnergyAssistant.Config;
 
 public class TariffPeriod
 {
-    public string? Name { get; set; }
+    [YamlMember(Alias = "start_date")]
+    public DateOnly StartDate { get; set; }
 
-    public DateOnly? Start { get; set; }
+    [YamlMember(Alias = "end_date")]
+    public DateOnly EndDate { get; set; }
 
-    public DateOnly? End { get; set; }
+    public TariffOption[]? Daily { get; set; }
 }

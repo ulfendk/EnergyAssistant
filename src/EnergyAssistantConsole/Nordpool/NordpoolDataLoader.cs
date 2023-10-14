@@ -20,7 +20,7 @@ public class NordpoolDataLoader
         {
             var now = DateTimeOffset.Now;
             
-            Console.Write($"Downloading prices from Nordpool...");
+            Console.Write($"[FALLBACK] Downloading prices from Nordpool...");
             
             string uri = $"https://www.nordpoolgroup.com/api/marketdata/page/41?currency=,DKK,DKK,EUR&endDate={now.ToString("dd-MM-yyyy")}";
             using var client = new HttpClient();
@@ -29,6 +29,7 @@ public class NordpoolDataLoader
 
             if (result is null)
             {
+                Console.WriteLine("Failed with empty response");
                 return Array.Empty<SpotPrice>();
             }
 
@@ -56,7 +57,7 @@ public class NordpoolDataLoader
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to download from Nordpool: {ex.Message}");
+            Console.WriteLine($"Failed: {ex.Message}");
 
             return Array.Empty<SpotPrice>();
         }

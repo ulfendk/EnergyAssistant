@@ -42,15 +42,15 @@ public class CarnotDataLoader
                 Source = "Carnot.dk",
                 RawPrice = (decimal?)x.Prediction / 1000m ?? throw new InvalidDataException(nameof(x.Prediction)),
                 IsPrediction = true
-            });
+            }).ToArray() ?? Array.Empty<SpotPrice>();
             
-            Console.WriteLine("Done");
+            Console.WriteLine(spotPrices.Any() ? "Done" : "Failed with empty result");
 
             return spotPrices?.ToArray() ?? Array.Empty<SpotPrice>();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to download from Carnot.dk: {ex.Message}");
+            Console.WriteLine($"Failed: {ex.Message}");
 
             return Array.Empty<SpotPrice>();
         }

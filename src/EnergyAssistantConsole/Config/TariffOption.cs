@@ -1,22 +1,29 @@
+using YamlDotNet.Serialization;
+
 namespace UlfenDk.EnergyAssistant.Config;
 
 public class TariffOption
 {
-    public string? Period { get; set; }
+    [YamlMember(Alias = "start_time")]
+    public TimeOnly StartTime { get; set; }
 
-    public TimeOnly? StartTime { get; set; }
-
-    public TimeOnly? EndTime { get; set; }
+    [YamlMember(Alias = "end_time")]
+    public TimeOnly EndTime { get; set; }
     
-    public float[]? CommonCosts { get; set; }
+    [YamlMember(Alias = "always_include")]
+    public decimal[]? AlwaysInclude { get; set; }
 
-    public float[]? RegularAdditionalCosts { get; set; }
+    public decimal[]? Standard { get; set; }
 
-    public float[]? ReducedAdditionalCosts { get; set; }
+    public decimal[]? Reduced { get; set; }
 
-    public float CommonCost => CommonCosts?.Sum() ?? 0f;
-    public float RegularFixedCost => CommonCost + RegularAdditionalCosts?.Sum() ?? 0;
+    [YamlIgnore]
+    public decimal CommonCost => AlwaysInclude?.Sum() ?? 0;
 
-    public float ReducedFixedCost => CommonCost + ReducedAdditionalCosts?.Sum() ?? 0;
+    [YamlIgnore]
+    public decimal RegularFixedCost => CommonCost + Standard?.Sum() ?? 0;
+
+    [YamlIgnore]
+    public decimal ReducedFixedCost => CommonCost + Reduced?.Sum() ?? 0;
 
 }

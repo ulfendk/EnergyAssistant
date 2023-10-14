@@ -16,7 +16,7 @@ public class EnergiDataServiceLoader
     {
         try
         {
-            Console.Write($"Downloading predictions from EnergiDataService...");
+            Console.Write($"Downloading spot prices from EnergiDataService...");
 
             var now = DateTimeOffset.Now;
 
@@ -37,13 +37,13 @@ public class EnergiDataServiceLoader
                 })
                 .ToArray() ?? Array.Empty<SpotPrice>();
             
-            Console.WriteLine("Done");
+            Console.WriteLine(spotPrices.Any() ? "Done" : "Failed with empty result");
 
             return spotPrices;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to download from EnergiDataService: {ex.Message}");
+            Console.WriteLine($"Failed: {ex.Message}");
 
             return Array.Empty<SpotPrice>();
         }

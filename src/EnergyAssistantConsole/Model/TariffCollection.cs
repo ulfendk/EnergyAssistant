@@ -1,14 +1,18 @@
+using UlfenDk.EnergyAssistant.Config;
+
 namespace UlfenDk.EnergyAssistant.Model;
 
 public record struct Tariff(decimal RegularCost, decimal ReducedCost);
 
 public class TariffCollection
 {
-    public IDictionary<CalendarInterval, IDictionary<TimeInterval, Tariff>> Tariffs { get;  }
+    private Dictionary<CalendarInterval, Dictionary<TimeInterval, Tariff>> Tariffs { get;  }
 
-    public TariffCollection(IDictionary<CalendarInterval, IDictionary<TimeInterval, Tariff>> tariffs)
+    public TariffCollection(TariffPeriod[] periods)
     {
-        Tariffs = tariffs ?? throw new ArgumentNullException(nameof(tariffs));
+        Tariffs = periods.ToDictionary(kv => new CalendarInterval(kv.StartDate, kv.EndDate),
+            kv => kv.Daily.ToDictionary(kkv => new TimeInterval(kkv.StartTime, kkv.EndTime),
+                kkv => new Tariff(kkv.RegularFixedCost, kkv.ReducedFixedCost)));
     }
 
     public Tariff this[DateTimeOffset time]
