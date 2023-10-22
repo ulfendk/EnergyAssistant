@@ -18,6 +18,8 @@ The assistant offers the following integrations into Home Assistant:
 - Spot price level sensors
   - Set levels, such as Low, Medium and High
 - Energy usage sensors (from ElOverblik)
+  - Used to calculate exact costs
+  - Combined with appliance usage for live costs per appliance
 - Tariff and fees configuration
   - Define fees based on date ranges and daily times
   - Define regular and reduced prices, applicable for homes with electric heating
