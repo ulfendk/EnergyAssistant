@@ -175,7 +175,6 @@ while (true)
 {
     Console.WriteLine($"[{DateTimeOffset.Now:s}]");
 
-    var now = DateTimeOffset.Now;
     if (DateTimeOffset.Now >= nextDataRefresh)
     {
         if (options.Carnot.IsEnabled)

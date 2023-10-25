@@ -21,9 +21,9 @@ public class TariffOption
     public decimal CommonCost => AlwaysInclude?.Sum() ?? 0;
 
     [YamlIgnore]
-    public decimal RegularFixedCost => CommonCost + Standard?.Sum() ?? 0;
+    public decimal RegularFixedCost => CommonCost + (Standard?.Sum() ?? 0);
 
     [YamlIgnore]
-    public decimal ReducedFixedCost => CommonCost + Reduced?.Sum() ?? 0;
+    public decimal ReducedFixedCost => CommonCost + (Reduced?.Sum() ?? 0);
 
 }

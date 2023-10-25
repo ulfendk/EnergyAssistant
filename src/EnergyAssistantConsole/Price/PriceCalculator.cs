@@ -33,8 +33,8 @@ public class PriceCalculator
         //     [(_, { } name)] => name,
         //     _ => _levels.Any() ? _levels.First().Name : "N/A"
         // };
-        var reducedLevels = _levels.Where(x => x.Value < regularPrice).ToArray();
-        var reducedLevel = regularLevels.Length > 0
+        var reducedLevels = _levels.Where(x => x.Value < reducedPrice).ToArray();
+        var reducedLevel = reducedLevels.Length > 0
             ? regularLevels.First().Name
             : "N/A";
         // var reducedLevel = _levels.Where(x => x.Value < reducedPrice).ToArray() switch
