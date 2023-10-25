@@ -1,0 +1,51 @@
+﻿@page "/fetchdata"
+@using EnergyAssistantGui.Data
+@using Microsoft.EntityFrameworkCore
+@using UlfenDk.EnergyAssistant.Database
+
+@inject WeatherForecastService ForecastService
+@inject IDbContextFactory<EnergyAssistantContext> RepositoryFactory
+
+<PageTitle>Weather forecast</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
+<MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+@if (forecasts == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="forecasts" Hover="true" SortLabel="Sort By" Elevation="0">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<WeatherForecast, object>(x=>x.Date)">Date</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureC)">Temp. (C)</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureF)">Temp. (F)</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Summary!)">Summary</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Date">@context.Date</MudTd>
+            <MudTd DataLabel="Temp. (C)">@context.TemperatureC</MudTd>
+            <MudTd DataLabel="Temp. (F)">@context.TemperatureF</MudTd>
+            <MudTd DataLabel="Summary">@context.Summary</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}
+
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        // await using var repo = await RepositoryFactory.CreateDbContextAsync();
+        // repo.Prices.Add(new SpotPriceRecord { Hour = DateTimeOffset.Now, IsPrediction = false, LastUpdated = DateTimeOffset.Now, RawPrice = 1m, ReducedPrice = 2m, RegularPrice = 3m, Region = "dk2", Source = "Test" });
+        // await repo.SaveChangesAsync();
+    // repo?.Test();
+    }
+
+}

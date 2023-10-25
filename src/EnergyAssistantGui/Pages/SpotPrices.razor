@@ -1,0 +1,20 @@
+﻿@page "/spotprices"
+
+<PageTitle>Spotprices</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Spotprices</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Energi Data Service</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Nordpool</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">NB! Nordpool does not allow API access, and by enabling this you are violating their terms of use.</MudText>
+<MudText Class="mb-4">Current count: @currentCount</MudText>
+<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
