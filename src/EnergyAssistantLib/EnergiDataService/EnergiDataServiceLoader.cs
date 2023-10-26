@@ -11,19 +11,19 @@ public class EnergiDataServiceLoader
     private readonly string _region;
     private readonly ILogger<EnergiDataServiceLoader> _logger;
 
-    public EnergiDataServiceLoader(IOptions<OptionsLoader<GeneralOptions>> options, ILogger<EnergiDataServiceLoader> logger)
+    public EnergiDataServiceLoader(OptionsLoader<GeneralOptions> options, ILogger<EnergiDataServiceLoader> logger)
     {
-        var config = options.Value.Load();
+        var config = options.Load();
         
         _region = config.Region ?? throw new ArgumentNullException(nameof(options));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<SpotPrice[]> GetLatestPricesAsync()
+    public async Task<SpotPrice[]> GetLatestPricesAsync(CancellationToken cancellationToken)
     {
         try
         {
-            _logger.LogInformation("Downloading spot prices...");
+            _logger.LogInformation("Downloading spot prices from EnergiDataService");
 
             var now = DateTimeOffset.Now;
 
@@ -31,7 +31,7 @@ public class EnergiDataServiceLoader
 
             using var client = new HttpClient();
             
-            var result = await client.GetFromJsonAsync<EnergiData>(url);
+            var result = await client.GetFromJsonAsync<EnergiData>(url, cancellationToken);
 
             var spotPrices = result?.Records?.Select(x => new SpotPrice
                 {
@@ -52,8 +52,6 @@ public class EnergiDataServiceLoader
             {
                 _logger.LogError("No prices downloaded.");
             }
-
-            Console.WriteLine(spotPrices.Any() ? "Done" : "Failed with empty result");
 
             return spotPrices;
         }

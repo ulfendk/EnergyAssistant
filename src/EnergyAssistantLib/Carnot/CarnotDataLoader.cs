@@ -1,11 +1,15 @@
 using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using UlfenDk.EnergyAssistant.Config;
 using UlfenDk.EnergyAssistant.Model;
 
 namespace UlfenDk.EnergiDataService.Carnot;
 
 public class CarnotDataLoader
 {
+    public bool IsEnabled { get; }
+
     private readonly string _user;
 
     private readonly string _apiKey;
@@ -13,19 +17,34 @@ public class CarnotDataLoader
     private readonly string _region;
     private readonly ILogger<CarnotDataLoader> _logger;
 
-    public CarnotDataLoader(string user, string apiKey, string region, ILogger<CarnotDataLoader> logger)
+    public CarnotDataLoader(OptionsLoader<GeneralOptions> generalOptions, OptionsLoader<CarnotOptions> options, ILogger<CarnotDataLoader> logger) 
     {
-        _user = user ?? throw new ArgumentNullException(nameof(user));
-        _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
-        _region = region ?? throw new ArgumentNullException(nameof(region));
+        var region = generalOptions.Load().Region;
+        var config = options.Load();
+
+        IsEnabled = config.IsEnabled;
+
+        if (IsEnabled)
+        {
+            _user = config.User ?? throw new ArgumentNullException(nameof(config.User));
+            _apiKey = config.ApiKey ?? throw new ArgumentNullException(nameof(config.ApiKey));
+            _region = region ?? throw new ArgumentNullException(nameof(GeneralOptions.Region));
+        }
+        else
+        {
+            _user = _apiKey = _region = string.Empty;
+        }
+
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<SpotPrice[]> GetPredictionsAsync()
+    public async Task<SpotPrice[]> GetPredictionsAsync(CancellationToken cancellationToken)
     {
+        if (!IsEnabled) throw new InvalidOperationException($"{nameof(CarnotDataLoader)} is not enabled.");
+        
         try
         {
-            _logger.LogInformation("Downloading predictions.");
+            _logger.LogInformation("Downloading predictions from Carnot.dk");
             string uri = $"https://whale-app-dquqw.ondigitalocean.app/openapi/get_predict?energysource=spotprice&region={_region}&daysahead=7";
 
             using var client = new HttpClient();
@@ -35,7 +54,7 @@ public class CarnotDataLoader
 
             var now = DateTimeOffset.Now;
             
-            var result = await client.GetFromJsonAsync<CarnotData>(uri);
+            var result = await client.GetFromJsonAsync<CarnotData>(uri, cancellationToken);
 
             var spotPrices = result?.Predictions?.Select(x => new SpotPrice
             {

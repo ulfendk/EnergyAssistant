@@ -1,3 +1,4 @@
+using System.Reflection;
 using EnergyAssistant.BackgroundWorkers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -7,21 +8,26 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using MudBlazor.Services;
 using UlfenDk.EnergyAssistant;
-using UlfenDk.EnergyAssistant.Database;
+
+var dataDir = (args.Length >= 1
+    ? new DirectoryInfo(args[1])?.FullName
+    : new FileInfo(Assembly.GetEntryAssembly()?.Location)?.DirectoryName)
+    ?? throw new ArgumentException("Data directory must be provided as the first argument.");
+
+var configDir = Path.Combine(dataDir, "energyassistant");
+if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
 
 var builder = WebApplication.CreateBuilder(args);
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
-// Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
 
-string dataDir = "/home/regin/energyassistant";
-builder.Services.AddEnergyAssistant(dataDir);
-builder.Services.AddHostedService<EnergyAssistantServiceWrapper>();
+builder.Services
+    .AddEnergyAssistant(configDir)
+    .AddHostedService<EnergyAssistantServiceWrapper>();
 
 var app = builder.Build();
 

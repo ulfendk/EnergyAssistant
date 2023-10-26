@@ -6,15 +6,16 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
-COPY ["src/EnergyAssistantConsole/EnergyAssistantConsole.csproj", "src/EnergyAssistantConsole"]
-RUN dotnet restore "src/EnergyAssistantConsole"
+COPY ["src/EnergyAssistantLib/EnergyAssistantGui.csproj", "src/EnergyAssistantGui"]
+RUN dotnet restore "src/EnergyAssistantGui"
 COPY . .
-WORKDIR "/src/src/EnergyAssistantConsole"
+WORKDIR "/src/src/EnergyAssistantGui"
 RUN dotnet build -c Release -o /app/build
 
 ARG BUILD_ARCH
 FROM build AS publish
-RUN dotnet publish -c Release --self-contained false -o /app/publish
+# RUN dotnet publish -c Release --self-contained false -o /app/publish
+RUN dotnet publish -a $TARGETARCH --no-restore -o /app/publish
 
 FROM base AS final
 WORKDIR /app

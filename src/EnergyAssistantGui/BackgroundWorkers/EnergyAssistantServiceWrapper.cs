@@ -13,15 +13,13 @@ public class EnergyAssistantServiceWrapper : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-//        throw new NotImplementedException();
+        _service.Start();
 
         return Task.CompletedTask;
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
-        // throw new NotImplementedException();
-
-        return Task.CompletedTask;
+        await _service.StopAsync(cancellationToken);
     }
 }

@@ -8,6 +8,24 @@ using YamlDotNet.Serialization.TypeInspectors;
 
 namespace UlfenDk.EnergyAssistant.Config;
 
+public class CircularTypeInspector<T> : TypeInspectorSkeleton
+{
+    private readonly ITypeInspector _innerTypeDescriptor;
+
+    public CircularTypeInspector(ITypeInspector innerTypeDescriptor)
+    {
+        _innerTypeDescriptor = innerTypeDescriptor;
+    }
+
+    public override IEnumerable<IPropertyDescriptor> GetProperties(Type type, object container)
+    {
+        var props = _innerTypeDescriptor.GetProperties(type, container)
+            .Where(p => p.Type != typeof(T));
+        
+        return props;
+    }
+}
+
 public class OptionsLoader<T>
     where T : IOptionsWithDefaults<T>, new()
 {
@@ -33,9 +51,11 @@ public class OptionsLoader<T>
                 inner => new YamlAttributesTypeInspector(inner),
                 s => s.Before<NamingConventionTypeInspector>()
             )
+            .WithTypeInspector(inspector => new CircularTypeInspector<T>(inspector))
             .WithIndentedSequences()
             .WithTypeConverter(new DateOnlyConverter(CultureInfo.InvariantCulture, false, "yyyy-MM-dd"))
             .WithTypeConverter(new TimeOnlyConverter())
+            
             .Build());
 
         _deserializer = new Lazy<IDeserializer>(() => new DeserializerBuilder()

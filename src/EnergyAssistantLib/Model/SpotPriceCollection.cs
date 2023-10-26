@@ -34,7 +34,7 @@ public class SpotPriceCollection : IEnumerable<SpotPrice>
     {
         var today = GetToday();
 
-        var toRemove = _prices.Where(x => x.Hour < GetToday()).ToArray();
+        var toRemove = _prices.Where(x => x.Hour < today).ToArray();
         foreach (var expiredPrice in toRemove)
         {
             _prices.Remove(expiredPrice);
@@ -47,10 +47,6 @@ public class SpotPriceCollection : IEnumerable<SpotPrice>
                 _prices.Remove(newPrice);
                 _prices.Add(newPrice);
             }
-            // else
-            // {
-            //     _prices.Add(newPrice);
-            // }
         }
     }
 

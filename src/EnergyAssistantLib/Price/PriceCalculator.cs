@@ -11,9 +11,9 @@ public class PriceCalculator
     private readonly TariffCollection _tariffs;
     private readonly IImmutableList<(decimal Value, string Name)> _levels;
 
-    public PriceCalculator(IOptions<OptionsLoader<PriceOptions>> options)
+    public PriceCalculator(OptionsLoader<PriceOptions> options)
     {
-        var config = options.Value.Load();
+        var config = options.Load();
         _vat = 1m + (config.Vat ?? 0m);
         _tariffs = new TariffCollection(config.TariffPeriods) ?? throw new ArgumentNullException(nameof(options));
         _levels = config.Levels?.OrderByDescending(kv => kv.Value).Select(kv => ((decimal)kv.Value, kv.Key)).ToImmutableList() ?? throw new ArgumentNullException(nameof(options));

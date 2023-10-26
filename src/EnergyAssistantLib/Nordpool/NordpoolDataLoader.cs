@@ -10,18 +10,33 @@ namespace UlfenDk.EnergyAssistant.Nordpool;
 
 public class NordpoolDataLoader
 {
+    public bool IsEnabled { get; }
+    
     private readonly string _region;
     private readonly ILogger<NordpoolDataLoader> _logger;
 
-    public NordpoolDataLoader(IOptions<OptionsLoader<GeneralOptions>> options, ILogger<NordpoolDataLoader> logger)
+    public NordpoolDataLoader(OptionsLoader<GeneralOptions> options, ILogger<NordpoolDataLoader> logger)
     {
-        var config = options.Value.Load();
-        _region = config.Region ?? throw new ArgumentNullException(nameof(options));
+        var config = options.Load();
+
+        IsEnabled = config.UseNordPoolBackup;
+
+        if (IsEnabled)
+        {
+            _region = config.Region ?? throw new ArgumentNullException(nameof(options));
+        }
+        else
+        {
+            _region = string.Empty;
+        }
+
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<SpotPrice[]> GetSpotPricesAsync()
+    public async Task<SpotPrice[]> GetSpotPricesAsync(CancellationToken cancellationToken)
     {
+        if (!IsEnabled) throw new InvalidOperationException($"{nameof(NordpoolDataLoader)} is not enabled.");
+        
         try
         {
             var now = DateTimeOffset.Now;
@@ -31,7 +46,7 @@ public class NordpoolDataLoader
             string uri = $"https://www.nordpoolgroup.com/api/marketdata/page/41?currency=,DKK,DKK,EUR&endDate={now.ToString("dd-MM-yyyy")}";
             using var client = new HttpClient();
 
-            var result = await client.GetFromJsonAsync<Welcome>(uri, Converter.Settings);
+            var result = await client.GetFromJsonAsync<Welcome>(uri, Converter.Settings, cancellationToken);
 
             if (result is null)
             {

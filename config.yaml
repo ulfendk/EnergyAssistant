@@ -1,7 +1,8 @@
 name: "Energy Assistant"
-description: "Enabling easy use of spot price data from Carnot in Home Assistant"
-version: "1.9.6"
+description: "Assists with energy prices and cost savings on energy."
+version: "2.0.0-alpha2"
 slug: "energy_assistant"
+url: "https://github.com/ulfendk/EnergyAssistant/blob/main/README.md"
 init: false
 arch:
   - aarch64
@@ -10,3 +11,9 @@ arch:
 homeassistant_api: true
 map:
   - config:rw
+icon: img/logo.jpg
+ingress: true
+webui: "http://[HOST]:[PORT:5000]"
+panel_icon: mdi:chart-bar
+panel_admin: false
+watchdog: "http://[HOST]:[PORT:5000]"

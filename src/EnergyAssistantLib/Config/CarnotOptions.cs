@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Options;
 using YamlDotNet.Serialization;
 
 namespace UlfenDk.EnergyAssistant.Config;
