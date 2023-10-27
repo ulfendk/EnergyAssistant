@@ -11,7 +11,7 @@ public class HomeAssistantOptions : IOptionsWithDefaults<HomeAssistantOptions>
     public HomeAssistantOptions Default => new HomeAssistantOptions
     {
         IsEnabled = true,
-        Url = "http://homeassistant/core",
+        Url = "http://supervisor/core",
         Token = Environment.GetEnvironmentVariable("SUPERVISOR_TOKEN") ?? string.Empty
     };
 }

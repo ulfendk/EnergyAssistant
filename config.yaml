@@ -8,12 +8,16 @@ arch:
   - aarch64
   - amd64
   - armhf
+hassio_api: true
 homeassistant_api: true
+homeassistant_url: asdf
 map:
   - config:rw
-icon: img/logo.jpg
 ingress: true
-webui: "http://[HOST]:[PORT:5000]"
+
+webui: "http://[HOST]:[PORT:8099]"
+ports:
+  "8099/tcp": 5999
 panel_icon: mdi:chart-bar
 panel_admin: false
-watchdog: "http://[HOST]:[PORT:5000]"
+watchdog: "http://[HOST]:[PORT:8099]"

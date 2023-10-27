@@ -2,13 +2,18 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "msbuild",
-			"problemMatcher": [
-				"$msCompile"
-			],
-			"group": "build",
-			"label": "Build: EnergyAssistant.fsproj",
-			"detail": "Build the EnergyAssistant.fsproj project using dotnet build"
+			"label": "Start Home Assistant",
+			"type": "shell",
+			"command": "supervisor_run",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			},
+			"problemMatcher": []
 		}
 	]
 }

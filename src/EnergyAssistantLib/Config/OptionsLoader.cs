@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
@@ -29,14 +30,16 @@ public class CircularTypeInspector<T> : TypeInspectorSkeleton
 public class OptionsLoader<T>
     where T : IOptionsWithDefaults<T>, new()
 {
+    private readonly ILogger<OptionsLoader<T>> _logger;
     private readonly Lazy<ISerializer> _serializer;
     private readonly Lazy<IDeserializer> _deserializer;
 
     private readonly string _fileName;
     
-    public OptionsLoader(IOptions<OptionsFileOptions<T>> options)
+    public OptionsLoader(IOptions<OptionsFileOptions<T>> options, ILogger<OptionsLoader<T>> logger)
     {
         if (options == null) throw new ArgumentNullException(nameof(options));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _fileName = options.Value.FileName;
         
         _serializer = new Lazy<ISerializer>(() => new SerializerBuilder()
@@ -79,6 +82,7 @@ public class OptionsLoader<T>
     {
         if (!File.Exists(_fileName))
         {
+            _logger.LogInformation("Saving default configuration to {fileName}", _fileName);
             Save(new T().Default);
         }
 
@@ -91,56 +95,9 @@ public class OptionsLoader<T>
 
     public void Save(T options)
     {
+        _logger.LogInformation("Saving configuration to {fileName}", _fileName);
+
         var yaml = _serializer.Value.Serialize(options);
         File.WriteAllText(_fileName, yaml);
     }
 }
-
-// public static class OptionsLoader
-// {
-//     public static void WriteOptions(string fileName, Options options)
-//     {
-//         var serializer = new SerializerBuilder()
-//             .WithNamingConvention(CamelCaseNamingConvention.Instance)
-//             .WithTypeInspector
-//             (
-//                 inner => inner,
-//                 s => s.InsteadOf<YamlAttributesTypeInspector>()
-//             )
-//             .WithTypeInspector
-//             (
-//                 inner => new YamlAttributesTypeInspector(inner),
-//                 s => s.Before<NamingConventionTypeInspector>()
-//             )
-//             .WithIndentedSequences()
-//             .WithTypeConverter(new DateOnlyConverter(CultureInfo.InvariantCulture, false, "yyyy-MM-dd"))
-//             .WithTypeConverter(new TimeOnlyConverter())
-//             .Build();
-//         var serialized = serializer.Serialize(options);
-//         File.WriteAllText(fileName, serialized);
-//     }
-//
-//     public static Options? GetOptions(string fileName)
-//     {
-//         var serializer = new DeserializerBuilder()
-//             .WithNamingConvention(CamelCaseNamingConvention.Instance)
-//             .WithTypeInspector
-//             (
-//                 inner => inner,
-//                 s => s.InsteadOf<YamlAttributesTypeInspector>()
-//             )
-//             .WithTypeInspector
-//             (
-//                 inner => new YamlAttributesTypeInspector(inner),
-//                 s => s.Before<NamingConventionTypeInspector>()
-//             )
-//             .WithTypeConverter(new DateOnlyConverter(CultureInfo.InvariantCulture, false, "yyyy-MM-dd"))
-//             .WithTypeConverter(new TimeOnlyConverter())
-//             .Build();
-//
-//         string optionsJson = File.ReadAllText(fileName);
-//
-//         return serializer.Deserialize<Options>(optionsJson);
-//         // return JsonSerializer.Deserialize<Options>(optionsJson, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase,   });
-//     }
-// }

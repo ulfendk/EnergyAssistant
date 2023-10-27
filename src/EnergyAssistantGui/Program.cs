@@ -1,18 +1,24 @@
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text.RegularExpressions;
 using EnergyAssistant.BackgroundWorkers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using EnergyAssistantGui.Data;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using MudBlazor.Services;
 using UlfenDk.EnergyAssistant;
+using UlfenDk.EnergyAssistant.Config;
 
 var dataDir = (args.Length >= 1
-    ? new DirectoryInfo(args[1])?.FullName
-    : new FileInfo(Assembly.GetEntryAssembly()?.Location)?.DirectoryName)
-    ?? throw new ArgumentException("Data directory must be provided as the first argument.");
+                  ? new DirectoryInfo(args[0])?.FullName
+                  : new FileInfo(Assembly.GetEntryAssembly()?.Location)?.DirectoryName)
+              ?? throw new ArgumentException("Data directory must be provided as the first argument.");
+
+Console.WriteLine($"Datadir: {dataDir}");
 
 var configDir = Path.Combine(dataDir, "energyassistant");
 if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
@@ -40,8 +46,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-// app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
