@@ -1,4 +1,6 @@
 ﻿@page "/predictions"
+@inject SpotPriceCollection SpotPrices
+
 @* *@
 @* <PageTitle>Carnot.dk</PageTitle> *@
 @* *@
@@ -24,6 +26,7 @@
 <PageTitle>Predictions</PageTitle>
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
+@using UlfenDk.EnergyAssistant.Model
 <MudText Typo="Typo.h3" GutterBottom="true">Predictions</MudText>
 <MudLink Target="_blank" Href="https://www.carnot.dk/"><MudImage Src="https://www.carnot.dk/img/logo.png" Height="50" /></MudLink>
 <MudText Typo="Typo.h6" GutterBottom="true">To enable predictions, you need to create an account at CARNOT. It is free for non-commercial use.</MudText>
@@ -69,6 +72,32 @@
     </MudItem>
 </MudGrid>
 
+<MudTable Items="SpotPrices" Hover="true" SortLabel="Sort By" Elevation="0" GroupBy="@_groupDefinition" @ref="_tableref">
+    <HeaderContent>
+        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<UlfenDk.EnergyAssistant.Model.SpotPrice, object>(x=>x.Hour)">Hour</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<UlfenDk.EnergyAssistant.Model.SpotPrice, object>(x=>x.CalculatedPriceRegularTariff)">Normal price (DKK/kWh)</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<UlfenDk.EnergyAssistant.Model.SpotPrice, object>(x=>x.RegularPriceLevel)">Normalt niveau</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<UlfenDk.EnergyAssistant.Model.SpotPrice, object>(x=>x.CalculatedPriceReducedTariff)">Reduceret pris (DKK/kWh)</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<UlfenDk.EnergyAssistant.Model.SpotPrice, object>(x=>x.ReducedPriceLevel)">Recueret niveau</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<UlfenDk.EnergyAssistant.Model.SpotPrice, object>(x=>x.RawPrice!)">Rå pris  (DKK/kWh, ex. VAT)</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <GroupHeaderTemplate>
+        <MudTh Class="mud-table-cell-custom-group" colspan="6"><MudIcon Icon="@Icons.Material.Filled.CalendarToday" Size="Size.Small" Style="vertical-align: middle"/> @(((DateTime)context.Key).ToString("dd/MM"))</MudTh>
+    </GroupHeaderTemplate>
+    <RowTemplate>
+        <MudTd DataLabel="Hour"><MudIcon Icon="@Icons.Material.Filled.AccessTime"  Style="vertical-align: middle" Size="Size.Small" /> @context.Hour.ToString("HH") - @context.Hour.AddHours(1).ToString("HH")</MudTd>
+        <MudTd DataLabel="Regular price">@context.CalculatedPriceRegularTariff.ToString("0.000")</MudTd>
+        <MudTd DataLabel="Regular level">@context.RegularPriceLevel</MudTd>
+        <MudTd DataLabel="Reduced price">@context.CalculatedPriceReducedTariff.ToString("0.000")</MudTd>
+        <MudTd DataLabel="Reduced level">@context.ReducedPriceLevel</MudTd>
+        <MudTd DataLabel="Raw price">@context.RawPrice.ToString("0.000")</MudTd>
+    </RowTemplate>
+    @* <PagerContent> *@
+    @*     <MudTablePager  PageSizeOptions="new int[]{50, 100}" /> *@
+    @* </PagerContent> *@
+</MudTable>
+
+
 
 @code {
     bool success;
@@ -84,4 +113,15 @@
             yield break;
         }
     }
+
+    private MudTable<SpotPrice> _tableref;
+    
+    private TableGroupDefinition<SpotPrice> _groupDefinition = new()
+    {
+        GroupName = "Day",
+        Indentation = false,
+        Expandable = true,
+        IsInitiallyExpanded = false,
+        Selector = (e) => e.Hour.Date
+    };
 }

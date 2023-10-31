@@ -1,4 +1,11 @@
 ﻿@page "/spotprices"
+@using UlfenDk.EnergyAssistant.Model
+@using ChartType = MudBlazor.ChartType
+@using Color = MudBlazor.Color
+@using ApexCharts
+@using System.Drawing
+
+@inject SpotPriceCollection SpotPriceColl
 
 <PageTitle>Spotprices</PageTitle>
 
@@ -9,12 +16,102 @@
 <MudText Class="mb-4">Current count: @currentCount</MudText>
 <MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
 
+@if (Series == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" ChartOptions="ChartOptions" Width="100%" Height="350px">
 
+
+        @*       <CustomGraphics> *@
+  @*           <style> *@
+		@* 	.heavy { font: bold 30px Helvetica; } *@
+		@* 	.Rrrrr { font: italic 40px Helvetica; fill: rgb(62,44,221); } *@
+		@* </style> *@
+  @*           $1$ <text x="80" y="35" class="heavy">I Love</text> #1# *@
+  @*           $1$ <text x="105" y="70" class="Rrrrr">MudBlazor!</text> #1# *@
+  @*       </CustomGraphics> *@
+    </MudChart>
+    
+    <ApexCharts.ApexChart TItem="SpotPrice"
+                          Title="Spot prices"
+                          XAxisType="ApexCharts.XAxisType.Datetime"
+                          Options="options">
+        <ApexPointTooltip>
+            <div class="p-1">
+                <h3>@context.DataPoint.X </h3>
+                @* <h4>@SpotPriceColl.Skip(context.DataPointIndex).Single().CalculatedPriceRegularTariff</h4> *@
+            </div>
+        </ApexPointTooltip>
+        
+        <ChildContent>
+            @* <ApexPointSeries TItem="Tuple<DateTimeOffset, decimal>" *@
+            @*                  Items="HighLevel" *@
+            @*                  Name="High level" *@
+            @*                  SeriesType="SeriesType.Line" *@
+            @*                  XValue="@(x => x.Item1)" *@
+            @*                  YValue="@(x => x.Item2)" *@
+            @* /> *@
+            <ApexCharts.ApexPointSeries TItem="SpotPrice"
+                                        Items="SpotPriceColl"
+                                        Name="Raw (DKK/kWh)"
+                                        SeriesType="ApexCharts.SeriesType.Bar"
+                                        XValue="@(x => x.Hour.Add(x.Hour.Offset))"
+                                        YValue="@(x => Math.Round(x.RawPrice * 1.25m, 2))"
+                                        />
+            <ApexCharts.ApexPointSeries TItem="SpotPrice"
+                                        Items="SpotPriceColl"
+                                        Name="Regular (DKK/kWh)"
+                                        SeriesType="ApexCharts.SeriesType.Bar"
+                                        XValue="@(x => x.Hour.Add(x.Hour.Offset))"
+                                        YValue="@(x => Math.Round(x.CalculatedPriceRegularTariff, 2))"
+                                        />
+        </ChildContent>
+    </ApexCharts.ApexChart>
+}
 @code {
     private int currentCount = 0;
+
+    private ApexCharts.ApexChartOptions<SpotPrice> options = new ApexChartOptions<SpotPrice>();
 
     private void IncrementCount()
     {
         currentCount++;
     }
+
+    protected override void OnInitialized()
+    {
+        Series = new List<ChartSeries>()
+        {
+            new ChartSeries() { Name = "Regular", Data = SpotPriceColl.Select(x => (double)Math.Round(x.CalculatedPriceRegularTariff, 2)).ToArray()},
+            // new ChartSeries() { Name = "Reduced", Data = SpotPriceColl.Select(x => (double)Math.Round(x.CalculatedPriceReducedTariff, 2)).ToArray()},
+            new ChartSeries() { Name = "Raw", Data = SpotPriceColl.Select(x => (double)Math.Round(x.RawPrice, 2)).ToArray()},
+        };
+        
+        XAxisLabels = SpotPriceColl.Select(x => x.Hour.Hour == 0 ? x.Hour.ToString("dd/MM") : "").ToArray();//{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+
+        ChartOptions = new ChartOptions
+        {
+            ChartPalette = new[] { "red", "blue" },
+            YAxisTicks = 1
+        };
+
+        // options.Xaxis.Min = new DateTime();
+        // options.Xaxis.Max = SpotPriceColl.Last().Hour;
+    }
+
+    public List<ChartSeries>? Series;
+
+    public string[] XAxisLabels;
+
+    public ChartOptions ChartOptions;
+
+    public Tuple<DateTimeOffset, decimal>[] HighLevel = new[]
+    {
+        new Tuple<DateTimeOffset, decimal>(DateTimeOffset.Now, 2.5m),
+        new Tuple<DateTimeOffset, decimal>(DateTimeOffset.Now.AddDays(5), 2.5m),
+    };
+
 }

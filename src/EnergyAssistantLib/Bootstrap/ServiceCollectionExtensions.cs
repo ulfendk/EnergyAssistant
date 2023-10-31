@@ -23,18 +23,20 @@ public static class ServiceCollectionExtensions
             .Configure<OptionsFileOptions<PriceOptions>>(o => o.FileName = Path.Join(dataDir, "prices.yaml"))
             .Configure<OptionsFileOptions<HomeAssistantOptions>>(o => o.FileName = Path.Join(dataDir, "homeassistant.yaml"))
             .Configure<OptionsFileOptions<CarnotOptions>>(o => o.FileName = Path.Join(dataDir, "carnot.yaml"))
+            .Configure<OptionsFileOptions<EnergiDataServiceOptions>>(o => o.FileName = Path.Join(dataDir, "energidataservice.yaml"))
+            .Configure<OptionsFileOptions<NordpoolOptions>>(o => o.FileName = Path.Join(dataDir, "nordpool.yaml"))
             .Configure<OptionsFileOptions<EloverblikOptions>>(o => o.FileName = Path.Join(dataDir, "eloverblik.yaml"))
             .Configure<OptionsFileOptions<ActivityOptions>>(o => o.FileName = Path.Join(dataDir, "activities.yaml"))
 
             .AddTransient(typeof(OptionsLoader<>))
             
-            .AddTransient<SpotPriceCollection>()
-            .AddTransient<CarnotDataLoader>()
-            .AddTransient<ElOverblikLoader>()
-            .AddTransient<EnergiDataServiceLoader>()
-            .AddTransient<HomeAssistantApiClient>()
-            .AddTransient<NordpoolDataLoader>()
-            .AddTransient<PriceCalculator>()
+            .AddSingleton<SpotPriceCollection>()
+            .AddSingleton<CarnotDataLoader>()
+            .AddSingleton<ElOverblikLoader>()
+            .AddSingleton<EnergiDataServiceLoader>()
+            .AddSingleton<HomeAssistantApiClient>()
+            .AddSingleton<NordpoolDataLoader>()
+            .AddSingleton<PriceCalculator>()
             // .AddTransient<EnergyAssistantRepository>(s => new EnergyAssistantRepository(Path.Combine(dataDir, "data.db")));
             .AddSingleton<EnergyAssistantService>()
 

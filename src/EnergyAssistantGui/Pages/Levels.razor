@@ -3,15 +3,6 @@
 <PageTitle>Levels</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Levels</MudText>
-<MudText Class="mb-4">Current count: @currentCount</MudText>
-<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+<MudText Typo="Typo.body1">You can define levels to help with energy management.</MudText>
 
-
-@code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-}
+<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />

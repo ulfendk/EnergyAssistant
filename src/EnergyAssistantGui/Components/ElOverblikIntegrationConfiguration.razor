@@ -1,0 +1,46 @@
+@using UlfenDk.EnergyAssistant.Config
+@namespace EnergyAssistant.Components
+
+<MudCard Class="@Class">
+    <MudCardHeader Style="background-color: rgb(10, 81, 93)">
+        <MudLink Target="_blank" Href="https://eloverblik.dk/"><MudImage Src="logos/logo_eloverblik.png" Height="50"/></MudLink>
+    </MudCardHeader>
+@if (_options == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudCardContent>
+        <MudText Typo="Typo.body1" GutterBottom="true">To enable accurate insights into energy consumption and correct price calculation, you can enable ElOverblik.</MudText>
+        <MudText Typo="Typo.body2" GutterBottom="true">The calculations are time-skewed and lagging two days behind.</MudText>
+        <MudForm>
+            <MudCheckBox @bind-Checked="_options.IsEnabled" T="bool" Label="Enabled"/>
+            <MudTextField @bind-Value="_options.MeteringPointId" T="string" Label="Metering point ID" HelperText="The metering point ID to load usage for." Variant="Variant.Text"/>
+            <MudTextField @bind-Value="_options.ApiKey" T="string" Label="Token" HelperText="The API access token." Variant="Variant.Text"/>
+        </MudForm>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Reset</MudButton>
+    </MudCardActions>
+}
+</MudCard>
+
+@code {
+    [Parameter]
+    public OptionsLoader<EloverblikOptions> OptionsLoader { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "";
+
+    private EloverblikOptions? _options;
+    
+    protected override Task OnInitializedAsync()
+    {
+        _options = OptionsLoader.Load();
+
+        return base.OnInitializedAsync();
+    }
+
+}

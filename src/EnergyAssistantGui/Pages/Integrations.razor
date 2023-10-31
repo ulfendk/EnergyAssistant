@@ -1,0 +1,40 @@
+﻿@page "/integrations"
+@using EnergyAssistant.Components
+@using UlfenDk.EnergyAssistant.Config
+
+@inject OptionsLoader<HomeAssistantOptions> HomeAssistantOptionsLoader;
+@inject OptionsLoader<CarnotOptions> CarnotOptionsLoader;
+@inject OptionsLoader<EnergiDataServiceOptions> EnergiDataServiceOptionsLoader;
+@inject OptionsLoader<NordpoolOptions> NordpoolOptionsLoader;
+@inject OptionsLoader<EloverblikOptions> ElOverblikOptionsLoader;
+
+<PageTitle>Integrations</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Integrations</MudText>
+<MudText Typo="Typo.subtitle1">Configure integrations</MudText>
+
+<HomeAssistantIntegrationConfiguration Class="ma-6" OptionsLoader="HomeAssistantOptionsLoader" />
+
+<CarnotIntegrationConfiguration Class="ma-6" OptionsLoader="CarnotOptionsLoader" />
+
+<EnergiDataServiceIntegrationConfiguration Class="ma-6" OptionsLoader="EnergiDataServiceOptionsLoader" />
+
+<NordpoolIntegrationConfiguration  Class="ma-6" OptionsLoader="NordpoolOptionsLoader"/>
+
+<ElOverblikIntegrationConfiguration  Class="ma-6" OptionsLoader="ElOverblikOptionsLoader"/>
+
+@code {
+    bool success;
+    string[] errors = { };
+    MudTextField<string> pwField1;
+    MudForm form;
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "API key is required!";
+            yield break;
+        }
+    }
+}

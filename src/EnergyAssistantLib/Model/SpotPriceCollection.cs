@@ -18,7 +18,9 @@ public class SpotPriceCollection : IEnumerable<SpotPrice>
             ({ } a, { } b)  => a.CompareTo(b),
             _ => -1
         };
-}
+    }
+
+    private readonly object _lock = new object();
 
     private readonly SortedSet<SpotPrice> _prices;
 
@@ -28,24 +30,37 @@ public class SpotPriceCollection : IEnumerable<SpotPrice>
         // _prices = new SortedSet<SpotPrice>(new RecordComparer());
     }
 
-    public SpotPrice? Current => _prices.SingleOrDefault(x => x.Hour == GetCurrentHour()); 
+    public SpotPrice? Current
+    {
+        get
+        {
+            lock (_lock)
+            {
+                return _prices.SingleOrDefault(x => x.Hour == GetCurrentHour());
+            }; 
+        }
+    }
+
 
     public void AddOrUpdateRange(IEnumerable<SpotPrice> prices)
     {
         var today = GetToday();
 
-        var toRemove = _prices.Where(x => x.Hour < today).ToArray();
-        foreach (var expiredPrice in toRemove)
+        lock (_lock)
         {
-            _prices.Remove(expiredPrice);
-        }
-
-        foreach (var newPrice in prices)
-        {
-            if (!_prices.Add(newPrice))
+            var toRemove = _prices.Where(x => x.Hour < today).ToArray();
+            foreach (var expiredPrice in toRemove)
             {
-                _prices.Remove(newPrice);
-                _prices.Add(newPrice);
+                _prices.Remove(expiredPrice);
+            }
+
+            foreach (var newPrice in prices)
+            {
+                if (!_prices.Add(newPrice))
+                {
+                    _prices.Remove(newPrice);
+                    _prices.Add(newPrice);
+                }
             }
         }
     }

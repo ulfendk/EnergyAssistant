@@ -1,0 +1,127 @@
+@using UlfenDk.EnergyAssistant.Config
+@using System.Reflection.Emit
+@namespace EnergyAssistant.Components
+
+<style>
+    .mud-timeline-item { cursor: pointer; }  /* change the mouse cursor to indicate that MudTimelineItems are clickable */
+</style>
+
+<MudGrid Class="@Class">
+    <MudItem Class="xs-4">
+        <MudForm>
+            <MudNumericField T="decimal" Label="Regular fee" HelperText="The regular fee [afgift] per kWh." />
+            <MudNumericField T="decimal" Label="Reduced fee" HelperText="The reduced fee [reduceret afgift] per kWh." />
+        </MudForm>
+    </MudItem>
+    <MudBreakpointProvider />
+    @if (_tariffOptions == null)
+    {
+        <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+    }
+    else
+    {
+        <MudItem Class="xs-4">
+            <MudTimeline Class="mr-12" TimelinePosition="TimelinePosition.Left" @bind-SelectedIndex="_index" @onclick="OnClick" @ref="_mudTimeline">
+                @foreach (var tariffOption in _tariffOptions)
+                {
+                    <MudTimelineItem>
+                        <MudText Typo="Typo.h6">@tariffOption.StartTime.ToString("HH:mm")</MudText>
+                    </MudTimelineItem>
+            @* <MudTimelineItem TimelineAlign="TimelineAlign.End"> *@
+            @*     <MudText>06:00</MudText> *@
+            @* </MudTimelineItem> *@
+            @* <MudTimelineItem TimelineAlign="TimelineAlign.End"> *@
+            @*     <MudText>17:00</MudText> *@
+            @* </MudTimelineItem> *@
+            @* <MudTimelineItem TimelineAlign="TimelineAlign.End"> *@
+            @*     <MudText>21:00</MudText> *@
+            @* </MudTimelineItem> *@
+            @* <MudTimelineItem TimelineAlign="TimelineAlign.End" HideDot="true"> *@
+            @*     <MudText>24:00</MudText> *@
+            @* </MudTimelineItem> *@
+                }
+            </MudTimeline>
+        </MudItem>
+        <MudItem Class="xs-4">
+            @if (_selectedOption is not null)
+            {
+                <MudPaper Class="pa-6">
+                    <MudText Typo="Typo.h5">@_selectedOption.StartTime.ToString("HH:mm") - @_selectedOption.EndTime.ToString("HH:mm")</MudText>
+                    <MudText Typo="Typo.subtitle1">Fees are in DKK / kWh</MudText>
+                    <MudText Typo="Typo.subtitle2">All prices are excl. VAT</MudText>
+
+                    <MudText Typo="Typo.h6" Class="mt-6">Always included</MudText>
+                    <MudText Typo="Typo.subtitle1">Will always be added (i.e. tariff).</MudText>
+                    <MudTable T="decimal" Items="@_selectedOption.AlwaysInclude">
+                        <HeaderContent>
+                            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<decimal, object>(x => x)">Fee</MudTableSortLabel></MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Fee">@context</MudTd>
+                        </RowTemplate>
+                    </MudTable>
+
+                    <MudText Typo="Typo.h6">Regular fees</MudText>
+                    <MudText Typo="Typo.subtitle1">Fees to add under normal circumstances.</MudText>
+                    <MudDataGrid T="decimal" bind-Items="@_selectedOption.Standard">
+                        <Columns>
+                            <PropertyColumn Property="x => x" Title="Fee"/>
+                        </Columns>
+                    </MudDataGrid>
+
+                    <MudText Typo="Typo.h6">Reduced fees</MudText>
+                    <MudText Typo="Typo.subtitle1">Fees to add, if applicable, once qualified for reduced fees (above 4,000 kWh this year).</MudText>
+                    <MudDataGrid T="decimal" bind-Items="@_selectedOption.Reduced">
+                        <Columns>
+                            <PropertyColumn Property="x => x" Title="Fee"/>
+                        </Columns>
+                    </MudDataGrid>
+
+                </MudPaper>
+            }
+        </MudItem>
+    }
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public TariffOption[]? TariffOptions { get; set; }
+
+    private List<TariffOption>? _tariffOptions;
+
+    [Parameter]
+    public string Class { get; set; } = "";
+
+    private int _index;
+    private TariffOption? _selectedOption;
+
+    private MudTimeline _mudTimeline;
+    
+    void OnClick()
+    {
+        if (_tariffOptions is not null)
+        {
+            _selectedOption = _tariffOptions.Count >= _index
+                ? _tariffOptions[_index]
+                : null;
+            
+            for (int i=0; i < _mudTimeline.Items.Count; i++)
+            {
+                _mudTimeline.Items[i].Color = i == _index
+                    ? Color.Primary
+                    : Color.Default;
+            }
+        }
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        _tariffOptions = TariffOptions is not null
+            ? new List<TariffOption>(TariffOptions)
+            : null;
+        
+        return base.OnInitializedAsync();
+    }
+
+}

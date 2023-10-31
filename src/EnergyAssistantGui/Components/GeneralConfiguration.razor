@@ -1,0 +1,50 @@
+@using UlfenDk.EnergyAssistant.Config
+@namespace EnergyAssistant.Components
+
+<MudCard Class="@Class">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">General settings</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+@if (_options == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudCardContent>
+        <MudForm>
+            <MudRadioGroup @bind-SelectedOption="_options.Region">
+                <MudRadio Option="@("dk1")">DK1 - West of Storebælt</MudRadio>
+                <MudRadio Option="@("dk2")">DK2 - East of Storebælt</MudRadio>
+            </MudRadioGroup>
+            <MudCheckBox T="bool" Label="Electrically heated home" />
+            <MudText Typo="Typo.body1">If you check this, your spot price will have only the reduced fee added to the price - and a capped fee will be added to your daily costs.  The eligibility for reduced fees, is calculated daily, based on a 10.96 kWh threshold (365 day/year x 10.96 kWh/day = 4,000 kWh/year).</MudText>
+            <MudText Typo="Typo.body2"><b>NB! To be eligible, you must make sure your power provider has your home registered with electric heating (which they will only allow, if already registered in BBR as such).</b></MudText>
+        </MudForm>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Reset</MudButton>
+    </MudCardActions>
+}
+</MudCard>
+
+@code {
+    [Parameter]
+    public OptionsLoader<GeneralOptions> OptionsLoader { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "";
+
+    private GeneralOptions? _options;
+    
+    protected override Task OnInitializedAsync()
+    {
+        _options = OptionsLoader.Load();
+
+        return base.OnInitializedAsync();
+    }
+
+}

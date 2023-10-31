@@ -1,0 +1,43 @@
+@using UlfenDk.EnergyAssistant.Config
+@namespace EnergyAssistant.Components
+
+<MudCard Class="@Class">
+    <MudCardHeader Style="background-color: #eeeeec">
+        <MudLink Target="_blank" Href="https://www.home-assistant.io/"><MudImage Src="logos/home-assistant-logo.svg" Height="50"/></MudLink>
+    </MudCardHeader>
+@if (_options == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudCardContent>
+        <MudForm>
+            <MudCheckBox @bind-Checked="_options.IsEnabled" T="bool" Label="Enabled"/>
+            <MudTextField @bind-Value="_options.Url" T="string" Label="URL" HelperText="The URL to Home Assistant. Leave as default (http://supervisor/core) when running as an add-on." Variant="Variant.Text"/>
+            <MudTextField @bind-Value="_options.Token" T="string" Label="Token" HelperText="The long-lived token for accessing Home Assistant API. Leave blank when running as an add-on." Variant="Variant.Text"/>
+        </MudForm>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Reset</MudButton>
+    </MudCardActions>
+}
+</MudCard>
+
+@code {
+    [Parameter]
+    public OptionsLoader<HomeAssistantOptions> OptionsLoader { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "";
+
+    private HomeAssistantOptions? _options;
+    protected override Task OnInitializedAsync()
+    {
+        _options = OptionsLoader.Load();
+
+        return base.OnInitializedAsync();
+    }
+
+}

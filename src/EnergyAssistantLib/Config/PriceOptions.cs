@@ -24,19 +24,83 @@ public class PriceOptions : IOptionsWithDefaults<PriceOptions>
                 {
                     new TariffOption
                     {
+                        StartTime = new TimeOnly(0, 0),
+                        EndTime = new TimeOnly(6, 0),
                         AlwaysInclude = new []
                         {
-                            0.1m
+                            0.1215m,
+                            0.016m,
+                            0.014m
                         },
                         Reduced = new []
                         {
-                            0.2m
+                            0.008m
                         },
                         Standard = new []
                         {
-                            0.3m
+                            0.6970m
                         }
-                    }
+                    },                    
+
+                    new TariffOption
+                    {
+                        StartTime = new TimeOnly(6, 0),
+                        EndTime = new TimeOnly(17, 0),
+                        AlwaysInclude = new []
+                        {
+                            0.3645m,
+                            0.016m,
+                            0.014m
+                        },
+                        Reduced = new []
+                        {
+                            0.008m
+                        },
+                        Standard = new []
+                        {
+                            0.6970m
+                        }
+                    },                    
+
+                    new TariffOption
+                    {
+                        StartTime = new TimeOnly(17, 0),
+                        EndTime = new TimeOnly(21, 0),
+                        AlwaysInclude = new []
+                        {
+                            1.0934m,
+                            0.016m,
+                            0.014m
+                        },
+                        Reduced = new []
+                        {
+                            0.008m
+                        },
+                        Standard = new []
+                        {
+                            0.6970m
+                        }
+                    },
+
+                    new TariffOption
+                    {
+                        StartTime = new TimeOnly(21, 0),
+                        EndTime = new TimeOnly(0, 0),
+                        AlwaysInclude = new []
+                        {
+                            0.3645m,
+                            0.016m,
+                            0.014m
+                        },
+                        Reduced = new []
+                        {
+                            0.008m
+                        },
+                        Standard = new []
+                        {
+                            0.6970m
+                        }
+                    },                    
                 }
             }
         },

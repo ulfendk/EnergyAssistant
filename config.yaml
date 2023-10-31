@@ -21,3 +21,8 @@ ports:
 panel_icon: mdi:chart-bar
 panel_admin: false
 watchdog: "http://[HOST]:[PORT:8099]"
+options:
+  admin_users: []
+schema:
+  admin_users:
+    - user_name: str

@@ -1,0 +1,131 @@
+﻿@page "/configuration"
+@using EnergyAssistant.Components
+
+@using System.ComponentModel.DataAnnotations
+@using UlfenDk.EnergyAssistant.Config
+@inject OptionsLoader<GeneralOptions> GeneralOptionsLoader;
+@inject OptionsLoader<PriceOptions> PriceOptionsLoader;
+
+<PageTitle>Configuration</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Configuration</MudText>
+<MudText Typo="Typo.subtitle1">Configure general settings</MudText>
+
+<GeneralConfiguration Class="ma-6" OptionsLoader="GeneralOptionsLoader" />
+<FeesTariffsConfiguration Class="ma-6" OptionsLoader="PriceOptionsLoader" />
+
+@* <MudItem> *@
+@*     <MudText Typo="Typo.h4">Tariffs, fees and VAT</MudText> *@
+@* </MudItem> *@
+@* *@
+@* <MudItem Class="pa-10"> *@
+@*     <MudGrid> *@
+@*         <MudItem xs="12" sm="7"> *@
+@*             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors"> *@
+@*                 <MudTextField T="string" Label="VAT" HelperText="The VAT percentage" Required="true" RequiredError="VAT must not be blank." *@
+@*                               InputType="InputType.Number" /> *@
+@*                 $1$ <div class="d-flex"> #1# *@
+@*                 $1$     <MudRadioGroup T="string" Required="true" RequiredError="Account type is required!"> #1# *@
+@*                 $1$         <MudRadio Option="@("Personal")">Personal</MudRadio> #1# *@
+@*                 $1$         <MudRadio Option="@("Professional")">Professional</MudRadio> #1# *@
+@*                 $1$     </MudRadioGroup> #1# *@
+@*                 $1$ </div> #1# *@
+@*                 $1$ <div class="d-flex align-center justify-space-between"> #1# *@
+@*                 $1$     <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!"/> #1# *@
+@*                 $1$     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Register</MudButton> #1# *@
+@*                 $1$ </div> #1# *@
+@*             </MudForm> *@
+@*             <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Save" Label="Save" OnClick="@(() => form.Validate())" /> *@
+@*             $1$ <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.ResetAsync())" Class="mx-2">Reset</MudButton> #1# *@
+@*             $1$ <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Reset Validation</MudButton> #1# *@
+@*         </MudItem> *@
+@*         <MudItem xs="12" sm="5"> *@
+@*             <MudText Typo="Typo.subtitle2">@($"Errors ({errors.Length})")</MudText> *@
+@*             @foreach (var error in errors) *@
+@*             { *@
+@*                 <MudText Color="@Color.Error">@error</MudText> *@
+@*             } *@
+@*         </MudItem> *@
+@*     </MudGrid> *@
+@* </MudItem> *@
+@* *@
+@* <MudExpansionPanels MultiExpansion="true"> *@
+@*     <MudExpansionPanel> *@
+@*         <TitleContent> *@
+@*             <MudText Typo="Typo.h6"><MudIcon Icon="@Icons.Filled.CalendarMonth" Style="vertical-align: middle" /> 1/10/2023 - 31/12/2023</MudText> *@
+@*         </TitleContent> *@
+@*         <ChildContent> *@
+@*             <FeesTariffsTimeIntervalConfiguration TariffOptions="@PriceOptionsLoader.Load().TariffPeriods.First().Daily" /> *@
+@*             $1$ <MudGrid Spacing="5"> #1# *@
+@*             $1$     <MudItem Class="xs-6"> #1# *@
+@*             $1$         <MudGrid Class="pa-6"> #1# *@
+@*             $1$             <MudItem Class="xs-12"> #1# *@
+@*             $1$                 <MudTimeline> #1# *@
+@*             $1$                     <MudTimelineItem Color="Color.Primary" TimelineAlign="TimelineAlign.End"> #1# *@
+@*             $1$                         <MudText Typo="Typo.h6">00:00</MudText> #1# *@
+@*             $1$                     </MudTimelineItem> #1# *@
+@*             $1$                     <MudTimelineItem TimelineAlign="TimelineAlign.End"> #1# *@
+@*             $1$                         <MudText>06:00</MudText> #1# *@
+@*             $1$                     </MudTimelineItem> #1# *@
+@*             $1$                     <MudTimelineItem TimelineAlign="TimelineAlign.End"> #1# *@
+@*             $1$                         <MudText>17:00</MudText> #1# *@
+@*             $1$                     </MudTimelineItem> #1# *@
+@*             $1$                     <MudTimelineItem TimelineAlign="TimelineAlign.End"> #1# *@
+@*             $1$                         <MudText>21:00</MudText> #1# *@
+@*             $1$                     </MudTimelineItem> #1# *@
+@*             $1$                     <MudTimelineItem HideDot="true" TimelineAlign="TimelineAlign.End"> #1# *@
+@*             $1$                         <MudText>24:00</MudText> #1# *@
+@*             $1$                     </MudTimelineItem> #1# *@
+@*             $1$                 </MudTimeline> #1# *@
+@*             $1$             </MudItem> #1# *@
+@*             $1$             <MudBreakpointProvider/> #1# *@
+@*             $1$             <MudItem Class="xs-12"> #1# *@
+@*             $1$                 <MudFab StartIcon="@Icons.Filled.Add" Color="Color.Primary" Style="object-position: right bottom;"/> #1# *@
+@*             $1$             </MudItem> #1# *@
+@*             $1$         </MudGrid> #1# *@
+@*             $1$     </MudItem> #1# *@
+@*             $1$     <MudItem Class="xs-6"> #1# *@
+@*             $1$         <MudPaper Class="pa-6"> #1# *@
+@*             $1$             <MudText Typo="Typo.h5">00:00 - 06:00</MudText> #1# *@
+@*             $1$             <MudText Typo="Typo.subtitle1">Fees are in DKK / kWh</MudText> #1# *@
+@*             $1$             <MudText Typo="Typo.subtitle2">All prices are excl. VAT</MudText> #1# *@
+@*             $1$ #1# *@
+@*             $1$             <MudText Typo="Typo.h6" Class="mt-6">Always included</MudText> #1# *@
+@*             $1$             <MudText Typo="Typo.subtitle1">Will always be added (i.e. tariff).</MudText> #1# *@
+@*             $1$             <MudList> #1# *@
+@*             $1$                 <MudListItem>0.123</MudListItem> #1# *@
+@*             $1$             </MudList> #1# *@
+@*             $1$             <MudText Typo="Typo.h6">Regular fees</MudText> #1# *@
+@*             $1$             <MudText Typo="Typo.subtitle1">Fees to add under normal circumstances.</MudText> #1# *@
+@*             $1$             <MudList> #1# *@
+@*             $1$                 <MudListItem>0.987</MudListItem> #1# *@
+@*             $1$             </MudList> #1# *@
+@*             $1$             <MudText Typo="Typo.h6">Reduced fees</MudText> #1# *@
+@*             $1$             <MudText Typo="Typo.subtitle1">Fees to add, if applicable, once qualified for reduced fees (above 4,000 kWh this year).</MudText> #1# *@
+@*             $1$             <MudList> #1# *@
+@*             $1$                 <MudListItem>0.008</MudListItem> #1# *@
+@*             $1$             </MudList> #1# *@
+@*             $1$         </MudPaper> #1# *@
+@*             $1$     </MudItem> #1# *@
+@*             $1$ </MudGrid> #1# *@
+@*         </ChildContent> *@
+@*     </MudExpansionPanel> *@
+@*     <MudExpansionPanel Text="1/1/2024-31/3/2024"> *@
+@*         Panel Two Content *@
+@*     </MudExpansionPanel> *@
+@* </MudExpansionPanels> *@
+@code {
+    bool success;
+    string[] errors = { };
+    MudTextField<string> pwField1;
+    MudForm form;
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "API key is required!";
+            yield break;
+        }
+    }
+}

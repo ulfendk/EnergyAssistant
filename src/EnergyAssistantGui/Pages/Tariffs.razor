@@ -1,17 +1,9 @@
 ﻿@page "/tariffs"
 
-<PageTitle>Tariffs</PageTitle>
+<PageTitle>Tariffs and fees</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Tariffs</MudText>
-<MudText Class="mb-4">Current count: @currentCount</MudText>
-<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+<MudText Typo="Typo.h3" GutterBottom="true">Tariffs and fees</MudText>
 
+<MudText Typo="Typo.body1">Define tariffs and fees for time periods.</MudText>
 
-@code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-}
+<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />

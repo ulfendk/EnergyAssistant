@@ -1,0 +1,119 @@
+@using UlfenDk.EnergyAssistant.Config
+@namespace EnergyAssistant.Components
+
+<style>
+    .mud-timeline-item { cursor: pointer; }  /* change the mouse cursor to indicate that MudTimelineItems are clickable */
+</style>
+
+@* <MudTimeline @onclick="OnClick" @bind-SelectedIndex="@selectedIndex" TimelinePosition="TimelinePosition.Left"> *@
+@*     <MudTimelineItem>Meeting 1</MudTimelineItem> *@
+@*     <MudTimelineItem>Meeting 2</MudTimelineItem> *@
+@*     <MudTimelineItem>Meeting 3</MudTimelineItem> *@
+@* </MudTimeline> *@
+
+<MudCard Class="@Class">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">Fees and tariffs</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+@if (_options == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudCardContent>
+        <MudForm>
+            <MudNumericField @bind-Value="_options.Vat" Label="VAT" HelperText="The applicable VAT rate." Min="0.0m" Max="1.0m" Step="0.01m" />
+        </MudForm>
+        
+        <MudExpansionPanels MultiExpansion="true">
+            @foreach (var period in _options.TariffPeriods ?? Array.Empty<TariffPeriod>())
+            {
+                <MudExpansionPanel>
+                    <TitleContent>
+                        <MudText Typo="Typo.h6"><MudIcon Icon="@Icons.Filled.CalendarMonth" Style="vertical-align: middle"/>@period.StartDate - @period.EndDate</MudText>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudGrid>
+                            <FeesTariffsTimeIntervalConfiguration TariffOptions="@OptionsLoader.Load().TariffPeriods.First().Daily" />
+                            @* <MudItem Class="xs-6"> *@
+                            @*     <b>@_details</b> *@
+                            @*     <MudTimeline Class="mr-12" TimelinePosition="TimelinePosition.Left" @bind-SelectedIndex="_index" @onclick="OnClick"> *@
+                            @*         <MudTimelineItem Color="Color.Primary"> *@
+                            @*             <MudText Typo="Typo.h6">00:00</MudText> *@
+                            @*         </MudTimelineItem> *@
+                            @*         <MudTimelineItem TimelineAlign="TimelineAlign.End"> *@
+                            @*             <MudText>06:00</MudText> *@
+                            @*         </MudTimelineItem> *@
+                            @*         <MudTimelineItem TimelineAlign="TimelineAlign.End"> *@
+                            @*             <MudText>17:00</MudText> *@
+                            @*         </MudTimelineItem> *@
+                            @*         <MudTimelineItem TimelineAlign="TimelineAlign.End"> *@
+                            @*             <MudText>21:00</MudText> *@
+                            @*         </MudTimelineItem> *@
+                            @*         <MudTimelineItem TimelineAlign="TimelineAlign.End" HideDot="true"> *@
+                            @*             <MudText>24:00</MudText> *@
+                            @*         </MudTimelineItem> *@
+                            @*     </MudTimeline> *@
+                            @* </MudItem> *@
+                            @* <MudItem Class="xs-6"> *@
+                            @*     <MudPaper Class="pa-6"> *@
+                            @*         <MudText Typo="Typo.h5">00:00 - 06:00</MudText> *@
+                            @*         <MudText Typo="Typo.subtitle1">Fees are in DKK / kWh</MudText> *@
+                            @*         <MudText Typo="Typo.subtitle2">All prices are excl. VAT</MudText> *@
+                            @* *@
+                            @*         <MudText Typo="Typo.h6" Class="mt-6">Always included</MudText> *@
+                            @*         <MudText Typo="Typo.subtitle1">Will always be added (i.e. tariff).</MudText> *@
+                            @*         <MudList> *@
+                            @*             <MudListItem>0.123</MudListItem> *@
+                            @*         </MudList> *@
+                            @*         <MudText Typo="Typo.h6">Regular fees</MudText> *@
+                            @*         <MudText Typo="Typo.subtitle1">Fees to add under normal circumstances.</MudText> *@
+                            @*         <MudList> *@
+                            @*             <MudListItem>0.987</MudListItem> *@
+                            @*         </MudList> *@
+                            @*         <MudText Typo="Typo.h6">Reduced fees</MudText> *@
+                            @*         <MudText Typo="Typo.subtitle1">Fees to add, if applicable, once qualified for reduced fees (above 4,000 kWh this year).</MudText> *@
+                            @*         <MudList> *@
+                            @*             <MudListItem>0.008</MudListItem> *@
+                            @*         </MudList> *@
+                            @*     </MudPaper> *@
+                            @* </MudItem> *@
+                        </MudGrid>
+                    </ChildContent>
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Reset</MudButton>
+    </MudCardActions>
+}
+</MudCard>
+
+@code {
+    [Parameter]
+    public OptionsLoader<PriceOptions> OptionsLoader { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "";
+
+    private int _index;
+    private string _details = "";
+    void OnClick() {
+        _details = $"Meeting {_index}";
+    }
+    
+    private PriceOptions? _options;
+    
+    protected override Task OnInitializedAsync()
+    {
+        _options = OptionsLoader.Load();
+
+        return base.OnInitializedAsync();
+    }
+
+}

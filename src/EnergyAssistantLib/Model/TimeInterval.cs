@@ -7,6 +7,6 @@ public record struct TimeInterval(TimeOnly Start, TimeOnly End)
         var localTime = value.ToLocalTime();
         var time = new TimeOnly(localTime.Hour, localTime.Minute, localTime.Second);
 
-        return time >= Start && time < End;
+        return time >= Start && (End == new TimeOnly(0, 0) || time < End);
     }
 }
