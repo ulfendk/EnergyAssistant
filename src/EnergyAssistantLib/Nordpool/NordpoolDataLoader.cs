@@ -5,40 +5,37 @@ using Microsoft.Extensions.Options;
 using UlfenDk.EnergiDataService.Carnot;
 using UlfenDk.EnergyAssistant.Config;
 using UlfenDk.EnergyAssistant.Model;
+using UlfenDk.EnergyAssistant.Repository;
 
 namespace UlfenDk.EnergyAssistant.Nordpool;
 
 public class NordpoolDataLoader
 {
-    public bool IsEnabled { get; }
-    
-    private readonly string _region;
+    private readonly EnergyAssistantRepository _repository;
     private readonly ILogger<NordpoolDataLoader> _logger;
 
-    public NordpoolDataLoader(OptionsLoader<GeneralOptions> options, ILogger<NordpoolDataLoader> logger)
+    public async Task<bool> GetIsEnabledAsync()
     {
-        var config = options.Load();
+        var settings = await _repository.GetNordPoolSettingsAsync();
+        
+        return settings.IsEnabled;
+    }
 
-        IsEnabled = config.UseNordPoolBackup;
-
-        if (IsEnabled)
-        {
-            _region = config.Region ?? throw new ArgumentNullException(nameof(options));
-        }
-        else
-        {
-            _region = string.Empty;
-        }
-
+    public NordpoolDataLoader(EnergyAssistantRepository repository, ILogger<NordpoolDataLoader> logger)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task<SpotPrice[]> GetSpotPricesAsync(CancellationToken cancellationToken)
     {
-        if (!IsEnabled) throw new InvalidOperationException($"{nameof(NordpoolDataLoader)} is not enabled.");
-        
         try
         {
+            var generalSettings = await _repository.GetGeneralSettingsAsync();
+            var settings = await _repository.GetNordPoolSettingsAsync();
+        
+            if (!settings.IsEnabled) throw new InvalidOperationException($"{nameof(NordpoolDataLoader)} is not enabled.");
+        
             var now = DateTimeOffset.Now;
             
             _logger.LogWarning("Downloading prices. This is a violation of Nordpool terms.");
@@ -56,7 +53,7 @@ public class NordpoolDataLoader
 
             var spotPrices = result.Data.Rows.Take(24).Select((x, i) =>
             {
-                var column = x.Columns.SingleOrDefault(y => y.Name?.ToString().Equals(_region, StringComparison.OrdinalIgnoreCase) ?? false)
+                var column = x.Columns.SingleOrDefault(y => y.Name?.ToString().Equals(generalSettings.Region, StringComparison.OrdinalIgnoreCase) ?? false)
                     ?? throw new InvalidDataException("Column not found.");
                 var priceString = column.Value.Replace(",", ".").Replace(" ", "");
                 var price = decimal.Parse(priceString, CultureInfo.InvariantCulture) / 1000m;

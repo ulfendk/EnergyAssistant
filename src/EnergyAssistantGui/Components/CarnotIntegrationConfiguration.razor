@@ -1,11 +1,15 @@
 @using UlfenDk.EnergyAssistant.Config
+@using UlfenDk.EnergyAssistant.Database
+@using UlfenDk.EnergyAssistant.Repository
 @namespace EnergyAssistant.Components
+
+@inject EnergyAssistantRepository Repository
 
 <MudCard Class="@Class">
     <MudCardHeader Style="background-color: #eeeeec">
         <MudLink Target="_blank" Href="https://www.carnot.dk/"><MudImage Src="logos/carnot_logo.png" Height="50" /></MudLink>
     </MudCardHeader>
-@if (_options == null)
+@if (_settings == null)
 {
     <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
@@ -15,32 +19,40 @@ else
         <MudText Typo="Typo.body1" GutterBottom="true">To enable predictions, you need to create an account at CARNOT. It is free for non-commercial use.</MudText>
         <MudText Typo="Typo.body2" GutterBottom="true">Click the image above to create your account.</MudText>
         <MudForm>
-            <MudCheckBox @bind-Checked="_options.IsEnabled" T="bool" Label="Enabled"/>
-            <MudTextField @bind-Value="_options.User" T="string" Label="URL" HelperText="Your Carnot user name (email address)." Variant="Variant.Text"/>
-            <MudTextField @bind-Value="_options.ApiKey" T="string" Label="API Key" HelperText="Your API key from Carnot." Variant="Variant.Text"/>
+            <MudCheckBox @bind-Checked="_settings.IsEnabled" T="bool" Label="Enabled"/>
+            <MudTextField @bind-Value="_settings.User" T="string" Label="URL" HelperText="Your Carnot user name (email address)." Variant="Variant.Text"/>
+            <MudTextField @bind-Value="_settings.ApiKey" T="string" Label="API Key" HelperText="Your API key from Carnot." Variant="Variant.Text"/>
         </MudForm>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="(async () => OnSaveClickedAsync())">Save</MudButton>
         <MudButton Variant="Variant.Text" Color="Color.Primary">Reset</MudButton>
     </MudCardActions>
 }
 </MudCard>
 
 @code {
-    [Parameter]
-    public OptionsLoader<CarnotOptions> OptionsLoader { get; set; }
 
     [Parameter]
     public string Class { get; set; } = "";
 
-    private CarnotOptions? _options;
+    private CarnotSettings _settings;
     
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        _options = OptionsLoader.Load();
+        _settings = await Repository.GetCarnotSettingsAsync();
 
-        return base.OnInitializedAsync();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OnSaveClickedAsync()
+    {
+        await Repository.UpdateCarnotSettingsAsync(s =>
+        {
+            s.IsEnabled = _settings.IsEnabled;
+            s.User = _settings.User;
+            s.ApiKey = _settings.ApiKey;
+        });
     }
 
 }

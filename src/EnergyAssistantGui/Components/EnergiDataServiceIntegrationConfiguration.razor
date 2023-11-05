@@ -1,11 +1,15 @@
 @using UlfenDk.EnergyAssistant.Config
+@using UlfenDk.EnergyAssistant.Database
+@using UlfenDk.EnergyAssistant.Repository
 @namespace EnergyAssistant.Components
+
+@inject EnergyAssistantRepository Repository
 
 <MudCard Class="@Class">
     <MudCardHeader Style="background-color: rgb(0, 138, 139)">
        <MudLink Target="_blank" Href="https://www.energidataservice.dk"><MudImage Src="logos/eds-logo.png" Height="50" /></MudLink>
     </MudCardHeader>
-@if (_options == null)
+@if (_settings == null)
 {
     <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
@@ -14,11 +18,11 @@ else
     <MudCardContent>
         <MudText Typo="Typo.body1" GutterBottom="true">EnergiDataService is the free Danish public API for energy prices.</MudText>
         <MudForm>
-            <MudCheckBox @bind-Checked="_options.IsEnabled" T="bool" Label="Enabled"/>
+            <MudCheckBox @bind-Checked="_settings.IsEnabled" T="bool" Label="Enabled"/>
         </MudForm>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="(async () => await OnSaveClickedAsync())">Save</MudButton>
         <MudButton Variant="Variant.Text" Color="Color.Primary">Reset</MudButton>
     </MudCardActions>
 }
@@ -26,18 +30,23 @@ else
 
 @code {
     [Parameter]
-    public OptionsLoader<EnergiDataServiceOptions> OptionsLoader { get; set; }
-
-    [Parameter]
     public string Class { get; set; } = "";
 
-    private EnergiDataServiceOptions? _options;
+    private EnergiDataServiceSettings? _settings;
     
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        _options = OptionsLoader.Load();
+        _settings = await Repository.GetEnergiDataServiceSettingsAsync();
 
-        return base.OnInitializedAsync();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OnSaveClickedAsync()
+    {
+        await Repository.UpdateEnergiDataServiceSettingsAsync(s =>
+        {
+            s.IsEnabled = _settings!.IsEnabled;
+        });
     }
 
 }

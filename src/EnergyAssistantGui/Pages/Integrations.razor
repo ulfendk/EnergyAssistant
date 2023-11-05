@@ -2,26 +2,20 @@
 @using EnergyAssistant.Components
 @using UlfenDk.EnergyAssistant.Config
 
-@inject OptionsLoader<HomeAssistantOptions> HomeAssistantOptionsLoader;
-@inject OptionsLoader<CarnotOptions> CarnotOptionsLoader;
-@inject OptionsLoader<EnergiDataServiceOptions> EnergiDataServiceOptionsLoader;
-@inject OptionsLoader<NordpoolOptions> NordpoolOptionsLoader;
-@inject OptionsLoader<EloverblikOptions> ElOverblikOptionsLoader;
-
 <PageTitle>Integrations</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Integrations</MudText>
 <MudText Typo="Typo.subtitle1">Configure integrations</MudText>
 
-<HomeAssistantIntegrationConfiguration Class="ma-6" OptionsLoader="HomeAssistantOptionsLoader" />
+<HomeAssistantIntegrationConfiguration Class="ma-6" />
 
-<CarnotIntegrationConfiguration Class="ma-6" OptionsLoader="CarnotOptionsLoader" />
+<CarnotIntegrationConfiguration Class="ma-6" />
 
-<EnergiDataServiceIntegrationConfiguration Class="ma-6" OptionsLoader="EnergiDataServiceOptionsLoader" />
+<EnergiDataServiceIntegrationConfiguration Class="ma-6" />
 
-<NordpoolIntegrationConfiguration  Class="ma-6" OptionsLoader="NordpoolOptionsLoader"/>
+<NordpoolIntegrationConfiguration  Class="ma-6"/>
 
-<ElOverblikIntegrationConfiguration  Class="ma-6" OptionsLoader="ElOverblikOptionsLoader"/>
+<ElOverblikIntegrationConfiguration  Class="ma-6" />
 
 @code {
     bool success;

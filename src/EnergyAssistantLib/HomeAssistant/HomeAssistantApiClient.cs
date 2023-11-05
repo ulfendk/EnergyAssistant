@@ -4,40 +4,48 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UlfenDk.EnergyAssistant.Config;
 using UlfenDk.EnergyAssistant.Model;
+using UlfenDk.EnergyAssistant.Repository;
 
 namespace UlfenDk.EnergyAssistant.HomeAssistant;
 
 public class HomeAssistantApiClient
 {
     private readonly HashSet<HttpStatusCode> _successStatusCodes;
+    private readonly EnergyAssistantRepository _repository;
     private readonly ILogger<HomeAssistantApiClient> _logger;
 
-    private readonly OptionsLoader<HomeAssistantOptions> _options;
-    private readonly string _url;
-    private readonly string _token;
     private readonly string _sensorPrefix;
 
-    public HomeAssistantApiClient(OptionsLoader<GeneralOptions> generalOptions, OptionsLoader<HomeAssistantOptions> options, ILogger<HomeAssistantApiClient> logger)
+    public HomeAssistantApiClient(EnergyAssistantRepository repository, ILogger<HomeAssistantApiClient> logger)
     {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        
-        var region = generalOptions.Load().Region;
-        _options = options;
-        
-        var config = _options.Load();
-        
-        _url = config.Url ?? "http://homeassistant/core";
-        _token = config.Token ?? Environment.GetEnvironmentVariable("SUPERVISOR_TOKEN")!;
-        _sensorPrefix = $"energy_assistant_{region}";
+
+        _sensorPrefix = $"energy_assistant";
 
         _successStatusCodes = new HashSet<HttpStatusCode>(new[] { HttpStatusCode.OK, HttpStatusCode.Created });
     }
 
+    private async Task<HttpClient> GetHttpClientAsync()
+    {
+        var settings = await _repository.GetHomeAssistantSettingsAsync();
+        string token = string.IsNullOrWhiteSpace(settings.Token)
+            ? Environment.GetEnvironmentVariable("SUPERVISOR_TOKEN")!
+            : settings.Token;
+
+        var client = new HttpClient()
+        {
+            BaseAddress = new Uri(settings.Url)
+        };
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+        return client;
+    }
+
     public async Task<HttpStatusCode> UpdateEntityAsync<T>(string entityType, string entityName, SensorPayload<T> payload, CancellationToken cancellationToken)
     {
-        using var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token}");
-        string url = $"{_url}/api/states/{entityType}.{_sensorPrefix}_{entityName}"; 
+        string url = $"/api/states/{entityType}.{_sensorPrefix}_{entityName}"; 
+        using var client = await GetHttpClientAsync();
         var result = await client.PostAsJsonAsync(
             url,
             payload,

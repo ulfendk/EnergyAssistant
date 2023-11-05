@@ -96,7 +96,7 @@ public class EnergyAssistantService
              var now = DateTimeOffset.Now;
              if (DateTimeOffset.Now >= nextDataRefresh)
              {
-                 if (_carnotDataLoader.IsEnabled)
+                 if (await _carnotDataLoader.GetIsEnabledAsync())
                  {
                      var carnotData = await _carnotDataLoader.GetPredictionsAsync(cancellationToken);
                      if (carnotData.Any())
@@ -105,17 +105,20 @@ public class EnergyAssistantService
                      }
                  }
 
-                 var energiData = await _energiDataServiceLoader.GetLatestPricesAsync(cancellationToken);
-                 if (energiData.Any())
+                 if (await _energiDataServiceLoader.GetIsEnabledAsync())
                  {
-                     _spotPrices.AddOrUpdateRange(energiData.Select(_priceCalculator.AddCosts));
+                     var energiData = await _energiDataServiceLoader.GetLatestPricesAsync(cancellationToken);
+                     if (energiData.Any())
+                     {
+                         _spotPrices.AddOrUpdateRange(energiData.Select(_priceCalculator.AddCosts));
+                     }
+                     else if (await _nordpoolDataLoader.GetIsEnabledAsync())
+                     {
+                         var nordpoolData = await _nordpoolDataLoader.GetSpotPricesAsync(cancellationToken);
+                         _spotPrices.AddOrUpdateRange(nordpoolData.Select(_priceCalculator.AddCosts));
+                     }
                  }
-                 else if (_nordpoolDataLoader.IsEnabled)
-                 {
-                     var nordpoolData = await _nordpoolDataLoader.GetSpotPricesAsync(cancellationToken);
-                     _spotPrices.AddOrUpdateRange(nordpoolData.Select(_priceCalculator.AddCosts));
-                 }
-         
+                 
                  lastChanged = DateTimeOffset.Now;
              }
 

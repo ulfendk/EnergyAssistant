@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using UlfenDk.EnergyAssistant.Config;
+using UlfenDk.EnergyAssistant.Repository;
 using ArgumentNullException = System.ArgumentNullException;
 
 namespace UlfenDk.EnergyAssistant.Eloverblik;
@@ -16,18 +17,17 @@ public class ElOverblikLoader
     }
 
     private const string BaseAddress = "https://api.eloverblik.dk/";
-    
-    private readonly OptionsLoader<EloverblikOptions> _options;
+
+    private readonly EnergyAssistantRepository _repository;
     private readonly ILogger<ElOverblikLoader> _logger;
 
-    private EloverblikOptions Options => _options.Load();
 
     private DateTimeOffset _tokenExpiresAt = default;
     private string _accessToken = "";
-
-    public ElOverblikLoader(OptionsLoader<EloverblikOptions> options, ILogger<ElOverblikLoader> logger)
+    
+    public ElOverblikLoader(EnergyAssistantRepository repository, ILogger<ElOverblikLoader> logger)
     {
-        _options = options ?? throw new ArgumentNullException(nameof(options));
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
@@ -35,6 +35,8 @@ public class ElOverblikLoader
     {
         try
         {
+            var settings = await _repository.GetElOverblikSettingsAsync();
+            
             _logger.LogInformation("Fetching usage for period {from} {to}.", from, to);
             await AuthenticateAsync();
 
@@ -47,7 +49,7 @@ public class ElOverblikLoader
                     {
                         meteringPoint = new string[]
                         {
-                            Options.MeteringPointId
+                            settings.MeteringPointId
                         }
                     }
                 });
@@ -81,9 +83,11 @@ public class ElOverblikLoader
         {
             try
             {
+                var settings = await _repository.GetElOverblikSettingsAsync();
+                
                 _logger.LogInformation("Refresh token is invalid or non-existing.");
                 
-                using var httpClient = GetHttpClient(Options.ApiKey);
+                using var httpClient = GetHttpClient(settings.ApiToken);
 
                 var result = await httpClient.GetFromJsonAsync<JsonAuthenticationResult>("api/token");
 

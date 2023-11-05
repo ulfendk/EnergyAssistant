@@ -1,5 +1,9 @@
 @using UlfenDk.EnergyAssistant.Config
+@using UlfenDk.EnergyAssistant.Database
+@using UlfenDk.EnergyAssistant.Repository
 @namespace EnergyAssistant.Components
+
+@inject EnergyAssistantRepository Repository
 
 <MudCard Class="@Class">
     <MudCardHeader>
@@ -7,7 +11,7 @@
             <MudText Typo="Typo.h6">General settings</MudText>
         </CardHeaderContent>
     </MudCardHeader>
-@if (_options == null)
+@if (_settings == null)
 {
     <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
@@ -15,17 +19,17 @@ else
 {
     <MudCardContent>
         <MudForm>
-            <MudRadioGroup @bind-SelectedOption="_options.Region">
+            <MudRadioGroup @bind-SelectedOption="_settings.Region">
                 <MudRadio Option="@("dk1")">DK1 - West of Storebælt</MudRadio>
                 <MudRadio Option="@("dk2")">DK2 - East of Storebælt</MudRadio>
             </MudRadioGroup>
-            <MudCheckBox T="bool" Label="Electrically heated home" />
+            <MudCheckBox T="bool" @bind-Checked="_settings.HasElectricHeating" Label="Electrically heated home" />
             <MudText Typo="Typo.body1">If you check this, your spot price will have only the reduced fee added to the price - and a capped fee will be added to your daily costs.  The eligibility for reduced fees, is calculated daily, based on a 10.96 kWh threshold (365 day/year x 10.96 kWh/day = 4,000 kWh/year).</MudText>
             <MudText Typo="Typo.body2"><b>NB! To be eligible, you must make sure your power provider has your home registered with electric heating (which they will only allow, if already registered in BBR as such).</b></MudText>
         </MudForm>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(async () => await OnSaveClickedAsync())">Save</MudButton>
         <MudButton Variant="Variant.Text" Color="Color.Primary">Reset</MudButton>
     </MudCardActions>
 }
@@ -33,18 +37,24 @@ else
 
 @code {
     [Parameter]
-    public OptionsLoader<GeneralOptions> OptionsLoader { get; set; }
-
-    [Parameter]
     public string Class { get; set; } = "";
-
-    private GeneralOptions? _options;
     
-    protected override Task OnInitializedAsync()
+    private GeneralSettings? _settings;
+    
+    protected override async Task OnInitializedAsync()
     {
-        _options = OptionsLoader.Load();
+        _settings = await Repository.GetGeneralSettingsAsync();
 
-        return base.OnInitializedAsync();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OnSaveClickedAsync()
+    {
+        await Repository.UpdateGeneralSettingsAsync(s =>
+        {
+            s.Region = _settings!.Region;
+            s.HasElectricHeating = _settings!.HasElectricHeating;
+        });
     }
 
 }

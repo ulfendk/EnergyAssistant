@@ -1,11 +1,15 @@
 @using UlfenDk.EnergyAssistant.Config
+@using UlfenDk.EnergyAssistant.Database
+@using UlfenDk.EnergyAssistant.Repository
 @namespace EnergyAssistant.Components
+
+@inject EnergyAssistantRepository Repository
 
 <MudCard Class="@Class">
     <MudCardHeader Style="background-color: rgb(0, 28, 55)">
         <MudLink Target="_blank" Href="https://www.nordpoolgroup.com"><MudImage Src="logos/nordpool.png" Height="50" /></MudLink>
     </MudCardHeader>
-@if (_options == null)
+@if (_settings == null)
 {
     <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
@@ -15,11 +19,11 @@ else
         <MudText Typo="Typo.body1" GutterBottom="true">Enable Nordpool spot price downloads. Only used, when EnergiDataService is disabled or down.</MudText>
         <MudText Typo="Typo.body2" GutterBottom="true"><b>NB! Nordpool does not allow un-paid API access, and by enabling this you are violating their terms of use.</b></MudText>
         <MudForm>
-            <MudCheckBox @bind-Checked="_options.IsEnabled" T="bool" Label="Enabled"/>
+            <MudCheckBox @bind-Checked="_settings.IsEnabled" T="bool" Label="Enabled"/>
         </MudForm>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="(async () => await OnSaveClickedAsync())">Save</MudButton>
         <MudButton Variant="Variant.Text" Color="Color.Primary">Reset</MudButton>
     </MudCardActions>
 }
@@ -27,18 +31,23 @@ else
 
 @code {
     [Parameter]
-    public OptionsLoader<NordpoolOptions> OptionsLoader { get; set; }
-
-    [Parameter]
     public string Class { get; set; } = "";
 
-    private NordpoolOptions? _options;
-    
-    protected override Task OnInitializedAsync()
-    {
-        _options = OptionsLoader.Load();
+    private NordPoolSettings? _settings;
 
-        return base.OnInitializedAsync();
+    protected override async Task OnInitializedAsync()
+    {
+        _settings = await Repository.GetNordPoolSettingsAsync();
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OnSaveClickedAsync()
+    {
+        await Repository.UpdateNordPoolSettingsAsync(s =>
+        {
+            s.IsEnabled = _settings!.IsEnabled;
+        });
     }
 
 }

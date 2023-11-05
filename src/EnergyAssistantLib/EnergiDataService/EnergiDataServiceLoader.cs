@@ -3,19 +3,25 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UlfenDk.EnergyAssistant.Config;
 using UlfenDk.EnergyAssistant.Model;
+using UlfenDk.EnergyAssistant.Repository;
 
 namespace UlfenDk.EnergyAssistant.EnergiDataService;
 
 public class EnergiDataServiceLoader
 {
-    private readonly string _region;
+    private readonly EnergyAssistantRepository _repository;
     private readonly ILogger<EnergiDataServiceLoader> _logger;
 
-    public EnergiDataServiceLoader(OptionsLoader<GeneralOptions> options, ILogger<EnergiDataServiceLoader> logger)
+    public async Task<bool> GetIsEnabledAsync()
     {
-        var config = options.Load();
+        var settings = await _repository.GetEnergiDataServiceSettingsAsync();
         
-        _region = config.Region ?? throw new ArgumentNullException(nameof(options));
+        return settings.IsEnabled;
+    }
+
+    public EnergiDataServiceLoader(EnergyAssistantRepository repository, ILogger<EnergiDataServiceLoader> logger)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
@@ -23,11 +29,15 @@ public class EnergiDataServiceLoader
     {
         try
         {
+            var generalSettings = await _repository.GetGeneralSettingsAsync();
+            var settings = await _repository.GetEnergiDataServiceSettingsAsync();
+            
+            if (!settings.IsEnabled) throw new InvalidOperationException($"{nameof(EnergiDataServiceLoader)} is not enabled.");
             _logger.LogInformation("Downloading spot prices from EnergiDataService");
 
             var now = DateTimeOffset.Now;
 
-            string url = $"https://api.energidataservice.dk/dataset/elspotprices?start={now:yyyy-MM-dd}&sort=HourUTC asc&filter={{\"PriceArea\":[\"{_region}\"]}}&limit=48";
+            string url = $"https://api.energidataservice.dk/dataset/elspotprices?start={now:yyyy-MM-dd}&sort=HourUTC asc&filter={{\"PriceArea\":[\"{generalSettings.Region}\"]}}&limit=48";
 
             using var client = new HttpClient();
             
@@ -37,7 +47,7 @@ public class EnergiDataServiceLoader
                 {
                     Hour = new DateTimeOffset(DateTime.Parse(x.HourUtc ?? throw new InvalidDataException(nameof(x.HourUtc))), TimeSpan.Zero)
                         .ToOffset(now.Offset),
-                    Region = (x.PriceArea ?? _region).ToLowerInvariant(),
+                    Region = (x.PriceArea ?? generalSettings.Region).ToLowerInvariant(),
                     RawPrice = (decimal?)x.SpotPriceDkk / 1000m ?? throw new InvalidDataException(nameof(x.SpotPriceDkk)),
                     IsPrediction = false,
                     Source = "EnergiDataService"

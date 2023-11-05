@@ -3,7 +3,7 @@
 
 @using System.ComponentModel.DataAnnotations
 @using UlfenDk.EnergyAssistant.Config
-@inject OptionsLoader<GeneralOptions> GeneralOptionsLoader;
+@* @inject OptionsLoader<GeneralOptions> GeneralOptionsLoader; *@
 @inject OptionsLoader<PriceOptions> PriceOptionsLoader;
 
 <PageTitle>Configuration</PageTitle>
@@ -11,7 +11,7 @@
 <MudText Typo="Typo.h3" GutterBottom="true">Configuration</MudText>
 <MudText Typo="Typo.subtitle1">Configure general settings</MudText>
 
-<GeneralConfiguration Class="ma-6" OptionsLoader="GeneralOptionsLoader" />
+<GeneralConfiguration Class="ma-6" />
 <FeesTariffsConfiguration Class="ma-6" OptionsLoader="PriceOptionsLoader" />
 
 @* <MudItem> *@

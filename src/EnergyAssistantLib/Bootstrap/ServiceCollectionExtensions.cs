@@ -19,13 +19,13 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddEnergyAssistant(this IServiceCollection services, string dataDir)
     {
         services
-            .Configure<OptionsFileOptions<GeneralOptions>>(o => o.FileName = Path.Join(dataDir, "general.yaml"))
+            // .Configure<OptionsFileOptions<GeneralOptions>>(o => o.FileName = Path.Join(dataDir, "general.yaml"))
             .Configure<OptionsFileOptions<PriceOptions>>(o => o.FileName = Path.Join(dataDir, "prices.yaml"))
-            .Configure<OptionsFileOptions<HomeAssistantOptions>>(o => o.FileName = Path.Join(dataDir, "homeassistant.yaml"))
-            .Configure<OptionsFileOptions<CarnotOptions>>(o => o.FileName = Path.Join(dataDir, "carnot.yaml"))
-            .Configure<OptionsFileOptions<EnergiDataServiceOptions>>(o => o.FileName = Path.Join(dataDir, "energidataservice.yaml"))
-            .Configure<OptionsFileOptions<NordpoolOptions>>(o => o.FileName = Path.Join(dataDir, "nordpool.yaml"))
-            .Configure<OptionsFileOptions<EloverblikOptions>>(o => o.FileName = Path.Join(dataDir, "eloverblik.yaml"))
+            // .Configure<OptionsFileOptions<HomeAssistantOptions>>(o => o.FileName = Path.Join(dataDir, "homeassistant.yaml"))
+            // .Configure<OptionsFileOptions<CarnotOptions>>(o => o.FileName = Path.Join(dataDir, "carnot.yaml"))
+            // .Configure<OptionsFileOptions<EnergiDataServiceOptions>>(o => o.FileName = Path.Join(dataDir, "energidataservice.yaml"))
+            // .Configure<OptionsFileOptions<NordpoolOptions>>(o => o.FileName = Path.Join(dataDir, "nordpool.yaml"))
+            // .Configure<OptionsFileOptions<EloverblikOptions>>(o => o.FileName = Path.Join(dataDir, "eloverblik.yaml"))
             .Configure<OptionsFileOptions<ActivityOptions>>(o => o.FileName = Path.Join(dataDir, "activities.yaml"))
 
             .AddTransient(typeof(OptionsLoader<>))
@@ -42,6 +42,8 @@ public static class ServiceCollectionExtensions
 
             .AddDbContextFactory<EnergyAssistantContext>(options =>
                 options.UseSqlite($"Data Source={Path.Combine(dataDir, "data.db")}"))
+            
+            .AddTransient<EnergyAssistantRepository>()
         
             ;
             // .AddDbContext<EnergyAssistantContext>();
