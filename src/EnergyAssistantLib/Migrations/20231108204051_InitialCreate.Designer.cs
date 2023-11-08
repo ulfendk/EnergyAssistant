@@ -11,7 +11,7 @@ using UlfenDk.EnergyAssistant.Database;
 namespace UlfenDk.EnergyAssistant.Migrations
 {
     [DbContext(typeof(EnergyAssistantContext))]
-    [Migration("20231101201518_InitialCreate")]
+    [Migration("20231108204051_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -49,6 +49,25 @@ namespace UlfenDk.EnergyAssistant.Migrations
                             IsEnabled = false,
                             User = ""
                         });
+                });
+
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.DailyInterval", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("MonthPeriodId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<TimeOnly>("Start")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MonthPeriodId");
+
+                    b.ToTable("DailyIntervals");
                 });
 
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.ElOverblikSettings", b =>
@@ -140,6 +159,49 @@ namespace UlfenDk.EnergyAssistant.Migrations
                     b.ToTable("Usages");
                 });
 
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.Fee", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("DailyIntervalId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("MonthPeriodId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("MonthPeriodId1")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("MonthPeriodId2")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("YearPeriodId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DailyIntervalId");
+
+                    b.HasIndex("MonthPeriodId");
+
+                    b.HasIndex("MonthPeriodId1");
+
+                    b.HasIndex("MonthPeriodId2");
+
+                    b.HasIndex("YearPeriodId");
+
+                    b.ToTable("Fees");
+                });
+
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.FeePerUnit", b =>
                 {
                     b.Property<long>("Id")
@@ -166,7 +228,7 @@ namespace UlfenDk.EnergyAssistant.Migrations
 
                     b.HasIndex("HourlyFeePeriodId");
 
-                    b.ToTable("FeesPerUnit");
+                    b.ToTable("FeePerUnit");
                 });
 
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.FeePeriod", b =>
@@ -190,7 +252,7 @@ namespace UlfenDk.EnergyAssistant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Periods");
+                    b.ToTable("FeePeriod");
                 });
 
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.FixedFee", b =>
@@ -213,7 +275,7 @@ namespace UlfenDk.EnergyAssistant.Migrations
 
                     b.HasIndex("FeePeriodId");
 
-                    b.ToTable("FixedFees");
+                    b.ToTable("FixedFee");
                 });
 
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.GeneralSettings", b =>
@@ -293,7 +355,24 @@ namespace UlfenDk.EnergyAssistant.Migrations
 
                     b.HasIndex("FeePeriodId");
 
-                    b.ToTable("HourlyFees");
+                    b.ToTable("HourlyFeePeriod");
+                });
+
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.MonthPeriod", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly>("From")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("To")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MonthPeriods");
                 });
 
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.NordPoolSettings", b =>
@@ -355,6 +434,30 @@ namespace UlfenDk.EnergyAssistant.Migrations
                     b.ToTable("Prices");
                 });
 
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.YearPeriod", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Vat")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("YearPeriods");
+                });
+
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.DailyInterval", b =>
+                {
+                    b.HasOne("UlfenDk.EnergyAssistant.Database.MonthPeriod", null)
+                        .WithMany("Daily")
+                        .HasForeignKey("MonthPeriodId");
+                });
+
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.EnergyUsageRecord", b =>
                 {
                     b.HasOne("UlfenDk.EnergyAssistant.Database.FeePeriod", "FeePeriod")
@@ -364,6 +467,29 @@ namespace UlfenDk.EnergyAssistant.Migrations
                         .IsRequired();
 
                     b.Navigation("FeePeriod");
+                });
+
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.Fee", b =>
+                {
+                    b.HasOne("UlfenDk.EnergyAssistant.Database.DailyInterval", null)
+                        .WithMany("UnitFees")
+                        .HasForeignKey("DailyIntervalId");
+
+                    b.HasOne("UlfenDk.EnergyAssistant.Database.MonthPeriod", null)
+                        .WithMany("MonthlyCosts")
+                        .HasForeignKey("MonthPeriodId");
+
+                    b.HasOne("UlfenDk.EnergyAssistant.Database.MonthPeriod", null)
+                        .WithMany("ReducedFeesPerUnit")
+                        .HasForeignKey("MonthPeriodId1");
+
+                    b.HasOne("UlfenDk.EnergyAssistant.Database.MonthPeriod", null)
+                        .WithMany("RegularFeesPerUnit")
+                        .HasForeignKey("MonthPeriodId2");
+
+                    b.HasOne("UlfenDk.EnergyAssistant.Database.YearPeriod", null)
+                        .WithMany("YearlyCosts")
+                        .HasForeignKey("YearPeriodId");
                 });
 
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.FeePerUnit", b =>
@@ -400,6 +526,11 @@ namespace UlfenDk.EnergyAssistant.Migrations
                     b.Navigation("FeePeriod");
                 });
 
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.DailyInterval", b =>
+                {
+                    b.Navigation("UnitFees");
+                });
+
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.FeePeriod", b =>
                 {
                     b.Navigation("HourlyFees");
@@ -410,6 +541,22 @@ namespace UlfenDk.EnergyAssistant.Migrations
             modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.HourlyFeePeriod", b =>
                 {
                     b.Navigation("Fees");
+                });
+
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.MonthPeriod", b =>
+                {
+                    b.Navigation("Daily");
+
+                    b.Navigation("MonthlyCosts");
+
+                    b.Navigation("ReducedFeesPerUnit");
+
+                    b.Navigation("RegularFeesPerUnit");
+                });
+
+            modelBuilder.Entity("UlfenDk.EnergyAssistant.Database.YearPeriod", b =>
+                {
+                    b.Navigation("YearlyCosts");
                 });
 #pragma warning restore 612, 618
         }

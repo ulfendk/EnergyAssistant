@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace UlfenDk.EnergyAssistant.Database;
@@ -5,6 +6,7 @@ namespace UlfenDk.EnergyAssistant.Database;
 [Index(nameof(Hour))]
 public class SpotPriceRecord
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
     public DateTimeOffset Hour { get; set; }
 

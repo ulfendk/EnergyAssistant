@@ -56,6 +56,22 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FeePeriod",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    HasElectricHeating = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Start = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    End = table.Column<DateOnly>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeePeriod", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GeneralSettings",
                 columns: table => new
                 {
@@ -85,6 +101,20 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MonthPeriods",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    From = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    To = table.Column<DateOnly>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MonthPeriods", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NordPoolSettings",
                 columns: table => new
                 {
@@ -98,23 +128,21 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Periods",
+                name: "YearPeriods",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    HasElectricHeating = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Start = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    End = table.Column<DateOnly>(type: "TEXT", nullable: false)
+                    Year = table.Column<int>(type: "INTEGER", nullable: false),
+                    Vat = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Periods", x => x.Id);
+                    table.PrimaryKey("PK_YearPeriods", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "FixedFees",
+                name: "FixedFee",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
@@ -125,17 +153,17 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FixedFees", x => x.Id);
+                    table.PrimaryKey("PK_FixedFee", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FixedFees_Periods_FeePeriodId",
+                        name: "FK_FixedFee_FeePeriod_FeePeriodId",
                         column: x => x.FeePeriodId,
-                        principalTable: "Periods",
+                        principalTable: "FeePeriod",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "HourlyFees",
+                name: "HourlyFeePeriod",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
@@ -146,11 +174,11 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HourlyFees", x => x.Id);
+                    table.PrimaryKey("PK_HourlyFeePeriod", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HourlyFees_Periods_FeePeriodId",
+                        name: "FK_HourlyFeePeriod_FeePeriod_FeePeriodId",
                         column: x => x.FeePeriodId,
-                        principalTable: "Periods",
+                        principalTable: "FeePeriod",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -173,9 +201,9 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 {
                     table.PrimaryKey("PK_Prices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Prices_Periods_FeePeriodId",
+                        name: "FK_Prices_FeePeriod_FeePeriodId",
                         column: x => x.FeePeriodId,
-                        principalTable: "Periods",
+                        principalTable: "FeePeriod",
                         principalColumn: "Id");
                 });
 
@@ -195,15 +223,34 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 {
                     table.PrimaryKey("PK_Usages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Usages_Periods_FeePeriodId",
+                        name: "FK_Usages_FeePeriod_FeePeriodId",
                         column: x => x.FeePeriodId,
-                        principalTable: "Periods",
+                        principalTable: "FeePeriod",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeesPerUnit",
+                name: "DailyIntervals",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Start = table.Column<TimeOnly>(type: "TEXT", nullable: false),
+                    MonthPeriodId = table.Column<long>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailyIntervals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DailyIntervals_MonthPeriods_MonthPeriodId",
+                        column: x => x.MonthPeriodId,
+                        principalTable: "MonthPeriods",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FeePerUnit",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
@@ -216,11 +263,55 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeesPerUnit", x => x.Id);
+                    table.PrimaryKey("PK_FeePerUnit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FeesPerUnit_HourlyFees_HourlyFeePeriodId",
+                        name: "FK_FeePerUnit_HourlyFeePeriod_HourlyFeePeriodId",
                         column: x => x.HourlyFeePeriodId,
-                        principalTable: "HourlyFees",
+                        principalTable: "HourlyFeePeriod",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Fees",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Amount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    DailyIntervalId = table.Column<long>(type: "INTEGER", nullable: true),
+                    MonthPeriodId = table.Column<long>(type: "INTEGER", nullable: true),
+                    MonthPeriodId1 = table.Column<long>(type: "INTEGER", nullable: true),
+                    MonthPeriodId2 = table.Column<long>(type: "INTEGER", nullable: true),
+                    YearPeriodId = table.Column<long>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fees_DailyIntervals_DailyIntervalId",
+                        column: x => x.DailyIntervalId,
+                        principalTable: "DailyIntervals",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Fees_MonthPeriods_MonthPeriodId",
+                        column: x => x.MonthPeriodId,
+                        principalTable: "MonthPeriods",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Fees_MonthPeriods_MonthPeriodId1",
+                        column: x => x.MonthPeriodId1,
+                        principalTable: "MonthPeriods",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Fees_MonthPeriods_MonthPeriodId2",
+                        column: x => x.MonthPeriodId2,
+                        principalTable: "MonthPeriods",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Fees_YearPeriods_YearPeriodId",
+                        column: x => x.YearPeriodId,
+                        principalTable: "YearPeriods",
                         principalColumn: "Id");
                 });
 
@@ -255,18 +346,48 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 values: new object[] { 1L, false });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeesPerUnit_HourlyFeePeriodId",
-                table: "FeesPerUnit",
+                name: "IX_DailyIntervals_MonthPeriodId",
+                table: "DailyIntervals",
+                column: "MonthPeriodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeePerUnit_HourlyFeePeriodId",
+                table: "FeePerUnit",
                 column: "HourlyFeePeriodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FixedFees_FeePeriodId",
-                table: "FixedFees",
+                name: "IX_Fees_DailyIntervalId",
+                table: "Fees",
+                column: "DailyIntervalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fees_MonthPeriodId",
+                table: "Fees",
+                column: "MonthPeriodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fees_MonthPeriodId1",
+                table: "Fees",
+                column: "MonthPeriodId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fees_MonthPeriodId2",
+                table: "Fees",
+                column: "MonthPeriodId2");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fees_YearPeriodId",
+                table: "Fees",
+                column: "YearPeriodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FixedFee_FeePeriodId",
+                table: "FixedFee",
                 column: "FeePeriodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HourlyFees_FeePeriodId",
-                table: "HourlyFees",
+                name: "IX_HourlyFeePeriod_FeePeriodId",
+                table: "HourlyFeePeriod",
                 column: "FeePeriodId");
 
             migrationBuilder.CreateIndex(
@@ -303,10 +424,13 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 name: "EnergiDataServiceSettings");
 
             migrationBuilder.DropTable(
-                name: "FeesPerUnit");
+                name: "FeePerUnit");
 
             migrationBuilder.DropTable(
-                name: "FixedFees");
+                name: "Fees");
+
+            migrationBuilder.DropTable(
+                name: "FixedFee");
 
             migrationBuilder.DropTable(
                 name: "GeneralSettings");
@@ -324,10 +448,19 @@ namespace UlfenDk.EnergyAssistant.Migrations
                 name: "Usages");
 
             migrationBuilder.DropTable(
-                name: "HourlyFees");
+                name: "HourlyFeePeriod");
 
             migrationBuilder.DropTable(
-                name: "Periods");
+                name: "DailyIntervals");
+
+            migrationBuilder.DropTable(
+                name: "YearPeriods");
+
+            migrationBuilder.DropTable(
+                name: "FeePeriod");
+
+            migrationBuilder.DropTable(
+                name: "MonthPeriods");
         }
     }
 }
