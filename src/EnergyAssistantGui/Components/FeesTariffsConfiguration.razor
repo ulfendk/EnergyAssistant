@@ -16,19 +16,11 @@
 @*     <MudTimelineItem>Meeting 2</MudTimelineItem> *@
 @*     <MudTimelineItem>Meeting 3</MudTimelineItem> *@
 @* </MudTimeline> *@
-
-                            <MudDataGrid T="FeeViewModel" Items="@_yearPeriods[0].YearlyCosts">
-                                <Columns>
-                                    @* <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" /> *@
-                                    <PropertyColumn Property="x => x.Name" Title="Name" />
-                                    <PropertyColumn Property="x => x.Amount" Title="Amount" />
-                                </Columns> 
-                            </MudDataGrid>
-
 <MudCard Class="@Class">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h6">Fees and tariffs</MudText>
+
         </CardHeaderContent>
     </MudCardHeader>
 @if (_yearPeriods == null)
@@ -38,104 +30,38 @@
 else
 {
     <MudCardContent>
-        <MudFab StartIcon="@Icons.Filled.Add" OnClick="@(async () => await OnCreatePeriodClickedAsync())" />
-        <MudExpansionPanels MultiExpansion="true">
+        @foreach (var yearPeriod in _yearPeriods)
+        {
+            <MudForm>
+                <MudText Typo="Typo.h6"><MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Style="vertical-align: middle"/>@yearPeriod.Year</MudText>
+                <MudTextField T="decimal" Label="VAT" @bind-Value="yearPeriod.Vat"/>
+            </MudForm>
 
-            @foreach (var yearPeriod in _yearPeriods)
-            {
-                <MudExpansionPanel>
-                    <TitleContent>
-                        <MudForm>
-                            <MudText Typo="Typo.h6"><MudIcon Icon="@Icons.Filled.CalendarMonth" Style="vertical-align: middle"/>@yearPeriod.Year</MudText>
-                            <MudTextField T="decimal" Label="VAT" @bind-Value="yearPeriod.Vat" />
-                        </MudForm>
-                            <MudDataGrid T="FeeViewModel" Items="@yearPeriod.YearlyCosts">
-                                <Columns>
-                                    @* <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" /> *@
-                                    <PropertyColumn Property="x => x.Name" Title="Name" />
-                                    <PropertyColumn Property="x => x.Amount" Title="Amount" />
-                                </Columns> 
-                            </MudDataGrid>
-                            
-                            @foreach (var cost in yearPeriod.YearlyCosts)
-                            {
-                                <MudText>@cost</MudText>
-                            }
-                    </TitleContent>
-                    <ChildContent>
-                        @* @foreach (var monthPeriod in _monthPeriods *@
-                        @*     .Where(x => x.From.Year == yearPeriod.Year || x.To.Year == yearPeriod.Year) *@
-                        @*     .OrderBy(x => x.From)) *@
-                        @* { *@
-                        @*     <MudText>@monthPeriod.From - @monthPeriod.To</MudText> *@
-                        @* } *@
-                    </ChildContent>
-                </MudExpansionPanel>
-            }
-        </MudExpansionPanels>
-        @* <MudCardContent> *@
-        @*     <MudForm> *@
-        @*         <MudNumericField @bind-Value=".Vat" Label="VAT" HelperText="The applicable VAT rate." Min="0.0m" Max="1.0m" Step="0.01m" /> *@
-        @*     </MudForm> *@
-        @*      *@
-        @*     <MudExpansionPanels MultiExpansion="true"> *@
-        @*         @foreach (var period in _options.TariffPeriods ?? Array.Empty<TariffPeriod>()) *@
-        @*         { *@
-        @*             <MudExpansionPanel> *@
-        @*                 <TitleContent> *@
-        @*                     <MudText Typo="Typo.h6"><MudIcon Icon="@Icons.Filled.CalendarMonth" Style="vertical-align: middle"/>@period.StartDate - @period.EndDate</MudText> *@
-        @*                 </TitleContent> *@
-        @*                 <ChildContent> *@
-        @*                     <MudGrid> *@
-        @*                         <FeesTariffsTimeIntervalConfiguration TariffOptions="@OptionsLoader.Load().TariffPeriods.First().Daily" /> *@
-        @*                         $1$ <MudItem Class="xs-6"> #1# *@
-        @*                         $1$     <b>@_details</b> #1# *@
-        @*                         $1$     <MudTimeline Class="mr-12" TimelinePosition="TimelinePosition.Left" @bind-SelectedIndex="_index" @onclick="OnClick"> #1# *@
-        @*                         $1$         <MudTimelineItem Color="Color.Primary"> #1# *@
-        @*                         $1$             <MudText Typo="Typo.h6">00:00</MudText> #1# *@
-        @*                         $1$         </MudTimelineItem> #1# *@
-        @*                         $1$         <MudTimelineItem TimelineAlign="TimelineAlign.End"> #1# *@
-        @*                         $1$             <MudText>06:00</MudText> #1# *@
-        @*                         $1$         </MudTimelineItem> #1# *@
-        @*                         $1$         <MudTimelineItem TimelineAlign="TimelineAlign.End"> #1# *@
-        @*                         $1$             <MudText>17:00</MudText> #1# *@
-        @*                         $1$         </MudTimelineItem> #1# *@
-        @*                         $1$         <MudTimelineItem TimelineAlign="TimelineAlign.End"> #1# *@
-        @*                         $1$             <MudText>21:00</MudText> #1# *@
-        @*                         $1$         </MudTimelineItem> #1# *@
-        @*                         $1$         <MudTimelineItem TimelineAlign="TimelineAlign.End" HideDot="true"> #1# *@
-        @*                         $1$             <MudText>24:00</MudText> #1# *@
-        @*                         $1$         </MudTimelineItem> #1# *@
-        @*                         $1$     </MudTimeline> #1# *@
-        @*                         $1$ </MudItem> #1# *@
-        @*                         $1$ <MudItem Class="xs-6"> #1# *@
-        @*                         $1$     <MudPaper Class="pa-6"> #1# *@
-        @*                         $1$         <MudText Typo="Typo.h5">00:00 - 06:00</MudText> #1# *@
-        @*                         $1$         <MudText Typo="Typo.subtitle1">Fees are in DKK / kWh</MudText> #1# *@
-        @*                         $1$         <MudText Typo="Typo.subtitle2">All prices are excl. VAT</MudText> #1# *@
-        @*                         $1$ #1# *@
-        @*                         $1$         <MudText Typo="Typo.h6" Class="mt-6">Always included</MudText> #1# *@
-        @*                         $1$         <MudText Typo="Typo.subtitle1">Will always be added (i.e. tariff).</MudText> #1# *@
-        @*                         $1$         <MudList> #1# *@
-        @*                         $1$             <MudListItem>0.123</MudListItem> #1# *@
-        @*                         $1$         </MudList> #1# *@
-        @*                         $1$         <MudText Typo="Typo.h6">Regular fees</MudText> #1# *@
-        @*                         $1$         <MudText Typo="Typo.subtitle1">Fees to add under normal circumstances.</MudText> #1# *@
-        @*                         $1$         <MudList> #1# *@
-        @*                         $1$             <MudListItem>0.987</MudListItem> #1# *@
-        @*                         $1$         </MudList> #1# *@
-        @*                         $1$         <MudText Typo="Typo.h6">Reduced fees</MudText> #1# *@
-        @*                         $1$         <MudText Typo="Typo.subtitle1">Fees to add, if applicable, once qualified for reduced fees (above 4,000 kWh this year).</MudText> #1# *@
-        @*                         $1$         <MudList> #1# *@
-        @*                         $1$             <MudListItem>0.008</MudListItem> #1# *@
-        @*                         $1$         </MudList> #1# *@
-        @*                         $1$     </MudPaper> #1# *@
-        @*                         $1$ </MudItem> #1# *@
-        @*                     </MudGrid> *@
-        @*                 </ChildContent> *@
-        @*             </MudExpansionPanel> *@
-        @*         } *@
-        @*     </MudExpansionPanels> *@
+
+            @* <MudFab StartIcon="@Icons.Material.Filled.Add" OnClick="() => AddItem(yearPeriod.YearlyCosts)" Color="Color.Primary" /> *@
+            <MudButton OnClick="() => AddItem(yearPeriod.YearlyCosts)" Color="@Color.Success" Class="add-item-btn">Add Item</MudButton>
+            @* <MudButton OnClick="() => RemoveItem(yearPeriod.YearlyCosts)" Color="@Color.Error" Class="remove-item-btn">Remove Item</MudButton> *@
+            <MudDataGrid Groupable="true" GroupClassFunc="GroupClassFunc" Bordered="false" Class="mt-6" T="FeeViewModel" Items="@yearPeriod.YearlyCosts" ReadOnly="false" EditMode="DataGridEditMode.Form" EditTrigger="DataGridEditTrigger.OnRowClick">
+                <Columns>
+                    <PropertyColumn Property="x => x.Name" Title="Name">
+                        <EditTemplate>
+                            <MudTextField @bind-Value="context.Item.Name" Label="Name" Variant="Variant.Outlined" Class="mx-8"/>
+                        </EditTemplate>
+                    </PropertyColumn>
+                    <PropertyColumn Property="x => x.Amount" Title="Amount">
+                        <EditTemplate>
+                            <MudTextField @bind-Value="context.Item.Amount" Label="Amount" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="DKK / kWh" Class="mx-8"/>
+                        </EditTemplate>
+                    </PropertyColumn>
+                    <TemplateColumn Title="Action">
+                        <CellTemplate>
+                            <MudIconButton OnClick="@context.Actions.StartEditingItemAsync" Icon="@Icons.Material.Outlined.Edit" Size="@Size.Small" Title="Edit"/>
+                            <MudIconButton OnClick="async () => RemoveItemAsync(yearPeriod.YearlyCosts, context.Item)" Icon="@Icons.Material.Outlined.Delete" Size="@Size.Small" Title="Delete"/>
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+            </MudDataGrid>
+        }
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Text" Color="Color.Primary">Save</MudButton>
@@ -145,12 +71,18 @@ else
 </MudCard>
 
 @code {
-    [Parameter]
-    public string Class { get; set; } = "";
+    [Parameter] public string Class { get; set; } = "";
+    
+    [Inject] private IDialogService DialogService { get; set; }
 
     private ObservableCollection<YearPeriodViewModel>? _yearPeriods;
     private ObservableCollection<MonthPeriod>? _monthPeriods;
-    
+    private string GroupClassFunc(GroupDefinition<FeeViewModel> item)
+    {
+        return item.Grouping.Key?.ToString() == "Nonmetal" || item.Grouping.Key?.ToString() == "Other"
+            ? "mud-theme-warning"
+            : string.Empty;
+    }
     protected override async Task OnInitializedAsync()
     {
         _yearPeriods = new ObservableCollection<YearPeriodViewModel>((await Repository.GetYearlyPeriodsAsync()).Select(x => new YearPeriodViewModel(x)));
@@ -186,5 +118,23 @@ else
         //     s.Region = _settings!.Region;
         //     s.HasElectricHeating = _settings!.HasElectricHeating;
         // });
+    }
+    
+    void AddItem(ObservableCollection<FeeViewModel> items)
+    {
+        items.Add(new FeeViewModel(new Fee{ Name = "New", Amount = 0m}));
+    }
+
+    async Task RemoveItemAsync(ObservableCollection<FeeViewModel> items, FeeViewModel item)
+    {
+        if (items.Any() &&
+            await DialogService.ShowMessageBox(
+                "Warning", 
+                $"Are you sure you want to delete {item.Name}?", 
+                yesText:"Delete", cancelText:"Cancel") == true)
+        {
+            items.Remove(item);
+            StateHasChanged();
+        }
     }
 }
